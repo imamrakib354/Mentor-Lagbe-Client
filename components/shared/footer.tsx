@@ -33,7 +33,7 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="w-full overflow-hidden rounded-3xl bg-linear-to-br from-blue-800 via-blue-700 to-blue-600 text-white">
+    <footer className="w-full overflow-hidden bg-linear-to-br from-blue-800 via-blue-700 to-blue-600 text-white">
       <div className="grid gap-10 px-6 py-10 sm:grid-cols-2 sm:px-8 lg:grid-cols-[1.3fr_0.8fr_1.1fr_1fr] lg:gap-12 lg:px-10 lg:py-12">
         <div>
           <Link

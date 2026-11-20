@@ -5,6 +5,7 @@ import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
 
 function ThemeProvider({
   children,
+  scriptProps,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
   return (
@@ -13,6 +14,11 @@ function ThemeProvider({
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange
+      scriptProps={{
+        ...scriptProps,
+        // Bootstrap the theme on the server; do not re-execute on client remounts.
+        type: typeof window === "undefined" ? "text/javascript" : "text/plain",
+      }}
       {...props}
     >
       <ThemeHotkey />
@@ -39,7 +45,13 @@ function ThemeHotkey() {
 
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.defaultPrevented || event.repeat) {
+      if (
+        event.defaultPrevented ||
+        event.repeat ||
+        event.isComposing ||
+        typeof event.key !== "string" ||
+        isTypingTarget(event.target)
+      ) {
         return
       }
 
@@ -48,10 +60,6 @@ function ThemeHotkey() {
       }
 
       if (event.key.toLowerCase() !== "d") {
-        return
-      }
-
-      if (isTypingTarget(event.target)) {
         return
       }
 
