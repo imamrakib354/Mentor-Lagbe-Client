@@ -5,6 +5,19 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, Moon } from "lucide-react"
 
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { cn } from "@/lib/utils"
+
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Browse Tuitions", href: "/tuitions" },
@@ -37,100 +50,137 @@ export function Navbar() {
           <ul className="flex items-center gap-1">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <Link
-                  href={link.href}
+                <Button
+                  variant="ghost"
+                  nativeButton={false}
+                  render={<Link href={link.href} />}
                   aria-current={
                     pathname === link.href ||
                     (link.href !== "/" && pathname.startsWith(`${link.href}/`))
                       ? "page"
                       : undefined
                   }
-                  className="inline-flex h-11 items-center rounded-xl px-4 text-sm font-semibold text-blue-950 transition-colors hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 aria-[current=page]:bg-blue-100 aria-[current=page]:text-blue-800"
+                  className="h-11 rounded-xl px-4 font-semibold text-blue-950 hover:bg-blue-50 hover:text-blue-700 focus-visible:ring-blue-500/40 aria-[current=page]:bg-blue-100 aria-[current=page]:text-blue-800"
                 >
                   {link.label}
-                </Link>
+                </Button>
               </li>
             ))}
           </ul>
         </nav>
 
         <div className="hidden items-center justify-end gap-3 lg:flex">
-          <Link
-            href="/sign-in"
-            className="inline-flex h-11 items-center justify-center rounded-xl border border-blue-100 px-5 text-sm font-semibold text-blue-950 transition-colors hover:border-blue-200 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<Link href="/sign-in" />}
+            className="h-11 rounded-xl border-blue-100 bg-white px-5 font-semibold text-blue-950 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-800 dark:border-blue-100 dark:bg-white"
           >
             Sign In
-          </Link>
-          <Link
-            href="/sign-up"
-            className="inline-flex h-11 items-center justify-center rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+          </Button>
+          <Button
+            nativeButton={false}
+            render={<Link href="/sign-up" />}
+            className="h-11 rounded-xl bg-blue-600 px-5 font-semibold text-white hover:bg-blue-700"
           >
             Sign Up
-          </Link>
-          <button
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
             type="button"
             disabled
             aria-label="Toggle color theme (coming soon)"
             title="Theme switching coming soon"
-            className="flex size-11 shrink-0 items-center justify-center rounded-xl text-blue-800"
+            className="size-11 rounded-xl text-blue-800 disabled:opacity-70"
           >
             <Moon aria-hidden="true" className="size-5" />
-          </button>
+          </Button>
         </div>
 
-        <details className="group relative lg:hidden">
-          <summary className="flex size-11 cursor-pointer list-none items-center justify-center rounded-xl border border-blue-100 text-blue-950 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 [&::-webkit-details-marker]:hidden">
-            <Menu aria-hidden="true" className="size-5" />
-            <span className="sr-only">Navigation menu</span>
-          </summary>
-          <nav
-            aria-label="Mobile navigation"
-            className="absolute top-14 right-0 z-20 w-64 rounded-2xl border border-blue-100 bg-white p-3 shadow-xl shadow-blue-950/10"
+        <Sheet>
+          <SheetTrigger
+            render={
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-11 rounded-xl border-blue-100 bg-white text-blue-950 hover:bg-blue-50 lg:hidden dark:border-blue-100 dark:bg-white"
+              />
+            }
+            aria-label="Open navigation menu"
           >
-            <ul className="space-y-1">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    aria-current={
-                      pathname === link.href ||
-                      (link.href !== "/" &&
-                        pathname.startsWith(`${link.href}/`))
-                        ? "page"
-                        : undefined
-                    }
-                    className="block rounded-lg px-3 py-3 text-sm font-semibold text-blue-950 transition-colors hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600 aria-[current=page]:bg-blue-100 aria-[current=page]:text-blue-800"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-3 grid grid-cols-[1fr_1fr_auto] items-center gap-2 border-t border-blue-100 pt-3">
-              <Link
-                href="/sign-in"
-                className="rounded-lg border border-blue-100 px-3 py-3 text-center text-sm font-semibold text-blue-950 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-blue-600"
+            <Menu aria-hidden="true" className="size-5" />
+          </SheetTrigger>
+          <SheetContent className="border-blue-100 bg-white text-blue-950 data-[side=right]:w-[min(22rem,90vw)]">
+            <SheetHeader className="px-6 pt-12">
+              <SheetTitle className="text-lg font-bold text-blue-950">
+                Explore MentorLagbe
+              </SheetTitle>
+              <SheetDescription className="mt-1 text-slate-500">
+                Your next learning opportunity starts here.
+              </SheetDescription>
+            </SheetHeader>
+            <Separator className="bg-blue-100" />
+            <nav aria-label="Mobile navigation" className="px-4">
+              <ul className="space-y-2">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <SheetClose
+                      nativeButton={false}
+                      render={<Link href={link.href} />}
+                      aria-current={
+                        pathname === link.href ||
+                        (link.href !== "/" &&
+                          pathname.startsWith(`${link.href}/`))
+                          ? "page"
+                          : undefined
+                      }
+                      className={cn(
+                        buttonVariants({ variant: "ghost" }),
+                        "h-12 w-full justify-start rounded-xl px-4 font-semibold text-blue-950 hover:bg-blue-50 hover:text-blue-700 focus-visible:border-blue-300 focus-visible:ring-blue-500/25 aria-[current=page]:bg-blue-100 aria-[current=page]:text-blue-800"
+                      )}
+                    >
+                      {link.label}
+                    </SheetClose>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <div className="mt-auto grid grid-cols-[1fr_1fr_auto] items-center gap-2 p-5">
+              <SheetClose
+                nativeButton={false}
+                render={<Link href="/sign-in" />}
+                className={cn(
+                  buttonVariants({ variant: "outline" }),
+                  "h-11 rounded-xl border-blue-100 bg-white text-blue-950 hover:bg-blue-50 dark:border-blue-100 dark:bg-white"
+                )}
               >
                 Sign In
-              </Link>
-              <Link
-                href="/sign-up"
-                className="rounded-lg bg-blue-600 px-3 py-3 text-center text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              </SheetClose>
+              <SheetClose
+                nativeButton={false}
+                render={<Link href="/sign-up" />}
+                className={cn(
+                  buttonVariants(),
+                  "h-11 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+                )}
               >
                 Sign Up
-              </Link>
-              <button
+              </SheetClose>
+              <Button
+                variant="ghost"
+                size="icon"
                 type="button"
                 disabled
                 aria-label="Toggle color theme (coming soon)"
                 title="Theme switching coming soon"
-                className="flex size-10 items-center justify-center rounded-lg text-blue-800"
+                className="size-10 rounded-xl text-blue-800 disabled:opacity-70"
               >
                 <Moon aria-hidden="true" className="size-5" />
-              </button>
+              </Button>
             </div>
-          </nav>
-        </details>
+          </SheetContent>
+        </Sheet>
       </div>
     </header>
   )

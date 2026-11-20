@@ -2,6 +2,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { Mail, MapPin, Phone } from "lucide-react"
 
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "Browse Tuitions", href: "/tuitions" },
@@ -107,13 +110,15 @@ export function Footer() {
           </p>
           <div className="mt-5 flex gap-3">
             {socialLinks.map((social) => (
-              <button
+              <Button
                 key={social.label}
+                variant="ghost"
+                size="icon"
                 type="button"
                 disabled
                 aria-label={`${social.label} (coming soon)`}
                 title={`${social.label} — coming soon`}
-                className="flex size-10 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-white"
+                className="size-10 rounded-xl border border-white/20 bg-white/10 text-white disabled:opacity-75"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -123,13 +128,14 @@ export function Footer() {
                 >
                   <path d={social.path} />
                 </svg>
-              </button>
+              </Button>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 border-t border-white/20 px-6 py-5 text-xs leading-6 text-blue-100 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
+      <Separator className="bg-white/20" />
+      <div className="flex flex-col gap-3 px-6 py-5 text-xs leading-6 text-blue-100 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
         <p>© {new Date().getFullYear()} MentorLagbe. All rights reserved.</p>
         <p>Made for learning. Built for your future.</p>
       </div>

@@ -5,6 +5,9 @@ import Link from "next/link"
 import { ArrowRight, GraduationCap, Layers, Users } from "lucide-react"
 import { motion, useReducedMotion } from "motion/react"
 
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+
 const highlights = [
   { label: "Subject-wise tutors", icon: GraduationCap },
   { label: "Structured batches", icon: Layers },
@@ -34,7 +37,10 @@ export default function BannerSection() {
 
       <div className="grid lg:min-h-144 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="relative z-10 px-5 pt-10 sm:px-10 sm:pt-14 lg:py-14 lg:pr-0 lg:pl-12 xl:pl-16">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-200/60 bg-blue-100/90 px-3 py-2 text-xs font-semibold text-blue-800 sm:gap-3 sm:px-5 sm:text-sm">
+          <Badge
+            variant="outline"
+            className="h-auto gap-1.5 rounded-full border-blue-200/60 bg-blue-100/90 px-3 py-2 text-xs font-semibold text-blue-800 sm:gap-3 sm:px-5 sm:text-sm"
+          >
             <GraduationCap aria-hidden="true" className="size-5 shrink-0" />
             <span>Learn</span>
             <span
@@ -47,7 +53,7 @@ export default function BannerSection() {
               className="size-1 rounded-full bg-blue-600"
             />
             <span>Grow Together</span>
-          </div>
+          </Badge>
 
           <h1
             id="banner-heading"
@@ -63,16 +69,17 @@ export default function BannerSection() {
             for students and tutors.
           </p>
 
-          <Link
-            href="/tuitions"
-            className="group mt-7 inline-flex min-h-12 items-center justify-center gap-3 rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-blue-600/15 transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 sm:px-7"
+          <Button
+            nativeButton={false}
+            render={<Link href="/tuitions" />}
+            className="group mt-7 h-auto min-h-12 gap-3 rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-blue-600/15 hover:bg-blue-700 focus-visible:ring-blue-500/40 sm:px-7"
           >
             Browse Tuitions
             <ArrowRight
               aria-hidden="true"
               className="size-5 transition-transform motion-safe:group-hover:translate-x-1"
             />
-          </Link>
+          </Button>
 
           <ul className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-4 sm:mt-10">
             {highlights.map(({ label, icon: Icon }) => (
