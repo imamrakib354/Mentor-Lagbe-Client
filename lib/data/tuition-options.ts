@@ -1,0 +1,82 @@
+export const tuitionSubjectsByClassLevel = {
+  Kindergarten: [
+    "Bangla",
+    "English",
+    "Mathematics",
+    "General Knowledge",
+    "Drawing",
+  ],
+  Primary: [
+    "Bangla",
+    "English",
+    "Mathematics",
+    "Science",
+    "Bangladesh & Global Studies",
+    "ICT",
+  ],
+  SSC: [
+    "Bangla",
+    "English",
+    "General Mathematics",
+    "Higher Mathematics",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Accounting",
+    "Finance & Banking",
+    "Business Entrepreneurship",
+    "ICT",
+  ],
+  HSC: [
+    "Bangla",
+    "English",
+    "ICT",
+    "Higher Mathematics",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "Accounting",
+    "Finance",
+    "Business Organization & Management",
+    "Economics",
+  ],
+  University: [
+    "C Programming",
+    "C++",
+    "Java",
+    "Python",
+    "Data Structures & Algorithms",
+    "Calculus",
+    "Linear Algebra",
+    "Statistics",
+    "Physics",
+    "Chemistry",
+    "Economics",
+    "Accounting",
+    "BBA",
+    "English",
+  ],
+  Professional: [
+    "IELTS",
+    "Spoken English",
+    "Graphic Design",
+    "Web Development",
+    "Digital Marketing",
+    "MS Office",
+    "Accounting & Finance",
+    "Freelancing",
+  ],
+  Admission: [
+    "University Admission",
+    "Medical Admission",
+    "Engineering Admission",
+    "English",
+    "General Knowledge",
+  ],
+} as const
+
+export const classLevels = Object.keys(tuitionSubjectsByClassLevel) as Array<
+  keyof typeof tuitionSubjectsByClassLevel
+>
+
+export type ClassLevel = keyof typeof tuitionSubjectsByClassLevel

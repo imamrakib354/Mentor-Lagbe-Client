@@ -8,7 +8,6 @@ import { Moon } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
 
 type DashboardHeaderProps = {
   user: { name: string; role?: string | null } | null
@@ -45,10 +44,6 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
 
       <div className="flex min-w-0 flex-1 items-center justify-between gap-2 px-3 sm:gap-4 sm:px-5 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
-          <SidebarTrigger
-            aria-label="Toggle dashboard sidebar"
-            className="size-9 shrink-0 rounded-xl text-blue-700 hover:bg-blue-50 hover:text-blue-800"
-          />
           <span className="hidden truncate text-base font-semibold text-blue-950 capitalize sm:block">
             {role} Workspace
           </span>
