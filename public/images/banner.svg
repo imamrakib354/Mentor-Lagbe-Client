@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1200 900" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="580" y1="170" x2="580" y2="790" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B8DDFF"/><stop offset="1" stop-color="#E9F5FF"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="150" y1="720" x2="1060" y2="830" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#72BAFF"/><stop offset="1" stop-color="#1D61DF"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="450" y1="450" x2="820" y2="830" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FCFF"/><stop offset=".52" stop-color="#DCEBFC"/><stop offset="1" stop-color="#A9C8EE"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="499" y1="260" x2="695" y2="440" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4C19A"/><stop offset=".55" stop-color="#E5A77E"/><stop offset="1" stop-color="#CB875E"/>
+    </linearGradient>
+    <linearGradient id="arm" x1="470" y1="650" x2="750" y2="750" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E4A57C"/><stop offset=".5" stop-color="#F1BD95"/><stop offset="1" stop-color="#D7966C"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="493" y1="170" x2="658" y2="325" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#33435C"/><stop offset=".5" stop-color="#1B2940"/><stop offset="1" stop-color="#101C32"/>
+    </linearGradient>
+    <linearGradient id="bag" x1="340" y1="470" x2="518" y2="835" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#266CE1"/><stop offset="1" stop-color="#123E9A"/>
+    </linearGradient>
+    <linearGradient id="book" x1="540" y1="550" x2="737" y2="766" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#397DF3"/><stop offset="1" stop-color="#1246B5"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-25%" width="170%" height="165%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#214F94" flood-opacity=".15"/>
+    </filter>
+    <filter id="soft" x="-40%" y="-80%" width="180%" height="260%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <!-- An open, airy landscape rather than a rectangular image background. -->
+  <path d="M105 601C50 474 116 353 262 326C379 304 393 217 535 215C671 213 722 129 872 178C1024 227 1106 357 1100 502C1093 649 1051 756 908 793C733 839 642 792 471 816C312 838 163 738 105 601Z" fill="url(#sky)"/>
+  <circle cx="962" cy="280" r="45" fill="#F3FAFF" opacity=".8"/>
+  <path d="M811 291C811 276 823 265 837 268C840 247 868 244 879 262C898 257 913 271 912 287H927C936 287 941 293 941 300H799C798 294 803 291 811 291Z" fill="white" opacity=".83"/>
+  <path d="M176 449C177 435 188 428 201 431C205 411 230 407 243 426C261 420 277 432 277 447H291C300 447 305 452 306 459H163C163 452 168 449 176 449Z" fill="white" opacity=".74"/>
+  <path d="M717 382C724 376 731 377 737 383M748 374C754 369 760 370 765 375" stroke="#79AFE3" stroke-width="4" stroke-linecap="round"/>
+  <path d="M117 638C272 585 358 624 490 608C662 587 800 582 1091 620V739H117V638Z" fill="#C1DFF6"/>
+  <path d="M122 669C304 619 402 669 569 642C789 607 956 647 1080 637" stroke="#EEF8FF" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Seven architectural fins evoke Bangladesh's National Martyrs' Memorial. -->
+  <g>
+    <path d="M762 633L887 388L1004 633H762Z" fill="#85B9EB"/>
+    <path d="M791 633L890 352L984 633H791Z" fill="#F9FDFF"/>
+    <path d="M890 352L907 633H984L890 352Z" fill="#9CC9F2"/>
+    <path d="M815 633L891 394L963 633H815Z" fill="#EAF6FF"/>
+    <path d="M891 394L909 633H963L891 394Z" fill="#70A9E4"/>
+    <path d="M836 633L892 435L944 633H836Z" fill="#F8FCFF"/>
+    <path d="M892 435L906 633H944L892 435Z" fill="#A4CEF2"/>
+    <path d="M853 633L892 477L926 633H853Z" fill="#E8F4FF"/>
+    <path d="M892 477L902 633H926L892 477Z" fill="#74AEE6"/>
+    <path d="M870 633L892 523L909 633H870Z" fill="#F9FDFF"/>
+    <path d="M752 634H1018L1027 644H741L752 634Z" fill="#F8FCFF"/>
+    <path d="M738 647H1030L1038 657H729L738 647Z" fill="#A0C8ED"/>
+  </g>
+
+  <!-- Small landscape trees keep the national landmark in its setting. -->
+  <g>
+    <path d="M240 614V687M240 642L218 620M240 654L263 632" stroke="#5A8499" stroke-width="8" stroke-linecap="round"/>
+    <path d="M192 606C174 587 192 565 214 569C219 542 259 540 272 565C301 560 317 590 297 610C283 628 264 626 247 620C223 633 205 627 192 606Z" fill="#6CAFA7"/>
+    <path d="M202 580C214 576 229 579 234 588C250 568 274 574 283 586" stroke="#8BC8B8" stroke-width="13" stroke-linecap="round"/>
+    <path d="M1028 575V650M1028 606L1011 590M1028 614L1049 595" stroke="#5A8499" stroke-width="7" stroke-linecap="round"/>
+    <path d="M991 576C975 560 987 540 1006 541C1008 516 1040 512 1052 533C1078 529 1092 550 1077 568C1072 586 1051 594 1030 584C1014 594 996 591 991 576Z" fill="#66AFA7"/>
+    <path d="M1003 548C1016 542 1025 549 1027 555C1036 541 1054 544 1064 551" stroke="#8CCBBB" stroke-width="11" stroke-linecap="round"/>
+  </g>
+
+  <path d="M83 731C213 665 285 709 407 718C562 730 624 668 760 701C902 735 998 701 1112 666C1075 761 988 805 867 826C678 858 570 808 405 832C242 854 133 808 83 731Z" fill="#9CCFFA"/>
+  <path d="M145 785C319 705 438 828 596 762C776 686 878 777 1065 731C1000 824 834 854 675 838C475 818 312 877 145 785Z" fill="url(#wave)"/>
+  <path d="M235 819C410 778 483 848 654 820C786 797 877 823 962 809C782 874 495 872 235 819Z" fill="#1555C6" opacity=".65"/>
+  <ellipse cx="605" cy="821" rx="220" ry="24" fill="#194C96" opacity=".17" filter="url(#soft)"/>
+
+  <!-- A friendly university student, illustrated with soft dimensional shading. -->
+  <g filter="url(#shadow)">
+    <!-- Backpack and straps. -->
+    <path d="M442 455C377 451 338 498 327 577L309 749C305 795 339 824 384 827L488 829L510 529C503 486 483 459 442 455Z" fill="url(#bag)"/>
+    <path d="M363 542C347 592 342 662 337 729C335 761 347 780 373 785L411 789L427 552L363 542Z" fill="#174FB7"/>
+    <path d="M348 666L395 670L388 762L343 754L348 666Z" fill="#2C70DA"/>
+    <path d="M355 677L391 680" stroke="#9CC8FF" stroke-width="3" stroke-linecap="round"/>
+    <path d="M390 681V695" stroke="#D2E6FF" stroke-width="4" stroke-linecap="round"/>
+    <path d="M398 490C421 470 460 479 472 509" stroke="#123A8A" stroke-width="17" stroke-linecap="round"/>
+    <path d="M335 594C329 649 326 698 325 738" stroke="#71A6EF" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+
+    <!-- Neck and shirt silhouette. -->
+    <path d="M551 391L549 459L603 497L652 450L639 382L551 391Z" fill="url(#skin)"/>
+    <path d="M549 411C571 437 615 446 645 418L641 395L551 398L549 411Z" fill="#BC7C59" opacity=".35"/>
+    <path d="M544 438L493 450C454 461 424 488 412 532L389 645L433 676L437 830H810L800 672L845 647L815 535C804 487 776 462 734 453L654 435L605 472L544 438Z" fill="url(#shirt)"/>
+    <path d="M603 474L586 831" stroke="#A4BDDE" stroke-width="3"/>
+    <path d="M545 433L606 473L576 507L526 452L545 433Z" fill="#F9FCFF" stroke="#BDD1EB" stroke-width="2"/>
+    <path d="M653 432L606 473L635 504L672 448L653 432Z" fill="#EDF5FF" stroke="#BDD1EB" stroke-width="2"/>
+    <circle cx="600" cy="526" r="4" fill="#8EACD3"/>
+    <circle cx="597" cy="573" r="4" fill="#8EACD3"/>
+    <path d="M454 540L444 638M779 538L795 639M461 769L450 818M768 774L784 815" stroke="#B5CDE9" stroke-width="4" stroke-linecap="round"/>
+    <path d="M411 615L454 633L448 676L390 651L400 624C402 619 406 616 411 615Z" fill="#F5FAFF" stroke="#B5CDE9" stroke-width="2"/>
+    <path d="M791 627L837 613L847 649L800 675L791 627Z" fill="#F7FBFF" stroke="#B5CDE9" stroke-width="2"/>
+    <path d="M476 461C446 511 436 576 435 625" stroke="#194FA9" stroke-width="26" stroke-linecap="round"/>
+    <path d="M478 463C451 512 442 576 441 618" stroke="#5C91E5" stroke-width="8" stroke-linecap="round"/>
+    <path d="M733 458C758 497 766 539 768 578" stroke="#2155AD" stroke-width="23" stroke-linecap="round"/>
+    <path d="M734 461C756 500 759 532 762 566" stroke="#77A8ED" stroke-width="6" stroke-linecap="round"/>
+
+    <!-- Ears, face, and swept hair. -->
+    <path d="M510 305C490 290 475 308 484 336C488 354 500 363 517 357L510 305Z" fill="#DB9B74"/>
+    <path d="M683 300C702 290 715 307 705 334C700 350 691 356 678 350L683 300Z" fill="#D2936C"/>
+    <path d="M509 269C512 220 552 193 606 197C659 201 690 236 689 288L679 357C671 405 633 435 599 435C559 435 524 409 514 363L509 269Z" fill="url(#skin)"/>
+    <path d="M521 284C534 275 544 262 550 248C568 261 603 259 624 245C641 265 666 275 686 275L690 306C704 283 711 248 695 226C709 207 695 185 673 184C672 158 644 149 623 165C599 145 573 155 562 170C534 154 512 172 512 194C483 191 472 215 488 237C475 260 489 293 510 312L521 284Z" fill="url(#hair)"/>
+    <path d="M501 228C518 233 539 223 549 207M533 195C552 207 581 196 590 183M579 222C606 229 637 213 645 194M635 175C647 187 667 194 683 191" stroke="#4D5D73" stroke-width="7" stroke-linecap="round" opacity=".65"/>
+    <path d="M497 253C506 255 516 248 520 241M653 235C666 245 679 248 689 246" stroke="#607087" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+    <path d="M541 309C552 301 567 300 578 306M621 304C632 298 648 300 657 307" stroke="#3C3040" stroke-width="7" stroke-linecap="round"/>
+    <path d="M541 325C550 316 566 316 576 324C568 335 550 336 541 325Z" fill="#FFFAF2"/>
+    <path d="M620 322C630 313 646 314 655 323C644 334 628 333 620 322Z" fill="#FFFAF2"/>
+    <ellipse cx="560" cy="325" rx="6.5" ry="8" fill="#293247"/>
+    <ellipse cx="636" cy="323" rx="6.5" ry="8" fill="#293247"/>
+    <circle cx="562" cy="322" r="2" fill="white"/>
+    <circle cx="638" cy="320" r="2" fill="white"/>
+    <path d="M600 322L591 352C594 357 602 358 608 354" stroke="#C8855F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M558 371C580 382 619 384 644 365C638 393 621 404 602 405C583 405 567 394 558 371Z" fill="#8D4B3F"/>
+    <path d="M563 374C587 382 618 382 638 370L633 382C611 391 586 389 569 382L563 374Z" fill="#FFFDF8"/>
+    <path d="M588 398C598 393 613 393 623 397C614 405 599 408 588 398Z" fill="#D48D80"/>
+    <path d="M530 350C536 344 544 344 550 348M650 347C657 342 666 343 670 348" stroke="#E5A080" stroke-width="9" stroke-linecap="round" opacity=".7"/>
+
+    <!-- Two neatly bound notebooks and relaxed supporting arms. -->
+    <g transform="rotate(-8 625 660)">
+      <rect x="544" y="548" width="172" height="220" rx="9" fill="#A3CDFF"/>
+      <path d="M551 543H708V755H551V543Z" fill="#FBFDFF"/>
+      <path d="M550 551H707M550 557H707" stroke="#C4DAF3" stroke-width="2"/>
+      <rect x="533" y="565" width="175" height="220" rx="8" fill="url(#book)"/>
+      <path d="M548 565V785" stroke="#104199" stroke-width="7"/>
+      <path d="M563 591H665M563 600H636" stroke="#99C1FF" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+      <rect x="574" y="628" width="88" height="53" rx="5" fill="#EFF6FF" opacity=".16"/>
+    </g>
+    <path d="M397 654L444 671C465 691 489 693 517 686L598 656C610 652 621 658 622 669C625 681 617 690 607 694L528 732C489 750 453 742 426 719C412 707 399 679 397 654Z" fill="url(#arm)"/>
+    <path d="M595 659L615 651C627 647 639 651 640 660C641 667 635 673 627 677L611 685L595 659Z" fill="url(#arm)"/>
+    <path d="M608 667L621 660M612 678L628 669" stroke="#CC8B64" stroke-width="3" stroke-linecap="round"/>
+    <path d="M802 664L839 647C846 681 838 715 812 735C789 753 762 759 732 757L562 744C548 743 539 737 538 726C537 715 547 708 560 709L736 708C768 710 791 695 802 664Z" fill="url(#arm)"/>
+    <path d="M560 710L534 708C523 707 517 714 520 722C513 727 516 735 525 738L560 744" fill="#EAB18A"/>
+    <path d="M531 719L554 722M530 729L552 732" stroke="#CC8B64" stroke-width="3" stroke-linecap="round"/>
+    <path d="M752 708L750 756" stroke="#224578" stroke-width="17"/>
+    <rect x="736" y="714" width="31" height="34" rx="8" fill="#D3E3F6" transform="rotate(4 736 714)"/>
+    <rect x="741" y="719" width="21" height="24" rx="5" fill="#1A3868" transform="rotate(4 741 719)"/>
+    <path d="M753 723V731L758 735" stroke="#9CCBFF" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- A few light educational accents, without stock UI cards or lettering. -->
+  <g transform="translate(254 251) rotate(-12)">
+    <rect x="-36" y="-36" width="72" height="72" rx="24" fill="#F6FBFF" stroke="#C5DFFF" stroke-width="2"/>
+    <path d="M-24-6L0-18L24-6L0 6L-24-6Z" fill="#2868D9"/>
+    <path d="M-14 2V15C-5 22 5 22 14 15V2L0 10L-14 2Z" fill="#6EA7F4"/>
+    <path d="M24-5V13" stroke="#2868D9" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <path d="M975 432V451M965 441H985" stroke="#5797ED" stroke-width="4" stroke-linecap="round"/>
+  <path d="M360 326V340M353 333H367" stroke="#82B4EF" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="194" cy="705" r="6" fill="#EEF8FF"/>
+  <circle cx="1027" cy="714" r="5" fill="#E4F3FF"/>
+</svg>
