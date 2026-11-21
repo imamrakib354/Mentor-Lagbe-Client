@@ -1,3 +1,4 @@
+// Lists the available subjects for each tuition class level.
 export const tuitionSubjectsByClassLevel = {
   Kindergarten: [
     "Bangla",
@@ -75,8 +76,10 @@ export const tuitionSubjectsByClassLevel = {
   ],
 } as const
 
+// Provides the class levels as an array for form and filter options.
 export const classLevels = Object.keys(tuitionSubjectsByClassLevel) as Array<
   keyof typeof tuitionSubjectsByClassLevel
 >
 
+// Defines the class levels supported by the subject list.
 export type ClassLevel = keyof typeof tuitionSubjectsByClassLevel

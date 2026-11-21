@@ -201,11 +201,9 @@ export default function MyTuitionsPage() {
                     <TableCell className="px-4 py-4">
                       <div className="flex items-center gap-1">
                         <Button
-                          type="button"
+                          render={<Link href={`/tuitions/${tuition._id}`} />}
                           size="sm"
                           variant="secondary"
-                          disabled
-                          title="View will be added later"
                           aria-label={`View ${tuition.title}`}
                           className="bg-blue-50 text-blue-700"
                         >

@@ -1,0 +1,269 @@
+import Link from "next/link"
+import { notFound } from "next/navigation"
+import {
+  ArrowLeft,
+  BookOpen,
+  CalendarDays,
+  CheckCircle2,
+  Clock3,
+  Mail,
+  MapPin,
+  Monitor,
+  Send,
+  Star,
+  UserRound,
+} from "lucide-react"
+
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { getTuitionById } from "@/lib/actions/tuitions"
+import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })
+}
+
+export default async function TuitionDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const details = await getTuitionById(id)
+
+  if (!details) notFound()
+
+  const { tuition, tutor } = details
+  const currentUser = await getCurrentUser()
+  const canApply = currentUser?.role === "student"
+  const tutorName = tutor?.name || tuition.tutorName
+  const tutorEmail = tutor?.email || tuition.tutorEmail
+  const tutorInitial = tutorName.trim().charAt(0).toUpperCase() || "T"
+  const applicationMessage = currentUser
+    ? "Only student accounts can apply for a tuition."
+    : "Sign in with a student account to apply."
+
+  return (
+    <div className="mx-auto max-w-7xl pb-8">
+      <Link
+        href="/tuitions"
+        className="inline-flex items-center gap-2 rounded-lg px-2 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50"
+      >
+        <ArrowLeft aria-hidden="true" className="size-4" />
+        Back to All Tuitions
+      </Link>
+
+      <div className="mt-4 grid gap-6 xl:grid-cols-[minmax(0,1fr)_23rem]">
+        <div className="space-y-5">
+          <div className="overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-sm shadow-blue-950/5">
+            <div className="aspect-[16/8] bg-blue-50">
+              {/* Tuition banners use tutor-provided public URLs. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={tuition.bannerImage}
+                alt={`${tuition.title} banner`}
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+            <div className="p-5 sm:p-7">
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                  {tuition.subject}
+                </span>
+                <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+                  {tuition.classLevel}
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  <CheckCircle2 aria-hidden="true" className="size-3.5" />
+                  {tuition.approvalStatus}
+                </span>
+              </div>
+
+              <h1 className="mt-4 text-2xl font-bold tracking-tight text-blue-950 sm:text-4xl">
+                {tuition.title}
+              </h1>
+
+              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
+                <span className="inline-flex items-center gap-1.5">
+                  <UserRound aria-hidden="true" className="size-4 text-blue-600" />
+                  Tutor: <strong className="text-blue-950">{tutorName}</strong>
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <CalendarDays aria-hidden="true" className="size-4 text-blue-600" />
+                  {tuition.daysPerWeek} days per week
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock3 aria-hidden="true" className="size-4 text-blue-600" />
+                  Posted {formatDate(tuition.createdAt)}
+                </span>
+              </div>
+
+              <div className="mt-6 border-t border-blue-100 pt-6">
+                <div className="flex items-start gap-3">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <BookOpen aria-hidden="true" className="size-5" />
+                  </span>
+                  <div>
+                    <h2 className="text-xl font-bold text-blue-950">
+                      About This Tuition
+                    </h2>
+                    <p className="mt-2 whitespace-pre-line text-sm leading-7 text-slate-600">
+                      {tuition.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm shadow-blue-950/5 sm:p-7">
+            <div className="flex items-start gap-3">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <Star aria-hidden="true" className="size-5" />
+              </span>
+              <div>
+                <h2 className="text-xl font-bold text-blue-950">
+                  Student Feedback & Reviews
+                </h2>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  Reviews are coming soon. Students with approved applications
+                  will be able to share their experience.
+                </p>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              disabled
+              className="mt-5 border-blue-100 text-blue-700"
+            >
+              <Star aria-hidden="true" />
+              Write a review
+            </Button>
+          </section>
+        </div>
+
+        <aside className="space-y-5 xl:sticky xl:top-24 xl:self-start">
+          <section className="overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-sm shadow-blue-950/5">
+            <div className="bg-linear-to-br from-blue-50 to-blue-100 p-6">
+              <p className="text-xs font-bold tracking-wider text-blue-700 uppercase">
+                Monthly tuition fee
+              </p>
+              <p className="mt-2 text-3xl font-bold text-blue-950">
+                ৳{Number(tuition.monthlyFee).toLocaleString("en-US")}
+                <span className="ml-1 text-base font-medium text-slate-600">
+                  / month
+                </span>
+              </p>
+            </div>
+
+            <dl className="divide-y divide-blue-100 p-5">
+              <DetailRow icon={<BookOpen />} label="Subject" value={tuition.subject} />
+              <DetailRow
+                icon={<UserRound />}
+                label="Class level"
+                value={tuition.classLevel}
+              />
+              <DetailRow
+                icon={<Monitor />}
+                label="Delivery mode"
+                value={tuition.mode}
+              />
+              <DetailRow
+                icon={<MapPin />}
+                label="Location"
+                value={tuition.location}
+              />
+              <DetailRow
+                icon={<CalendarDays />}
+                label="Weekly classes"
+                value={`${tuition.daysPerWeek} days / week`}
+              />
+            </dl>
+
+            <div className="border-t border-blue-100 p-5">
+              <Button
+                type="button"
+                disabled={!canApply}
+                className="h-12 w-full bg-blue-600 text-base font-semibold text-white hover:bg-blue-700"
+              >
+                <Send aria-hidden="true" />
+                Apply Now
+              </Button>
+              {!canApply && (
+                <p className="mt-3 text-center text-xs leading-5 text-slate-500">
+                  {applicationMessage}
+                </p>
+              )}
+              <p className="mt-4 border-t border-blue-100 pt-4 text-center text-xs leading-5 text-slate-500">
+                Applications are reviewed by MentorLagbe before approval.
+              </p>
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm shadow-blue-950/5">
+            <p className="text-xs font-bold tracking-wider text-blue-700 uppercase">
+              Your mentor
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <Avatar className="size-14">
+                {tutor?.image && (
+                  <AvatarImage src={tutor.image} alt={tutorName} />
+                )}
+                <AvatarFallback className="bg-blue-600 text-lg font-bold text-white">
+                  {tutorInitial}
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0">
+                <h2 className="truncate text-lg font-bold text-blue-950">
+                  {tutorName}
+                </h2>
+                <p className="text-sm text-slate-500">Tutor</p>
+              </div>
+            </div>
+            <div className="mt-5 flex items-center gap-2 border-t border-blue-100 pt-4 text-sm text-slate-600">
+              <Mail aria-hidden="true" className="size-4 shrink-0 text-blue-600" />
+              <span className="truncate">{tutorEmail}</span>
+            </div>
+            {(tutor?.education || tutor?.experience || tutor?.expertise) && (
+              <div className="mt-4 space-y-2 border-t border-blue-100 pt-4 text-sm text-slate-600">
+                {tutor?.education && <p>{tutor.education}</p>}
+                {tutor?.experience && <p>{tutor.experience}</p>}
+                {tutor?.expertise && <p>{tutor.expertise}</p>}
+              </div>
+            )}
+          </section>
+        </aside>
+      </div>
+    </div>
+  )
+}
+
+function DetailRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+}) {
+  return (
+    <div className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
+      <span className="text-blue-600">{icon}</span>
+      <dt className="text-sm text-slate-600">{label}</dt>
+      <dd className="ml-auto text-right text-sm font-semibold text-blue-950">
+        {value}
+      </dd>
+    </div>
+  )
+}

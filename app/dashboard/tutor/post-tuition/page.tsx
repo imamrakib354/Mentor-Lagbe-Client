@@ -22,20 +22,28 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  createTuition,
-  uploadTuitionBanner,
-} from "@/lib/actions/tuitions"
+import { createTuition } from "@/lib/actions/tuitions"
+import { uploadImage } from "@/lib/actions/uploadImage"
 import { useSession } from "@/lib/auth-client"
 import {
   classLevels,
   tuitionSubjectsByClassLevel,
   type ClassLevel,
 } from "@/lib/data/tuition-options"
-import type { TuitionFormData, TuitionMode } from "@/lib/types/tuition"
+import type {
+  TuitionClassTime,
+  TuitionFormData,
+  TuitionMode,
+} from "@/lib/types/tuition"
 
 const acceptedImageTypes = ["image/jpeg", "image/png", "image/webp"]
 const maximumFileSize = 5 * 1024 * 1024
+const classTimeOptions: TuitionClassTime[] = [
+  "Morning (8:00 AM - 12:00 PM)",
+  "Afternoon (12:00 PM - 4:00 PM)",
+  "Evening (4:00 PM - 8:00 PM)",
+  "Flexible / Discuss with Tutor",
+]
 
 export default function PostTuitionPage() {
   const router = useRouter()
@@ -105,6 +113,12 @@ export default function PostTuitionPage() {
     const formData = new FormData(event.currentTarget)
     const monthlyFee = Number(formData.get("monthlyFee"))
     const daysPerWeek = Number(formData.get("daysPerWeek"))
+    const classTimes = formData
+      .getAll("classTimes")
+      .map(String)
+      .filter((time): time is TuitionClassTime =>
+        classTimeOptions.includes(time as TuitionClassTime)
+      )
 
     if (!Number.isFinite(monthlyFee) || monthlyFee <= 0) {
       toast.error("Enter a valid monthly fee.")
@@ -113,6 +127,11 @@ export default function PostTuitionPage() {
 
     if (!Number.isInteger(daysPerWeek) || daysPerWeek < 1 || daysPerWeek > 7) {
       toast.error("Days per week must be between 1 and 7.")
+      return
+    }
+
+    if (classTimes.length === 0) {
+      toast.error("Please select at least one class time.")
       return
     }
 
@@ -135,7 +154,7 @@ export default function PostTuitionPage() {
 
     try {
       if (imageMethod === "upload" && imageFile) {
-        bannerImage = await uploadTuitionBanner(imageFile)
+        bannerImage = await uploadImage(imageFile)
       }
 
       const tuition: TuitionFormData = {
@@ -149,6 +168,7 @@ export default function PostTuitionPage() {
         location: String(formData.get("location") || "").trim(),
         monthlyFee,
         daysPerWeek,
+        classTimes,
         description: String(formData.get("description") || "").trim(),
         bannerImage,
         approvalStatus: "pending",
@@ -318,19 +338,50 @@ export default function PostTuitionPage() {
                 <Label htmlFor="daysPerWeek" className="mb-2 text-slate-700">
                   Days per week <span className="text-red-500">*</span>
                 </Label>
-                <Input
+                <select
                   id="daysPerWeek"
                   name="daysPerWeek"
-                  type="number"
                   required
-                  min="1"
-                  max="7"
-                  step="1"
-                  placeholder="e.g. 3"
-                  className="h-11 border-blue-100 bg-slate-50 px-3 focus-visible:border-blue-500"
-                />
+                  defaultValue=""
+                  className="h-11 w-full rounded-lg border border-blue-100 bg-slate-50 px-3 text-sm text-slate-700 outline-none focus:border-blue-500 focus:ring-3 focus:ring-blue-500/20"
+                >
+                  <option value="" disabled>
+                    Select days per week
+                  </option>
+                  {[1, 2, 3, 4, 5, 6, 7].map((days) => (
+                    <option key={days} value={days}>
+                      {days} {days === 1 ? "day" : "days"} per week
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
+
+            <fieldset>
+              <legend className="mb-2 text-sm font-medium text-slate-700">
+                Available class times <span className="text-red-500">*</span>
+              </legend>
+              <p className="mb-3 text-xs text-slate-500">
+                Select every batch time you can offer. Students can choose one
+                when applying.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {classTimeOptions.map((time) => (
+                  <Label
+                    key={time}
+                    className="flex cursor-pointer items-center gap-3 rounded-xl border border-blue-100 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-blue-300 hover:bg-blue-50"
+                  >
+                    <input
+                      type="checkbox"
+                      name="classTimes"
+                      value={time}
+                      className="size-4 rounded border-blue-300 text-blue-600 accent-blue-600"
+                    />
+                    {time}
+                  </Label>
+                ))}
+              </div>
+            </fieldset>
 
             <div>
               <Label htmlFor="description" className="mb-2 text-slate-700">
