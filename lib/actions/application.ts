@@ -1,4 +1,8 @@
-import type { Application, ApplicationFormData } from "@/lib/types/application"
+import type {
+  Application,
+  ApplicationFormData,
+  ApplicationStatus,
+} from "@/lib/types/application"
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ||
@@ -31,4 +35,39 @@ export async function getStudentApplications(
 
   if (!response.ok) throw new Error("Could not load your applications.")
   return response.json()
+}
+
+// Fetches applications for a tutor, optionally filtered by status.
+export async function getTutorApplications(
+  tutorId: string,
+  status?: ApplicationStatus
+): Promise<Application[]> {
+  const query = status ? `?${new URLSearchParams({ status })}` : ""
+  const response = await fetch(
+    `${API_BASE_URL}/applications/tutor/${encodeURIComponent(tutorId)}${query}`,
+    { cache: "no-store" }
+  )
+
+  if (!response.ok) throw new Error("Could not load applicants.")
+  return response.json()
+}
+
+// Updates an application's status after the tutor's decision.
+export async function updateApplicationStatus(
+  applicationId: string,
+  status: "accepted" | "rejected"
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/applications/${encodeURIComponent(applicationId)}/status`,
+    {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ status }),
+    }
+  )
+
+  if (!response.ok) throw new Error("Could not update the application status.")
+
+  const result = await response.json()
+  if (result.matchedCount === 0) throw new Error("Application not found.")
 }
