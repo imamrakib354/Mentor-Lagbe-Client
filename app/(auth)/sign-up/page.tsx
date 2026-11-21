@@ -13,7 +13,6 @@ import {
   UserRound,
   GraduationCap,
   Presentation,
-  ShieldCheck,
 } from "lucide-react"
 
 import { AuthCard, GoogleSignInButton } from "../_components/auth-card"
@@ -28,11 +27,9 @@ import { authClient } from "@/lib/auth-client"
 const inputClassName =
   "h-12 rounded-xl border-blue-200 bg-white pl-11 text-blue-950 placeholder:text-slate-400 focus-visible:border-blue-500 focus-visible:ring-blue-500/20 dark:bg-white"
 
-// Development only: secure admin registration before deployment.
 const roleOptions = [
   { value: "student", label: "Student", icon: GraduationCap },
   { value: "tutor", label: "Tutor", icon: Presentation },
-  { value: "admin", label: "Admin", icon: ShieldCheck },
 ] as const
 
 export default function SignUpPage() {
@@ -60,7 +57,7 @@ export default function SignUpPage() {
       return
     }
 
-    if (role !== "student" && role !== "tutor" && role !== "admin") {
+    if (role !== "student" && role !== "tutor") {
       toast.error("Please select a valid role.")
       return
     }
@@ -145,7 +142,7 @@ export default function SignUpPage() {
             defaultValue="student"
             aria-label="Choose your account role"
             disabled={isSubmitting}
-            className="grid grid-cols-3 gap-2 sm:gap-3"
+            className="grid grid-cols-2 gap-2 sm:gap-3"
           >
             {roleOptions.map(({ value, label, icon: Icon }) => (
               <div key={value} className="relative">

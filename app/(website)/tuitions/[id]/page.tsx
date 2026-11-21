@@ -64,7 +64,8 @@ export default async function TuitionDetailsPage({
     : "Sign in with a student account to apply."
 
   return (
-    <div className="mx-auto max-w-7xl pb-8">
+    <div className="min-h-screen bg-[#f0f7ff] px-3 py-6 sm:px-5 sm:py-8">
+    <div className="mx-auto max-w-7xl">
       <Link
         href="/tuitions"
         className="inline-flex items-center gap-2 rounded-lg px-2 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50"
@@ -261,6 +262,7 @@ export default async function TuitionDetailsPage({
           </section>
         </aside>
       </div>
+    </div>
     </div>
   )
 }

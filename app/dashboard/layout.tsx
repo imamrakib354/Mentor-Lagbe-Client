@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react"
+import { redirect } from "next/navigation"
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
@@ -11,7 +12,9 @@ export default async function DashboardLayout({
   children: React.ReactNode
 }) {
   const user = await getCurrentUser()
-  const dashboardUser = user ? { name: user.name, role: user.role } : null
+  if (!user) redirect("/sign-in")
+
+  const dashboardUser = { name: user.name, role: user.role }
 
   return (
     <SidebarProvider

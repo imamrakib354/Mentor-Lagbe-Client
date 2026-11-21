@@ -29,9 +29,8 @@ shared dashboard experience, and the first tutor tuition-management flow.
 
 ```text
 app/
-  (website)/                  # Public site shell and home page
+  (website)/                  # Public site shell, home and tuition routes
   (auth)/                     # Sign-in and sign-up pages
-  tuitions/                   # Public browse page, cards and details route
   dashboard/                  # Shared dashboard layout and role workspaces
   api/auth/[...all]/          # Better Auth handler
   api/upload-image/           # Authenticated ImgBB image upload
@@ -39,12 +38,14 @@ components/
   shared/                     # Navbar and footer
   ui/                         # Reusable shadcn/Base UI primitives
 lib/
+  actions/application.ts      # Create and fetch student applications
   actions/tuitions.ts         # External tuition API client
   actions/uploadImage.ts      # Image upload helper
   auth.ts                     # Server-side Better Auth configuration
   auth-client.ts              # Typed client-side auth helpers
   data/tuition-options.ts     # Class-level and subject options
   helpers/getCurrentUser.ts   # Server-side session lookup
+  types/application.ts        # Application data and status types
   types/tuition.ts            # Tuition domain types
 ```
 
@@ -73,9 +74,12 @@ lib/
   With a tutor object, it can display the current profile image and optional
   education, experience, and expertise. Otherwise it falls back to the tutor
   name and email saved on the tuition; those values are not live profile data.
-- The Apply Now button is enabled only for a signed-in student, but it has no
-  action yet. Guests, tutors, and admins see a disabled button and notice.
-  The reviews section and review button are placeholders.
+- Students can open the Apply Now dialog and submit a phone number, a batch
+  time from the tuition's `classTimes`, and an optional learning note.
+  Guests, tutors, and admins see a disabled button and notice.
+- Before enabling Apply Now, the page checks the student's applications.
+  An existing application displays **Already Applied**; a failed check keeps
+  the button disabled. The reviews section and review button are placeholders.
 - The details page itself does not enforce public visibility or ownership.
   The external detail API must enforce approved/active visibility and any
   authenticated owner-preview exception.
@@ -113,36 +117,49 @@ lib/
   required tuition fields. Subjects change according to the selected class
   level.
 - Tutors choose 1–7 days per week and one or more available batch times.
-  The selected times are saved in `classTimes`; choosing a batch when applying
-  is not implemented yet.
+  The selected times are saved in `classTimes` for students to choose when
+  applying.
 - A new tuition is submitted with `pending` approval status and `isActive:
   true`.
 - Banner images can be uploaded or provided as public URLs:
   - Upload accepts JPG, PNG, and WebP up to 5 MB.
   - `/api/upload-image` requires an authenticated session and uploads to
     ImgBB.
-- `/dashboard/tutor/my-tuitions` is intended to display the current tutor's
-  listings and their statuses. **Known integration issue:** its
-  `getTutorTuitions()` helper expects an array from `GET /tuitions`, but the
-  new public endpoint returns a paginated object. It needs a separate,
-  authorized tutor-listing endpoint to include all of the owner's statuses.
+- `/dashboard/tutor/my-tuitions` fetches the current tutor's listings and
+  their statuses using `GET /tuitions/tutor/:tutorId`.
 - The active-status switch only updates local UI state. View links to the
   details page; edit and delete remain disabled placeholders, with no
   update/delete API operations yet.
+
+### Student applications
+
+- `lib/actions/application.ts` posts applications to `POST /applications` and
+  fetches a student's list from `GET /applications/student/:applicantId`.
+  Submission shows success or error toast notifications; a duplicate response
+  from the API is displayed to the student.
+- Each application stores the applicant and tuition IDs, contact and schedule
+  details, `pending` status, creation date, and a snapshot of the tuition and
+  tutor information used by the dashboard.
+- The external backend is expected to enforce a unique index on
+  `{ tuitionId, applicantId }` and return HTTP 409 for duplicates.
+- `/dashboard/student/my-applications` displays tuition, tutor name and email,
+  monthly fee, application date, status, and a details link. Search and status
+  filters operate on the fetched student's application list.
+- Cancel is visible but disabled for pending applications: the delete endpoint
+  and cancellation flow are not implemented yet. Tutor acceptance/rejection
+  is also still pending.
 
 ## Not Yet Implemented
 
 - Public pricing and about routes.
 - Tutor dashboard overview and applicant management.
-- Student dashboard overview, applications, saved tuitions, and application
-  workflow.
+- Student dashboard overview and saved tuitions.
 - Admin dashboard overview, user management, tuition approval/moderation, and
   transactions.
 - User profile page, live tutor-profile backend response, and theme switching.
-- Application form/submission, student-only server authorization, duplicate
-  prevention, and reviews.
-- Tuition edit, delete, persistent active-status updates, and server-side
-  tutor-specific listing.
+- Pending-application cancellation, tutor application decisions, student-only
+  server authorization, and reviews.
+- Tuition edit, delete, and persistent active-status updates.
 - Route guards and backend authorization for dashboard roles and tuition
   mutations.
 - Automated tests and a project-specific README.

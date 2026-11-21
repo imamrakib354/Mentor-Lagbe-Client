@@ -6,7 +6,7 @@ import PricingSection from "./_components/pricing-section"
 
 export default function HomePage() {
   return (
-    <div className="space-y-10 sm:space-y-12">
+    <div className="space-y-10 bg-[#f0f7ff] px-3 py-6 sm:space-y-12 sm:px-5 sm:py-8">
       <BannerSection />
       <FeaturedTuitions />
       <PricingSection />

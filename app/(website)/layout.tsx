@@ -7,9 +7,9 @@ export default function WebsiteLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex min-h-dvh flex-col gap-6 bg-[#f0f7ff] text-slate-900 sm:gap-8">
+    <div className="flex min-h-dvh flex-col text-slate-900">
       <Navbar />
-      <main className="w-full flex-1 px-3 sm:px-5">{children}</main>
+      <main className="w-full flex-1">{children}</main>
       <Footer />
     </div>
   )
