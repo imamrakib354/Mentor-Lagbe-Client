@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 
 import { Button, buttonVariants } from "@/components/ui/button"
+import { ApplicationSearch } from "@/components/shared/application-search"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { updateApplicationStatus } from "@/lib/actions/application"
-import type { Application } from "@/lib/types/application"
+import type { ApplicationListing } from "@/lib/types/application"
 import { cn } from "@/lib/utils"
 import { NoteDialog } from "./note-dialog"
 
@@ -20,13 +21,13 @@ const tabs = [
 ] as const
 
 export function ApplicantsTable({
-  applications,
-  allApplications,
+  listing,
   status,
+  search,
 }: {
-  applications: Application[]
-  allApplications: Application[]
+  listing: ApplicationListing
   status: string
+  search: string
 }) {
   const router = useRouter()
   const [updatingId, setUpdatingId] = useState<string | null>(null)
@@ -55,13 +56,13 @@ export function ApplicantsTable({
 
       <nav aria-label="Application status" className="flex flex-wrap gap-2">
         {tabs.map((tab) => {
-          const count = tab.value === "all"
-            ? allApplications.length
-            : allApplications.filter((application) => application.status === tab.value).length
+          const count = listing.counts[tab.value]
+          const params = new URLSearchParams({ status: tab.value })
+          if (search) params.set("search", search)
           return (
             <Link
               key={tab.value}
-              href={`/dashboard/tutor/applicants?status=${tab.value}`}
+              href={`/dashboard/tutor/applicants?${params}`}
               aria-current={status === tab.value ? "page" : undefined}
               className={cn(
                 buttonVariants(),
@@ -77,10 +78,13 @@ export function ApplicantsTable({
       </nav>
 
       <section className="rounded-3xl border border-blue-100 bg-white p-4 shadow-sm shadow-blue-950/5 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-xl font-bold text-blue-950">
           {status === "all" ? "All Applications" : `${tabs.find((tab) => tab.value === status)?.label} Applications`}
         </h2>
-        {applications.length === 0 ? (
+        <ApplicationSearch search={search} status={status} />
+        </div>
+        {listing.applications.length === 0 ? (
           <p className="py-16 text-center text-sm text-slate-500">No applications in this section yet.</p>
         ) : (
           <div className="mt-5 overflow-hidden rounded-2xl border border-blue-100">
@@ -98,7 +102,7 @@ export function ApplicantsTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {applications.map((application) => (
+                {listing.applications.map((application) => (
                   <TableRow key={application._id} className="border-blue-100">
                     <TableCell className="px-3 py-4 whitespace-normal">
                       <p className="font-semibold text-blue-950">{application.applicantName}</p>

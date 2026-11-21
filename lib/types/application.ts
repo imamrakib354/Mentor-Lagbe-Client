@@ -24,3 +24,9 @@ export type ApplicationFormData = {
 
 // Describes a saved application with its database ID.
 export type Application = ApplicationFormData & { _id: string }
+
+// Describes filtered applications and counts across their statuses.
+export type ApplicationListing = {
+  applications: Application[]
+  counts: { all: number; pending: number; accepted: number; rejected: number }
+}

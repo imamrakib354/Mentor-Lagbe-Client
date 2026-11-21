@@ -1,11 +1,17 @@
 import Link from "next/link"
 
 import { getStudentApplications } from "@/lib/actions/application"
+import { getSavedTuitions } from "@/lib/actions/saved-tuitions"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
-import type { Application } from "@/lib/types/application"
+import type { ApplicationListing } from "@/lib/types/application"
+import type { SavedTuition } from "@/lib/types/saved-tuition"
 import { ApplicationsTable } from "./_components/applications-table"
 
-export default async function MyApplicationsPage() {
+export default async function MyApplicationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string | string[]; status?: string | string[] }>
+}) {
   const user = await getCurrentUser()
 
   if (!user || user.role !== "student") {
@@ -18,9 +24,20 @@ export default async function MyApplicationsPage() {
     )
   }
 
-  let applications: Application[]
+  const params = await searchParams
+  const search = typeof params.search === "string" ? params.search.trim() : ""
+  const status = params.status === "pending" || params.status === "accepted" || params.status === "rejected" ? params.status : "all"
+  const query = new URLSearchParams()
+  if (search) query.set("search", search)
+  if (status !== "all") query.set("status", status)
+
+  let listing: ApplicationListing
+  let saved: SavedTuition[]
   try {
-    applications = await getStudentApplications(user.id)
+    ;[listing, saved] = await Promise.all([
+      getStudentApplications(user.id, query.toString()),
+      getSavedTuitions(user.id),
+    ])
   } catch {
     return (
       <div className="rounded-2xl border border-red-100 bg-white p-8">
@@ -30,5 +47,5 @@ export default async function MyApplicationsPage() {
     )
   }
 
-  return <ApplicationsTable applications={applications} />
+  return <ApplicationsTable listing={listing} savedIds={saved.map((item) => item.tuitionId)} studentId={user.id} search={search} status={status} />
 }

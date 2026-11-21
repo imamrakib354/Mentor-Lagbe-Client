@@ -50,8 +50,8 @@ export default async function TuitionDetailsPage({
   let applicationCheckFailed = false
   if (canApply && currentUser) {
     try {
-      const applications = await getStudentApplications(currentUser.id)
-      hasApplied = applications.some((application) => application.tuitionId === tuition._id)
+      const listing = await getStudentApplications(currentUser.id)
+      hasApplied = listing.applications.some((application) => application.tuitionId === tuition._id)
     } catch {
       applicationCheckFailed = true
     }

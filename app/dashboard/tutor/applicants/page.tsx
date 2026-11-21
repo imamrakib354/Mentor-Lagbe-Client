@@ -1,33 +1,33 @@
 import { getTutorApplications } from "@/lib/actions/application"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
-import type { Application, ApplicationStatus } from "@/lib/types/application"
+import type { ApplicationListing } from "@/lib/types/application"
 import { ApplicantsTable } from "./_components/applicants-table"
 
 export default async function ApplicantsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string | string[] }>
+  searchParams: Promise<{ status?: string | string[]; search?: string | string[] }>
 }) {
   const user = await getCurrentUser()
   if (user?.role !== "tutor") {
     return <p className="rounded-2xl bg-white p-6 text-slate-600">Sign in as a tutor to view applicants.</p>
   }
 
-  const { status: requestedStatus } = await searchParams
+  const { status: requestedStatus, search: requestedSearch } = await searchParams
+  const search = typeof requestedSearch === "string" ? requestedSearch.trim() : ""
   const status = requestedStatus === "accepted" || requestedStatus === "rejected" || requestedStatus === "all"
     ? requestedStatus
     : "pending"
-  let allApplications: Application[]
-  let applications: Application[]
+  const query = new URLSearchParams()
+  if (search) query.set("search", search)
+  if (status !== "all") query.set("status", status)
+  let listing: ApplicationListing
 
   try {
-    allApplications = await getTutorApplications(user.id)
-    applications = status === "all"
-      ? allApplications
-      : await getTutorApplications(user.id, status as ApplicationStatus)
+    listing = await getTutorApplications(user.id, query.toString())
   } catch {
     return <p className="rounded-2xl bg-white p-6 text-red-600">Could not load applicants. Please try again.</p>
   }
 
-  return <ApplicantsTable applications={applications} allApplications={allApplications} status={status} />
+  return <ApplicantsTable listing={listing} status={status} search={search} />
 }

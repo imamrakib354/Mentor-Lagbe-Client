@@ -1,7 +1,6 @@
 import type {
-  Application,
   ApplicationFormData,
-  ApplicationStatus,
+  ApplicationListing,
 } from "@/lib/types/application"
 
 const API_BASE_URL =
@@ -26,10 +25,11 @@ export async function createApplication(application: ApplicationFormData) {
 
 // Fetches applications belonging to the given student.
 export async function getStudentApplications(
-  applicantId: string
-): Promise<Application[]> {
+  applicantId: string,
+  query = ""
+): Promise<ApplicationListing> {
   const response = await fetch(
-    `${API_BASE_URL}/applications/student/${encodeURIComponent(applicantId)}`,
+    `${API_BASE_URL}/applications/student/${encodeURIComponent(applicantId)}${query ? `?${query}` : ""}`,
     { cache: "no-store" }
   )
 
@@ -40,11 +40,10 @@ export async function getStudentApplications(
 // Fetches applications for a tutor, optionally filtered by status.
 export async function getTutorApplications(
   tutorId: string,
-  status?: ApplicationStatus
-): Promise<Application[]> {
-  const query = status ? `?${new URLSearchParams({ status })}` : ""
+  query = ""
+): Promise<ApplicationListing> {
   const response = await fetch(
-    `${API_BASE_URL}/applications/tutor/${encodeURIComponent(tutorId)}${query}`,
+    `${API_BASE_URL}/applications/tutor/${encodeURIComponent(tutorId)}${query ? `?${query}` : ""}`,
     { cache: "no-store" }
   )
 
