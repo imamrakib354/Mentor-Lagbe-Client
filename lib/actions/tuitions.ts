@@ -1,4 +1,8 @@
-import type { Tuition, TuitionFormData } from "@/lib/types/tuition"
+import type {
+  Tuition,
+  TuitionFormData,
+  TuitionListing,
+} from "@/lib/types/tuition"
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ||
@@ -29,6 +33,21 @@ export async function createTuition(
 
 export async function getTuitions(): Promise<Tuition[]> {
   const response = await fetch(`${API_BASE_URL}/tuitions`)
+
+  if (!response.ok) {
+    throw new Error("Could not load tuitions. Please try again.")
+  }
+
+  return response.json()
+}
+
+export async function getPublicTuitions(
+  query = ""
+): Promise<TuitionListing> {
+  const response = await fetch(
+    `${API_BASE_URL}/tuitions${query ? `?${query}` : ""}`,
+    { cache: "no-store" }
+  )
 
   if (!response.ok) {
     throw new Error("Could not load tuitions. Please try again.")

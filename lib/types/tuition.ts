@@ -23,3 +23,11 @@ export type TuitionFormData = {
 export type Tuition = TuitionFormData & {
   _id: string
 }
+
+export type TuitionListing = {
+  tuitions: Tuition[]
+  total: number
+  page: number
+  pageSize: number
+  totalPages: number
+}
