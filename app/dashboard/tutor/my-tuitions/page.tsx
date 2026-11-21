@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { getTutorTuitions } from "@/lib/actions/tuitions"
+import { getTutorTuitions, updateTuitionActiveStatus } from "@/lib/actions/tuitions"
 import { useSession } from "@/lib/auth-client"
 import type { ApprovalStatus, Tuition } from "@/lib/types/tuition"
 
@@ -36,6 +36,7 @@ export default function MyTuitionsPage() {
   const { data: session, isPending: isSessionPending } = useSession()
   const [tuitions, setTuitions] = useState<Tuition[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [updatingId, setUpdatingId] = useState<string | null>(null)
 
   useEffect(() => {
     async function loadTuitions() {
@@ -63,12 +64,25 @@ export default function MyTuitionsPage() {
     loadTuitions()
   }, [isSessionPending, session?.user?.id])
 
-  function toggleActiveStatus(tuitionId: string, isActive: boolean) {
-    setTuitions((currentTuitions) =>
-      currentTuitions.map((tuition) =>
-        tuition._id === tuitionId ? { ...tuition, isActive } : tuition
+  async function toggleActiveStatus(tuitionId: string, isActive: boolean) {
+    if (updatingId) return
+    setUpdatingId(tuitionId)
+
+    try {
+      await updateTuitionActiveStatus(tuitionId, isActive)
+      setTuitions((currentTuitions) =>
+        currentTuitions.map((tuition) =>
+          tuition._id === tuitionId ? { ...tuition, isActive } : tuition
+        )
       )
-    )
+      toast.success(isActive ? "Tuition marked as active." : "Tuition marked as closed.")
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Could not update tuition availability."
+      )
+    } finally {
+      setUpdatingId(null)
+    }
   }
 
   return (
@@ -183,6 +197,7 @@ export default function MyTuitionsPage() {
                       <div className="flex items-center gap-2.5">
                         <Switch
                           checked={tuition.isActive}
+                          disabled={updatingId !== null}
                           onCheckedChange={(isActive) =>
                             toggleActiveStatus(tuition._id, isActive)
                           }

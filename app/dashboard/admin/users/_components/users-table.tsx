@@ -9,8 +9,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { updateUserRole } from "@/lib/helpers/users"
+import { activateUser, updateUserRole } from "@/lib/actions/users"
 import type { DirectoryUser, UserRole } from "@/lib/types/user"
+import { SuspendUserDialog } from "./suspend-user-dialog"
 
 const roles = ["student", "tutor", "admin"] as const
 const filters = ["all", ...roles] as const
@@ -21,11 +22,12 @@ function roleStyle(role: string) {
   return "bg-blue-50 text-blue-700"
 }
 
-export function UsersTable({ users, total }: { users: DirectoryUser[]; total: number }) {
+export function UsersTable({ users, total, currentUserId }: { users: DirectoryUser[]; total: number; currentUserId: string }) {
   const router = useRouter()
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState<(typeof filters)[number]>("all")
   const [updatingId, setUpdatingId] = useState<string | null>(null)
+  const [activatingId, setActivatingId] = useState<string | null>(null)
   const filteredUsers = users.filter((user) =>
     (filter === "all" || user.role === filter) &&
     `${user.name} ${user.email}`.toLowerCase().includes(search.trim().toLowerCase())
@@ -41,6 +43,19 @@ export function UsersTable({ users, total }: { users: DirectoryUser[]; total: nu
       toast.error(error instanceof Error ? error.message : "Could not update the user's role.")
     } finally {
       setUpdatingId(null)
+    }
+  }
+
+  async function handleActivate(userId: string) {
+    setActivatingId(userId)
+    try {
+      await activateUser(userId)
+      toast.success("Account reactivated successfully.")
+      router.refresh()
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not reactivate this account.")
+    } finally {
+      setActivatingId(null)
     }
   }
 
@@ -81,8 +96,10 @@ export function UsersTable({ users, total }: { users: DirectoryUser[]; total: nu
                   <TableHead className="min-w-48 px-4">User</TableHead>
                   <TableHead className="min-w-52 px-4">Email</TableHead>
                   <TableHead className="min-w-28 px-4">Role</TableHead>
+                  <TableHead className="min-w-28 px-4">Status</TableHead>
                   <TableHead className="min-w-32 px-4">Joined</TableHead>
                   <TableHead className="min-w-36 px-4">Change role</TableHead>
+                  <TableHead className="min-w-32 px-4">Account</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -101,6 +118,11 @@ export function UsersTable({ users, total }: { users: DirectoryUser[]; total: nu
                     <TableCell className="px-4">
                       <span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${roleStyle(user.role)}`}>{user.role}</span>
                     </TableCell>
+                    <TableCell className="px-4">
+                      <span className={`rounded-full px-3 py-1 text-xs font-semibold ${user.banned ? "bg-red-50 text-red-700" : "bg-emerald-50 text-emerald-700"}`}>
+                        {user.banned ? "Suspended" : "Active"}
+                      </span>
+                    </TableCell>
                     <TableCell className="px-4 text-slate-600">
                       {new Date(user.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                     </TableCell>
@@ -115,6 +137,15 @@ export function UsersTable({ users, total }: { users: DirectoryUser[]; total: nu
                         {!roles.includes(user.role as UserRole) && <option value={user.role}>{user.role}</option>}
                         {roles.map((role) => <option key={role} value={role}>{role}</option>)}
                       </select>
+                    </TableCell>
+                    <TableCell className="px-4">
+                      {user.banned ? (
+                        <Button type="button" variant="outline" disabled={activatingId !== null} onClick={() => handleActivate(user.id)} className="border-emerald-100 text-emerald-700 hover:bg-emerald-50">
+                          {activatingId === user.id ? "Activating..." : "Activate"}
+                        </Button>
+                      ) : (
+                        <SuspendUserDialog userId={user.id} userName={user.name} disabled={user.id === currentUserId} />
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

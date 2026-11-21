@@ -9,4 +9,5 @@ export type DirectoryUser = {
   image: string | null
   role: string
   createdAt: string
+  banned: boolean
 }

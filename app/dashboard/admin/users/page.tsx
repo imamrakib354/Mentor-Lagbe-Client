@@ -1,7 +1,8 @@
-import { getUsers } from "@/lib/helpers/users"
+import { getUsers } from "@/lib/actions/users"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
 import type { DirectoryUser } from "@/lib/types/user"
 import { UsersTable } from "./_components/users-table"
+import { UsersOverview } from "./_components/users-overview"
 
 export default async function UsersPage() {
   const currentUser = await getCurrentUser()
@@ -11,9 +12,11 @@ export default async function UsersPage() {
 
   let users: DirectoryUser[]
   let total: number
+  let fetchedAt: number
   try {
     const result = await getUsers()
     total = result.total
+    fetchedAt = result.fetchedAt
     users = result.users.map((user) => ({
       id: user.id,
       name: user.name,
@@ -21,10 +24,16 @@ export default async function UsersPage() {
       image: user.image ?? null,
       role: user.role || "student",
       createdAt: new Date(user.createdAt).toISOString(),
+      banned: user.banned ?? false,
     }))
   } catch {
     return <p className="rounded-2xl bg-white p-6 text-red-600">Could not load users. Please try again.</p>
   }
 
-  return <UsersTable users={users} total={total} />
+  return (
+    <div className="space-y-6">
+      <UsersOverview users={users} total={total} now={fetchedAt} />
+      <UsersTable users={users} total={total} currentUserId={currentUser.id} />
+    </div>
+  )
 }

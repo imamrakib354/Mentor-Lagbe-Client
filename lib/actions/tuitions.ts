@@ -94,3 +94,27 @@ export async function getTutorTuitions(tutorId: string): Promise<Tuition[]> {
 
   return response.json()
 }
+
+// Saves whether a tuition is open or closed.
+export async function updateTuitionActiveStatus(
+  tuitionId: string,
+  isActive: boolean
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/tuitions/${encodeURIComponent(tuitionId)}/active`,
+    {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ isActive }),
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error("Could not update tuition availability. Please try again.")
+  }
+
+  const result = await response.json()
+  if (result.matchedCount === 0) {
+    throw new Error("Tuition not found.")
+  }
+}

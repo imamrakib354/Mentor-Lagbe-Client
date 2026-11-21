@@ -43,6 +43,8 @@ export const auth = betterAuth({
   }),
 
   plugins: [
-    admin()
+    admin({
+      bannedUserMessage: "Your account is suspended. Please contact support.",
+    })
   ],
 })
