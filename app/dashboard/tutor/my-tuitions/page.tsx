@@ -87,6 +87,7 @@ export default function MyTuitionsPage() {
             </p>
           </div>
           <Button
+            nativeButton={false}
             render={<Link href="/dashboard/tutor/post-tuition" />}
             className="h-10 w-fit bg-blue-600 px-4 text-white hover:bg-blue-700"
           >
@@ -114,6 +115,7 @@ export default function MyTuitionsPage() {
               Create your first tuition listing to start reaching students.
             </p>
             <Button
+              nativeButton={false}
               render={<Link href="/dashboard/tutor/post-tuition" />}
               className="mt-5 bg-blue-600 text-white hover:bg-blue-700"
             >
@@ -201,6 +203,7 @@ export default function MyTuitionsPage() {
                     <TableCell className="px-4 py-4">
                       <div className="flex items-center gap-1">
                         <Button
+                          nativeButton={false}
                           render={<Link href={`/tuitions/${tuition._id}`} />}
                           size="sm"
                           variant="secondary"

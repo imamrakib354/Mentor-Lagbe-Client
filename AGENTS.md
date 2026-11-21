@@ -13,8 +13,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Purpose
 
 MentorLagbe is a role-based tuition marketplace client. It currently provides
-the public landing page, authentication, a shared dashboard experience, and
-the first tutor tuition-management flow.
+the public landing page, tuition browsing and details, authentication, a
+shared dashboard experience, and the first tutor tuition-management flow.
 
 ## Technology
 
@@ -31,6 +31,7 @@ the first tutor tuition-management flow.
 app/
   (website)/                  # Public site shell and home page
   (auth)/                     # Sign-in and sign-up pages
+  tuitions/                   # Public browse page, cards and details route
   dashboard/                  # Shared dashboard layout and role workspaces
   api/auth/[...all]/          # Better Auth handler
   api/upload-image/           # Authenticated ImgBB image upload
@@ -38,7 +39,8 @@ components/
   shared/                     # Navbar and footer
   ui/                         # Reusable shadcn/Base UI primitives
 lib/
-  actions/tuitions.ts         # External tuition API client and image uploader
+  actions/tuitions.ts         # External tuition API client
+  actions/uploadImage.ts      # Image upload helper
   auth.ts                     # Server-side Better Auth configuration
   auth-client.ts              # Typed client-side auth helpers
   data/tuition-options.ts     # Class-level and subject options
@@ -54,9 +56,29 @@ lib/
   how-it-works, and community sections.
 - A responsive shared navbar and footer are available under
   `components/shared/`.
-- The navbar handles loading, signed-in, and signed-out states. Its links to
-  `/tuitions`, `/pricing`, and `/about` are already visible but those routes
-  have not been implemented yet.
+- The navbar handles loading, signed-in, and signed-out states. The `/pricing`
+  and `/about` links do not yet have corresponding pages.
+
+### Tuition browsing and details
+
+- `/tuitions` reads search, subject, class level, mode, sort, and page values
+  from the URL, then forwards them to the external API. The backend is expected
+  to filter for approved, active listings and return paginated results.
+- The browse UI has full-width search, filters, newest/oldest sorting, reset,
+  reusable tuition cards, and pagination. It expects six results per page.
+- `/tuitions/[id]` fetches the tuition by ID and displays its banner,
+  description, fee, tutor, and other details. The details link is also enabled
+  in the tutor's My Tuitions table.
+- The details client accepts either a tuition document or `{ tuition, tutor }`.
+  With a tutor object, it can display the current profile image and optional
+  education, experience, and expertise. Otherwise it falls back to the tutor
+  name and email saved on the tuition; those values are not live profile data.
+- The Apply Now button is enabled only for a signed-in student, but it has no
+  action yet. Guests, tutors, and admins see a disabled button and notice.
+  The reviews section and review button are placeholders.
+- The details page itself does not enforce public visibility or ownership.
+  The external detail API must enforce approved/active visibility and any
+  authenticated owner-preview exception.
 
 ### Authentication
 
@@ -90,30 +112,37 @@ lib/
 - The form validates fees, days per week, image type/size, image URLs, and
   required tuition fields. Subjects change according to the selected class
   level.
+- Tutors choose 1–7 days per week and one or more available batch times.
+  The selected times are saved in `classTimes`; choosing a batch when applying
+  is not implemented yet.
 - A new tuition is submitted with `pending` approval status and `isActive:
   true`.
 - Banner images can be uploaded or provided as public URLs:
   - Upload accepts JPG, PNG, and WebP up to 5 MB.
   - `/api/upload-image` requires an authenticated session and uploads to
     ImgBB.
-- `/dashboard/tutor/my-tuitions` fetches all tuitions, filters them in the
-  client by the current tutor ID, and displays their approval and active
-  statuses.
-- The active-status switch only updates local UI state. View, edit, and delete
-  controls are intentionally disabled placeholders; no update/delete API
-  operations exist yet.
+- `/dashboard/tutor/my-tuitions` is intended to display the current tutor's
+  listings and their statuses. **Known integration issue:** its
+  `getTutorTuitions()` helper expects an array from `GET /tuitions`, but the
+  new public endpoint returns a paginated object. It needs a separate,
+  authorized tutor-listing endpoint to include all of the owner's statuses.
+- The active-status switch only updates local UI state. View links to the
+  details page; edit and delete remain disabled placeholders, with no
+  update/delete API operations yet.
 
 ## Not Yet Implemented
 
-- Public tuition browsing, pricing, and about routes.
+- Public pricing and about routes.
 - Tutor dashboard overview and applicant management.
 - Student dashboard overview, applications, saved tuitions, and application
   workflow.
 - Admin dashboard overview, user management, tuition approval/moderation, and
   transactions.
-- User profile page and theme switching.
-- Tuition detail, edit, delete, persistent active-status updates, search,
-  filtering, pagination, and server-side tutor-specific filtering.
+- User profile page, live tutor-profile backend response, and theme switching.
+- Application form/submission, student-only server authorization, duplicate
+  prevention, and reviews.
+- Tuition edit, delete, persistent active-status updates, and server-side
+  tutor-specific listing.
 - Route guards and backend authorization for dashboard roles and tuition
   mutations.
 - Automated tests and a project-specific README.
@@ -153,5 +182,8 @@ npm run format
   `lib/types/tuition.ts`.
 - Prefer adding API methods to `lib/actions/tuitions.ts` rather than issuing
   ad hoc fetches from components.
+- Image uploads use the separate `lib/actions/uploadImage.ts` helper. Exported
+  functions, data, and types in `lib/actions`, `lib/data`, `lib/helpers`, and
+  `lib/types` have short explanatory comments; keep them current.
 - Before working on Next.js code, read the relevant documentation in
   `node_modules/next/dist/docs/`, as required by the generated rule above.

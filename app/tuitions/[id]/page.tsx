@@ -20,6 +20,8 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { ApplicationDialog } from "./_components/application-dialog"
+import { getStudentApplications } from "@/lib/actions/application"
 import { getTuitionById } from "@/lib/actions/tuitions"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
 
@@ -44,6 +46,16 @@ export default async function TuitionDetailsPage({
   const { tuition, tutor } = details
   const currentUser = await getCurrentUser()
   const canApply = currentUser?.role === "student"
+  let hasApplied = false
+  let applicationCheckFailed = false
+  if (canApply && currentUser) {
+    try {
+      const applications = await getStudentApplications(currentUser.id)
+      hasApplied = applications.some((application) => application.tuitionId === tuition._id)
+    } catch {
+      applicationCheckFailed = true
+    }
+  }
   const tutorName = tutor?.name || tuition.tutorName
   const tutorEmail = tutor?.email || tuition.tutorEmail
   const tutorInitial = tutorName.trim().charAt(0).toUpperCase() || "T"
@@ -191,14 +203,19 @@ export default async function TuitionDetailsPage({
             </dl>
 
             <div className="border-t border-blue-100 p-5">
-              <Button
-                type="button"
-                disabled={!canApply}
-                className="h-12 w-full bg-blue-600 text-base font-semibold text-white hover:bg-blue-700"
-              >
-                <Send aria-hidden="true" />
-                Apply Now
-              </Button>
+              {canApply && currentUser && !hasApplied && !applicationCheckFailed ? (
+                <ApplicationDialog tuition={tuition} student={currentUser} tutorName={tutorName} tutorEmail={tutorEmail} />
+              ) : (
+                <Button type="button" disabled className="h-12 w-full bg-blue-600 text-base font-semibold text-white">
+                  <Send aria-hidden="true" />
+                  {hasApplied ? "Already Applied" : "Apply Now"}
+                </Button>
+              )}
+              {applicationCheckFailed && (
+                <p className="mt-3 text-center text-xs leading-5 text-red-600">
+                  Could not check your applications. Please refresh and try again.
+                </p>
+              )}
               {!canApply && (
                 <p className="mt-3 text-center text-xs leading-5 text-slate-500">
                   {applicationMessage}

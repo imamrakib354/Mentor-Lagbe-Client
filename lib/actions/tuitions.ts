@@ -81,8 +81,16 @@ export async function getTuitionById(
   return "tuition" in data ? data : { tuition: data }
 }
 
-// Filters the fetched tuitions to those belonging to the given tutor.
+// Fetches the given tutor's listings directly from the backend.
 export async function getTutorTuitions(tutorId: string): Promise<Tuition[]> {
-  const tuitions = await getTuitions()
-  return tuitions.filter((tuition) => tuition.tutorId === tutorId)
+  const response = await fetch(
+    `${API_BASE_URL}/tuitions/tutor/${encodeURIComponent(tutorId)}`,
+    { cache: "no-store" }
+  )
+
+  if (!response.ok) {
+    throw new Error("Could not load your tuitions. Please try again.")
+  }
+
+  return response.json()
 }

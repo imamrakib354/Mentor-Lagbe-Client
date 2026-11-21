@@ -62,8 +62,8 @@ export function TuitionBrowser({
   }
 
   return (
-    <div className="pb-8">
-      <section className="rounded-3xl bg-linear-to-b from-blue-50 to-[#e8f1ff] px-4 py-10 sm:px-6 sm:py-14">
+    <div className="min-h-screen bg-[#e8f1ff] pb-8">
+      <section className="px-4 py-10 sm:px-6 sm:py-14">
         <div className="mx-auto max-w-3xl text-center">
           <p className="inline-flex rounded-full border border-blue-100 bg-white/70 px-3 py-1 text-xs font-bold tracking-wider text-blue-700 uppercase">
             Tuition marketplace
@@ -173,7 +173,7 @@ export function TuitionBrowser({
         </form>
       </section>
 
-      <section className="pt-8">
+      <section className="px-4 pt-8 sm:px-6">
         <p className="text-sm text-slate-600">
           {listing.total === 0
             ? "No tuitions found"
