@@ -9,6 +9,7 @@ import {
   Mail,
   MapPin,
   Monitor,
+  Phone,
   Send,
   Star,
   UserRound,
@@ -266,6 +267,13 @@ export default async function TuitionDetailsPage({
               <Mail aria-hidden="true" className="size-4 shrink-0 text-blue-600" />
               <span className="truncate">{tutorEmail}</span>
             </div>
+            {tutor?.phone && (
+              <p className="mt-3 flex items-center gap-2 text-sm text-slate-600">
+                <Phone aria-hidden="true" className="size-4 shrink-0 text-blue-600" />
+                {tutor.phone}
+              </p>
+            )}
+            {tutor?.bio && <p className="mt-4 border-t border-blue-100 pt-4 text-sm leading-6 whitespace-pre-line text-slate-600">{tutor.bio}</p>}
             {(tutor?.education || tutor?.experience || tutor?.expertise) && (
               <div className="mt-4 space-y-2 border-t border-blue-100 pt-4 text-sm text-slate-600">
                 {tutor?.education && <p>{tutor.education}</p>}

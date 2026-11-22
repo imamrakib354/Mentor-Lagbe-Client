@@ -47,6 +47,8 @@ export type TutorDetails = {
   name?: string
   email?: string
   image?: string | null
+  phone?: string | null
+  bio?: string | null
   education?: string
   experience?: string
   expertise?: string

@@ -6,6 +6,7 @@ import { Send } from "lucide-react"
 import { toast } from "react-toastify"
 
 import { Button } from "@/components/ui/button"
+import { PhoneInput } from "@/components/shared/phone-input"
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { createApplication, getStudentApplications } from "@/lib/actions/application"
 import { getPremiumById } from "@/lib/actions/premium"
+import { isValidPhone } from "@/lib/helpers/phone"
 import type { Tuition } from "@/lib/types/tuition"
 
 type ApplicationDialogProps = {
@@ -66,8 +68,12 @@ export function ApplicationDialog({
     const form = new FormData(event.currentTarget)
     const phone = String(form.get("phone") || "").trim()
     const preferredSchedule = String(form.get("preferredSchedule") || "")
-    if (!phone || !classTimes.includes(preferredSchedule as (typeof classTimes)[number])) {
-      toast.error("Please enter your phone number and select an available schedule.")
+    if (!isValidPhone(phone)) {
+      toast.error("Enter a valid phone number using 01, 880, or +880.")
+      return
+    }
+    if (!classTimes.includes(preferredSchedule as (typeof classTimes)[number])) {
+      toast.error("Please select an available schedule.")
       return
     }
 
@@ -125,7 +131,7 @@ export function ApplicationDialog({
           </div>
           <div className="space-y-2">
             <Label htmlFor="application-phone">Contact phone number *</Label>
-            <Input id="application-phone" name="phone" type="tel" required maxLength={30} placeholder="+880" className="h-11 border-blue-100" />
+            <PhoneInput id="application-phone" required className="h-11 border-blue-100" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="application-schedule">Preferred schedule *</Label>

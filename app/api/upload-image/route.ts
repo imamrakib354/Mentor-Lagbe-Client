@@ -29,18 +29,18 @@ export async function POST(request: Request) {
     const formData = await request.formData()
     const image = formData.get("image")
 
-    if (!(image instanceof File)) {
+    if (!(image instanceof File) && typeof image !== "string") {
       return Response.json({ message: "Choose an image to upload." }, { status: 400 })
     }
 
-    if (!acceptedImageTypes.includes(image.type)) {
+    if (image instanceof File && !acceptedImageTypes.includes(image.type)) {
       return Response.json(
         { message: "Please upload a JPG, PNG, or WebP image." },
         { status: 400 }
       )
     }
 
-    if (image.size > maximumFileSize) {
+    if (image instanceof File && image.size > maximumFileSize) {
       return Response.json(
         { message: "Image size must be 5 MB or less." },
         { status: 400 }
@@ -57,8 +57,17 @@ export async function POST(request: Request) {
     }
 
     const imageData = new FormData()
-    const base64Image = Buffer.from(await image.arrayBuffer()).toString("base64")
-    imageData.append("image", base64Image)
+    if (image instanceof File) {
+      imageData.append("image", Buffer.from(await image.arrayBuffer()).toString("base64"))
+    } else {
+      try {
+        const url = new URL(image)
+        if (url.protocol !== "http:" && url.protocol !== "https:") throw new Error()
+      } catch {
+        return Response.json({ message: "Enter a valid public image URL." }, { status: 400 })
+      }
+      imageData.append("image", image)
+    }
 
     const imgbbResponse = await fetch(
       `https://api.imgbb.com/1/upload?key=${apiKey}`,

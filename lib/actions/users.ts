@@ -7,6 +7,28 @@ import type { UserRole } from "@/lib/types/user"
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000"
 
+// Updates the signed-in user's profile through the external backend.
+export async function updateUserProfile(profile: {
+    name: string
+    phone: string
+    bio: string
+    image: string | null
+}) {
+    const user = await getCurrentUser()
+    if (!user) throw new Error("Please sign in to update your profile.")
+    if (!profile.name.trim()) throw new Error("Please enter your name.")
+
+    const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/users/${encodeURIComponent(user.id)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile),
+        cache: "no-store",
+    })
+    if (!response.ok) throw new Error("Could not update your profile.")
+    const result = await response.json()
+    if (result.matchedCount !== 1) throw new Error("User not found.")
+}
+
 export const getUsers = async () => {
     const requestHeaders = await headers()
     const users: Awaited<ReturnType<typeof auth.api.listUsers>>["users"] = []

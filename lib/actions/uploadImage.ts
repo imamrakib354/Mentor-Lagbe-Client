@@ -1,5 +1,5 @@
-// Uploads an image through the local API and returns its public URL.
-export async function uploadImage(file: File): Promise<string> {
+// Uploads an image file or public URL through the local API.
+export async function uploadImage(file: File | string): Promise<string> {
   const formData = new FormData()
   formData.append("image", file)
 
