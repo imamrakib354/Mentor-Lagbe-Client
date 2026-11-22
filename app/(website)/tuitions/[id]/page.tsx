@@ -21,7 +21,9 @@ import {
 } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { ApplicationDialog } from "./_components/application-dialog"
+import { SaveTuitionButton } from "./_components/save-tuition-button"
 import { getStudentApplications } from "@/lib/actions/application"
+import { getSavedTuitions } from "@/lib/actions/saved-tuitions"
 import { getTuitionById } from "@/lib/actions/tuitions"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
 
@@ -48,12 +50,19 @@ export default async function TuitionDetailsPage({
   const canApply = currentUser?.role === "student"
   let hasApplied = false
   let applicationCheckFailed = false
+  let bookmarkId: string | null | undefined
   if (canApply && currentUser) {
     try {
       const listing = await getStudentApplications(currentUser.id)
       hasApplied = listing.applications.some((application) => application.tuitionId === tuition._id)
     } catch {
       applicationCheckFailed = true
+    }
+    try {
+      const saved = await getSavedTuitions(currentUser.id)
+      bookmarkId = saved.find((item) => item.tuitionId === tuition._id)?._id ?? null
+    } catch {
+      bookmarkId = undefined
     }
   }
   const tutorName = tutor?.name || tuition.tutorName
@@ -171,12 +180,17 @@ export default async function TuitionDetailsPage({
               <p className="text-xs font-bold tracking-wider text-blue-700 uppercase">
                 Monthly tuition fee
               </p>
-              <p className="mt-2 text-3xl font-bold text-blue-950">
-                ৳{Number(tuition.monthlyFee).toLocaleString("en-US")}
-                <span className="ml-1 text-base font-medium text-slate-600">
-                  / month
-                </span>
-              </p>
+              <div className="mt-2 flex items-center justify-between gap-3">
+                <p className="text-3xl font-bold text-blue-950">
+                  ৳{Number(tuition.monthlyFee).toLocaleString("en-US")}
+                  <span className="ml-1 text-base font-medium text-slate-600">
+                    / month
+                  </span>
+                </p>
+                {canApply && currentUser && (
+                  <SaveTuitionButton studentId={currentUser.id} tuitionId={tuition._id} bookmarkId={bookmarkId} />
+                )}
+              </div>
             </div>
 
             <dl className="divide-y divide-blue-100 p-5">

@@ -70,3 +70,15 @@ export async function updateApplicationStatus(
   const result = await response.json()
   if (result.matchedCount === 0) throw new Error("Application not found.")
 }
+
+// Cancels a pending application by its ID.
+export async function cancelApplication(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/applications/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+  })
+  if (!response.ok) throw new Error("Could not cancel the application.")
+  const result = await response.json()
+  if (result.deletedCount !== 1) {
+    throw new Error("Application was not found or is no longer pending.")
+  }
+}

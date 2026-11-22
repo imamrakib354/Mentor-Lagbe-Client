@@ -25,3 +25,13 @@ export async function getSavedTuitions(studentId: string): Promise<SavedTuition[
   if (!response.ok) throw new Error("Could not load saved tuitions.")
   return response.json()
 }
+
+// Removes a saved tuition bookmark by its ID.
+export async function removeSavedTuition(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/saved-tuitions/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+  })
+  if (!response.ok) throw new Error("Could not remove saved tuition.")
+  const result = await response.json()
+  if (result.deletedCount !== 1) throw new Error("Saved tuition was not found.")
+}

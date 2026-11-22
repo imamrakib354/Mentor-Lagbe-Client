@@ -1,7 +1,6 @@
 import Link from "next/link"
-import { BookmarkX } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
+import { DeleteConfirmationDialog } from "@/components/shared/delete-confirmation-dialog"
 import type { SavedTuition } from "@/lib/types/saved-tuition"
 
 export function SavedTuitionCard({ saved }: { saved: SavedTuition }) {
@@ -38,9 +37,7 @@ export function SavedTuitionCard({ saved }: { saved: SavedTuition }) {
             View Details
           </Button>
         )}
-        <Button type="button" variant="outline" disabled title="Removing saved tuitions is coming soon" aria-label="Remove from saved (coming soon)" className="border-blue-100">
-          <BookmarkX aria-hidden="true" /> Remove
-        </Button>
+        <DeleteConfirmationDialog kind="saved" id={saved._id} name={tuition?.title || "this tuition"} />
       </div>
     </article>
   )

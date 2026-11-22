@@ -3,6 +3,7 @@ import type {
   TuitionDetails,
   TuitionFormData,
   TuitionListing,
+  TuitionUpdateData,
 } from "@/lib/types/tuition"
 
 const API_BASE_URL =
@@ -117,4 +118,32 @@ export async function updateTuitionActiveStatus(
   if (result.matchedCount === 0) {
     throw new Error("Tuition not found.")
   }
+}
+
+// Deletes a tuition listing by its ID.
+export async function deleteTuition(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/tuitions/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+  })
+  if (!response.ok) throw new Error("Could not delete the tuition.")
+  const result = await response.json()
+  if (result.deletedCount !== 1) throw new Error("Tuition was not found.")
+}
+
+// Updates the editable details of a tuition.
+export async function updateTuitionDetails(
+  id: string,
+  details: TuitionUpdateData
+): Promise<void> {
+  const response = await fetch(
+    `${API_BASE_URL}/tuitions/${encodeURIComponent(id)}/details`,
+    {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(details),
+    }
+  )
+  if (!response.ok) throw new Error("Could not update the tuition.")
+  const result = await response.json()
+  if (result.matchedCount === 0) throw new Error("Tuition was not found.")
 }

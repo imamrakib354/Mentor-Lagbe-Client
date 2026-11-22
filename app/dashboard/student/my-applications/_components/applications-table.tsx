@@ -8,6 +8,7 @@ import { toast } from "react-toastify"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ApplicationSearch } from "@/components/shared/application-search"
+import { DeleteConfirmationDialog } from "@/components/shared/delete-confirmation-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { saveTuition } from "@/lib/actions/saved-tuitions"
 import type { ApplicationListing, ApplicationStatus } from "@/lib/types/application"
@@ -117,7 +118,9 @@ export function ApplicationsTable({ listing, savedIds, studentId, search, status
                             <Bookmark aria-hidden="true" />
                           </Button>
                         )}
-                        {application.status === "pending" && <Button type="button" disabled title="Cancellation coming soon" variant="outline">Cancel</Button>}
+                        {application.status === "pending" && (
+                          <DeleteConfirmationDialog kind="application" id={application._id} name={application.tuitionTitle} />
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

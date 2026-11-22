@@ -36,6 +36,12 @@ export type Tuition = TuitionFormData & {
   _id: string
 }
 
+// Describes the fields a tutor can edit on a tuition.
+export type TuitionUpdateData = Pick<
+  TuitionFormData,
+  "location" | "monthlyFee" | "daysPerWeek" | "mode" | "bannerImage" | "description"
+>
+
 // Describes the optional tutor profile fields returned with tuition details.
 export type TutorDetails = {
   name?: string

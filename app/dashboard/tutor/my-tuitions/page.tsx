@@ -6,13 +6,12 @@ import {
   BookOpen,
   Eye,
   Loader2,
-  Pencil,
   Plus,
-  Trash2,
 } from "lucide-react"
 import { toast } from "react-toastify"
 
 import { Button } from "@/components/ui/button"
+import { DeleteConfirmationDialog } from "@/components/shared/delete-confirmation-dialog"
 import { Switch } from "@/components/ui/switch"
 import {
   Table,
@@ -25,6 +24,7 @@ import {
 import { getTutorTuitions, updateTuitionActiveStatus } from "@/lib/actions/tuitions"
 import { useSession } from "@/lib/auth-client"
 import type { ApprovalStatus, Tuition } from "@/lib/types/tuition"
+import { EditTuitionDialog } from "./_components/edit-tuition-dialog"
 
 function approvalStatusClass(status: ApprovalStatus) {
   if (status === "approved") return "bg-emerald-50 text-emerald-700"
@@ -228,29 +228,18 @@ export default function MyTuitionsPage() {
                           <Eye aria-hidden="true" />
                           <span className="hidden lg:inline">View</span>
                         </Button>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="secondary"
-                          disabled
-                          title="Edit will be added later"
-                          aria-label={`Edit ${tuition.title}`}
-                          className="bg-blue-50 text-blue-700"
-                        >
-                          <Pencil aria-hidden="true" />
-                          <span className="hidden lg:inline">Edit</span>
-                        </Button>
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="destructive"
-                          disabled
-                          title="Delete will be added later"
-                          aria-label={`Delete ${tuition.title}`}
-                        >
-                          <Trash2 aria-hidden="true" />
-                          <span className="hidden lg:inline">Delete</span>
-                        </Button>
+                        <EditTuitionDialog
+                          tuition={tuition}
+                          onUpdated={(details) => setTuitions((items) =>
+                            items.map((item) => item._id === tuition._id ? { ...item, ...details } : item)
+                          )}
+                        />
+                        <DeleteConfirmationDialog
+                          kind="tuition"
+                          id={tuition._id}
+                          name={tuition.title}
+                          onDeleted={(id) => setTuitions((items) => items.filter((item) => item._id !== id))}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
