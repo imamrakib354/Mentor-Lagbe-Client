@@ -60,7 +60,7 @@ export function UsersTable({ users, total, currentUserId }: { users: DirectoryUs
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-sm shadow-blue-950/5">
+    <div className="dashboard-surface overflow-hidden rounded-3xl border">
       <header className="bg-gradient-to-r from-blue-50 to-blue-100 px-5 py-7 sm:px-8">
         <p className="text-xs font-bold tracking-[0.18em] text-blue-600 uppercase">User directory</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-blue-950 sm:text-4xl">Manage Users</h1>

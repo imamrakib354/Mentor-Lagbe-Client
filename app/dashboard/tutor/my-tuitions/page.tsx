@@ -87,7 +87,7 @@ export default function MyTuitionsPage() {
 
   return (
     <div>
-      <header className="mb-6 rounded-3xl border border-blue-100 bg-white px-5 py-7 shadow-sm shadow-blue-950/5 sm:px-7 sm:py-8">
+      <header className="dashboard-surface mb-6 rounded-3xl border px-5 py-7 sm:px-7 sm:py-8">
         <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
           <div>
             <p className="text-xs font-semibold tracking-[0.18em] text-blue-600 uppercase">
@@ -111,7 +111,7 @@ export default function MyTuitionsPage() {
         </div>
       </header>
 
-      <section className="rounded-3xl border border-blue-100 bg-white p-3 shadow-sm shadow-blue-950/5 sm:p-4">
+      <section className="dashboard-surface rounded-3xl border p-3 sm:p-4">
         {isLoading ? (
           <div className="flex min-h-64 items-center justify-center gap-2 text-sm text-slate-600">
             <Loader2 aria-hidden="true" className="size-5 animate-spin text-blue-600" />

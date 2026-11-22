@@ -16,7 +16,7 @@ export function UsersOverview({ users, total, now }: { users: DirectoryUser[]; t
   return (
     <section aria-label="User overview" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {cards.map((card) => (
-        <div key={card.label} className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm shadow-blue-950/5">
+        <div key={card.label} className="dashboard-surface rounded-2xl border p-5">
           <h2 className="text-xs font-semibold tracking-wide text-blue-700 uppercase">{card.label}</h2>
           <p className="mt-3 text-3xl font-bold text-blue-950">{card.count}</p>
           <p className="mt-2 text-sm text-slate-500">{card.description}</p>

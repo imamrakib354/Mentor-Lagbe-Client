@@ -10,7 +10,7 @@ export default async function ApplicantsPage({
 }) {
   const user = await getCurrentUser()
   if (user?.role !== "tutor") {
-    return <p className="rounded-2xl bg-white p-6 text-slate-600">Sign in as a tutor to view applicants.</p>
+    return <p className="dashboard-surface rounded-2xl border p-6 text-slate-600">Sign in as a tutor to view applicants.</p>
   }
 
   const { status: requestedStatus, search: requestedSearch } = await searchParams
@@ -26,7 +26,7 @@ export default async function ApplicantsPage({
   try {
     listing = await getTutorApplications(user.id, query.toString())
   } catch {
-    return <p className="rounded-2xl bg-white p-6 text-red-600">Could not load applicants. Please try again.</p>
+    return <p className="dashboard-surface rounded-2xl border p-6 text-red-600">Could not load applicants. Please try again.</p>
   }
 
   return <ApplicantsTable listing={listing} status={status} search={search} />

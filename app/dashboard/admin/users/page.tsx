@@ -7,7 +7,7 @@ import { UsersOverview } from "./_components/users-overview"
 export default async function UsersPage() {
   const currentUser = await getCurrentUser()
   if (currentUser?.role !== "admin") {
-    return <p className="rounded-2xl bg-white p-6 text-slate-600">Sign in as an admin to view users.</p>
+    return <p className="dashboard-surface rounded-2xl border p-6 text-slate-600">Sign in as an admin to view users.</p>
   }
 
   let users: DirectoryUser[]
@@ -27,7 +27,7 @@ export default async function UsersPage() {
       banned: user.banned ?? false,
     }))
   } catch {
-    return <p className="rounded-2xl bg-white p-6 text-red-600">Could not load users. Please try again.</p>
+    return <p className="dashboard-surface rounded-2xl border p-6 text-red-600">Could not load users. Please try again.</p>
   }
 
   return (

@@ -218,7 +218,7 @@ export default function PostTuitionPage() {
       </header>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <section className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm shadow-blue-950/5 sm:p-7">
+        <section className="dashboard-surface rounded-2xl border p-5 sm:p-7">
           <div className="mb-5 flex items-center gap-2">
             <span className="flex size-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
               1
@@ -412,7 +412,7 @@ export default function PostTuitionPage() {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm shadow-blue-950/5 sm:p-7">
+        <section className="dashboard-surface rounded-2xl border p-5 sm:p-7">
           <div className="mb-5 flex items-center gap-2">
             <span className="flex size-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
               2
@@ -544,7 +544,7 @@ export default function PostTuitionPage() {
           </div>
         </section>
 
-        <div className="flex flex-col-reverse items-start justify-between gap-4 rounded-2xl border border-blue-100 bg-white p-5 shadow-sm shadow-blue-950/5 sm:flex-row sm:items-center">
+        <div className="dashboard-surface flex flex-col-reverse items-start justify-between gap-4 rounded-2xl border p-5 sm:flex-row sm:items-center">
           <p className="flex items-start gap-2 text-xs leading-5 text-slate-600">
             <CheckCircle2 aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-blue-600" />
             Your tuition will be saved as pending and reviewed by an admin.

@@ -13,7 +13,7 @@ export default async function TuitionsPage({
 }) {
   const user = await getCurrentUser()
   if (user?.role !== "admin") {
-    return <p className="rounded-2xl bg-white p-6 text-slate-600">Sign in as an admin to manage tuitions.</p>
+    return <p className="dashboard-surface rounded-2xl border p-6 text-slate-600">Sign in as an admin to manage tuitions.</p>
   }
 
   const search = await searchParams
@@ -50,7 +50,7 @@ export default async function TuitionsPage({
       tuitions = await getAdminTuitions(params.toString())
     }
   } catch {
-    return <p className="rounded-2xl bg-white p-6 text-red-600">Could not load tuitions. Please try again.</p>
+    return <p className="dashboard-surface rounded-2xl border p-6 text-red-600">Could not load tuitions. Please try again.</p>
   }
 
   return <TuitionsTable tuitions={tuitions} allTuitions={allTuitions} filters={filters} />

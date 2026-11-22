@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import {
   usePathname,
@@ -129,9 +130,12 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
   return (
     <Sidebar
       collapsible="offcanvas"
-      className="top-20 h-[calc(100svh-5rem)] border-blue-100"
+      className="top-0 h-svh border-blue-100"
     >
-      <SidebarHeader className="border-b border-blue-100 bg-white p-5">
+      <SidebarHeader className="border-b border-blue-200/70 bg-gradient-to-br from-[#e4f3ff] to-[#dfe7ff] p-5">
+        <Link href="/" aria-label="MentorLagbe home" className="mb-3 block w-44 max-w-full">
+          <Image src="/images/Mentor_logo.png" alt="MentorLagbe" width={2172} height={724} sizes="176px" className="h-auto w-full" />
+        </Link>
         <div className="flex min-w-0 items-center gap-3">
           <Avatar size="lg">
             <AvatarFallback className="bg-blue-600 text-sm font-semibold text-white">
@@ -162,7 +166,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="bg-white">
+      <SidebarContent className="bg-gradient-to-b from-[#dfe7ff] via-[#e4eaff] to-[#d9ddfa]">
         <nav aria-label="Dashboard navigation">
           <SidebarGroup className="p-3">
             <SidebarGroupLabel className="mb-2 px-3 text-[10px] font-semibold tracking-widest text-slate-500 uppercase">
@@ -214,7 +218,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         </nav>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-blue-100 bg-white p-4">
+      <SidebarFooter className="border-t border-blue-200/70 bg-[#d9ddfa] p-4">
         <Button
           type="button"
           variant="outline"

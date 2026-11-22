@@ -48,13 +48,13 @@ export function ApplicationsTable({ listing, savedIds, studentId, search, status
 
   return (
     <div>
-      <header className="mb-6 rounded-3xl border border-blue-100 bg-gradient-to-r from-white to-blue-100 p-6 shadow-sm sm:p-8">
+      <header className="dashboard-surface mb-6 rounded-3xl border p-6 sm:p-8">
         <p className="text-xs font-bold tracking-[0.18em] text-blue-600 uppercase">Applications</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-blue-950 sm:text-4xl">My Applications</h1>
         <p className="mt-2 text-sm leading-6 text-slate-600">Keep track of the tuitions you have applied for and their current status.</p>
       </header>
 
-      <section className="rounded-3xl border border-blue-100 bg-white p-4 shadow-sm sm:p-6">
+      <section className="dashboard-surface rounded-3xl border p-4 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap gap-2">
             {statuses.map((item) => {

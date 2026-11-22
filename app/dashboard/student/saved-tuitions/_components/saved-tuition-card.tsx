@@ -8,7 +8,7 @@ export function SavedTuitionCard({ saved }: { saved: SavedTuition }) {
   const available = tuition?.approvalStatus === "approved" && tuition.isActive
 
   return (
-    <article className="flex flex-col rounded-2xl border border-blue-100 bg-white p-4 shadow-sm shadow-blue-950/5">
+    <article className="dashboard-surface flex flex-col rounded-2xl border p-4 transition-transform duration-200 hover:-translate-y-1 motion-reduce:transform-none">
       {tuition ? (
         <>
           <div className="aspect-[16/9] overflow-hidden rounded-xl bg-blue-50">
@@ -31,7 +31,7 @@ export function SavedTuitionCard({ saved }: { saved: SavedTuition }) {
           <p className="mt-2 text-sm text-slate-500">This tuition is no longer available.</p>
         </div>
       )}
-      <div className="mt-auto flex items-center justify-end gap-2 border-t border-blue-100 pt-4">
+      <div className="mt-auto flex items-center justify-end gap-2 border-t border-blue-200/70 pt-4">
         {available && (
           <Button nativeButton={false} render={<Link href={`/tuitions/${saved.tuitionId}`} />} variant="outline" className="border-blue-100 text-blue-700">
             View Details

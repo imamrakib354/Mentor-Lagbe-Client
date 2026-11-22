@@ -48,7 +48,7 @@ export function ApplicantsTable({
 
   return (
     <div className="space-y-6">
-      <header className="rounded-3xl border border-blue-100 bg-gradient-to-r from-white to-blue-100 px-5 py-7 sm:px-8">
+      <header className="dashboard-surface rounded-3xl border px-5 py-7 sm:px-8">
         <p className="text-xs font-bold tracking-[0.18em] text-blue-600 uppercase">Tutor workspace</p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-blue-950 sm:text-4xl">Manage Applicants</h1>
         <p className="mt-2 text-sm text-slate-600">Review students who have applied to your tuitions.</p>
@@ -77,7 +77,7 @@ export function ApplicantsTable({
         })}
       </nav>
 
-      <section className="rounded-3xl border border-blue-100 bg-white p-4 shadow-sm shadow-blue-950/5 sm:p-6">
+      <section className="dashboard-surface rounded-3xl border p-4 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-xl font-bold text-blue-950">
           {status === "all" ? "All Applications" : `${tabs.find((tab) => tab.value === status)?.label} Applications`}
