@@ -1,9 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google"
-import { ToastContainer } from "react-toastify"
 
 import "./globals.css"
 import "react-toastify/dist/ReactToastify.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeToastContainer } from "@/components/theme-toast-container"
 import { cn } from "@/lib/utils"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
@@ -32,14 +32,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           {children}
-          <ToastContainer
-            position="top-right"
-            autoClose={3500}
-            hideProgressBar
-            newestOnTop
-            closeOnClick
-            theme="light"
-          />
+          <ThemeToastContainer />
         </ThemeProvider>
       </body>
     </html>

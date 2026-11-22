@@ -18,6 +18,7 @@ export const getToken = async (): Promise<string> => {
   const session = await getSession()
 
   if (!session?.user) throw new Error("Please sign in to continue.")
+  if (session.user.roleSelectionRequired) throw new Error("Please choose your account role first.")
 
   const { token } = await auth.api.getToken({ headers: await headers() })
   if (!token) throw new Error("Could not obtain an authentication token.")

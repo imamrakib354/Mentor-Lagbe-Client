@@ -61,12 +61,12 @@ lib/
 
 ### Public experience
 
-- The home page UI is complete: banner, featured tuitions, pricing,
-  how-it-works, and community sections.
+- The home page uses `/new-tuitions` for featured listings and
+  `/platform-stats` for top subjects and platform counts.
 - A responsive shared navbar and footer are available under
   `components/shared/`.
 - The navbar handles loading, signed-in, and signed-out states. `/pricing`
-  exists; `/about` does not yet have a corresponding page.
+  exists; `/about` is not part of the navigation.
 
 ### Tuition browsing and details
 
@@ -92,7 +92,10 @@ lib/
 
 - Email/password sign-up and sign-in are implemented with Better Auth.
 - Google sign-in is conditionally configured when `GOOGLE_CLIENT_ID` and
-  `GOOGLE_CLIENT_SECRET` are supplied.
+  `GOOGLE_CLIENT_SECRET` are supplied. New Google users select student or tutor
+  once at `/choose-role`; existing accounts keep their role. The external API
+  must also reject users with `roleSelectionRequired: true` to enforce this
+  onboarding step against direct API calls.
 - Supported roles are `student`, `tutor`, and `admin`; each new account
   defaults to `student`.
 - Sign-up offers student and tutor roles. Better Auth's server hook rejects

@@ -8,8 +8,8 @@ import { Separator } from "@/components/ui/separator"
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "Browse Tuitions", href: "/tuitions" },
-  { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
+  { label: "Pricing", href: "/pricing" },
 ]
 
 const socialLinks = [
@@ -39,7 +39,7 @@ export function Footer() {
           <Link
             href="/"
             aria-label="MentorLagbe home"
-            className="inline-block rounded-xl bg-white px-3 py-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            className="brand-logo inline-block rounded-xl bg-white px-3 py-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
             <span className="flex h-12 w-48 items-center overflow-hidden">
               <Image

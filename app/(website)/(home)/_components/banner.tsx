@@ -20,7 +20,7 @@ export default function BannerSection() {
   return (
     <section
       aria-labelledby="banner-heading"
-      className="relative isolate overflow-hidden rounded-3xl border border-blue-100 bg-blue-50"
+      className="home-hero relative isolate overflow-hidden rounded-3xl border border-blue-100 bg-blue-50"
     >
       <Image
         src="/images/banner_background.png"
@@ -28,18 +28,19 @@ export default function BannerSection() {
         fill
         loading="eager"
         sizes="100vw"
-        className="-z-20 object-cover object-right-bottom"
+        className="hero-light-background -z-20 object-cover object-right-bottom"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-linear-to-b from-blue-50/95 via-blue-50/85 to-transparent lg:bg-none"
+        className="hero-light-overlay absolute inset-0 -z-10 bg-linear-to-b from-blue-50/95 via-blue-50/85 to-transparent lg:bg-none"
       />
+      <div aria-hidden="true" className="hero-dark-decoration" />
 
-      <div className="grid lg:min-h-144 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="relative z-10 px-5 pt-10 sm:px-10 sm:pt-14 lg:py-14 lg:pr-0 lg:pl-12 xl:pl-16">
+      <div className="hero-content grid lg:min-h-144 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="hero-copy relative z-10 px-5 pt-10 sm:px-10 sm:pt-14 lg:py-14 lg:pr-0 lg:pl-12 xl:pl-16">
           <Badge
             variant="outline"
-            className="h-auto gap-1.5 rounded-full border-blue-200/60 bg-blue-100/90 px-3 py-2 text-xs font-semibold text-blue-800 sm:gap-3 sm:px-5 sm:text-sm"
+            className="hero-badge h-auto gap-1.5 rounded-full border-blue-200/60 bg-blue-100/90 px-3 py-2 text-xs font-semibold text-blue-800 sm:gap-3 sm:px-5 sm:text-sm"
           >
             <GraduationCap aria-hidden="true" className="size-5 shrink-0" />
             <span>Learn</span>
@@ -57,13 +58,13 @@ export default function BannerSection() {
 
           <h1
             id="banner-heading"
-            className="mt-6 max-w-3xl text-3xl leading-[1.12] font-bold tracking-tight text-slate-950 sm:text-5xl lg:text-[clamp(2.75rem,3.5vw,4.5rem)]"
+            className="hero-heading mt-6 max-w-3xl text-3xl leading-[1.12] font-bold tracking-tight text-slate-950 sm:text-5xl lg:text-[clamp(2.75rem,3.5vw,4.5rem)]"
           >
             Find Your Ideal Tutor or{" "}
-            <span className="block text-blue-700">Mentorship Batch Today</span>
+            <span className="hero-heading-accent block text-blue-700">Mentorship Batch Today</span>
           </h1>
 
-          <p className="mt-5 max-w-xl text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
+          <p className="hero-description mt-5 max-w-xl text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
             Discover qualified tutors, join structured mentorship batches, and
             take your learning to the next level — all in one trusted platform
             for students and tutors.
@@ -72,7 +73,7 @@ export default function BannerSection() {
           <Button
             nativeButton={false}
             render={<Link href="/tuitions" />}
-            className="group mt-7 h-auto min-h-12 gap-3 rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-blue-600/15 hover:bg-blue-700 focus-visible:ring-blue-500/40 sm:px-7"
+            className="hero-button group mt-7 h-auto min-h-12 gap-3 rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-blue-600/15 hover:bg-blue-700 focus-visible:ring-blue-500/40 sm:px-7"
           >
             Browse Tuitions
             <ArrowRight
@@ -81,16 +82,15 @@ export default function BannerSection() {
             />
           </Button>
 
-          <ul className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-4 sm:mt-10">
+          <ul className="hero-highlights mt-8 flex flex-wrap items-center gap-x-5 gap-y-4 sm:mt-10">
             {highlights.map(({ label, icon: Icon }) => (
               <li
                 key={label}
                 className="flex items-center gap-2 text-xs font-medium text-slate-700 sm:text-sm"
               >
-                <Icon
-                  aria-hidden="true"
-                  className="size-5 shrink-0 text-blue-600 sm:size-6"
-                />
+                <span className="hero-highlight-icon">
+                  <Icon aria-hidden="true" className="size-5 shrink-0 text-blue-600 sm:size-6" />
+                </span>
                 {label}
               </li>
             ))}
@@ -101,7 +101,7 @@ export default function BannerSection() {
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduceMotion ? 0 : 0.8, ease: "easeOut" }}
-          className="relative mx-auto mt-4 h-96 w-full max-w-md sm:h-112 lg:mt-0 lg:h-auto lg:min-h-144 lg:max-w-none"
+          className="hero-illustration relative mx-auto mt-4 h-96 w-full max-w-md sm:h-112 lg:mt-0 lg:h-auto lg:min-h-144 lg:max-w-none"
         >
           <motion.div
             initial={false}

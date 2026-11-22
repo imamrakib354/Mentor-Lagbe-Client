@@ -22,7 +22,7 @@ export default async function TutorDashboardPage() {
       <OverviewHeading eyebrow="Tutor dashboard" title={`Welcome back, ${user.name}!`} description="Manage your tuition listings, respond to applicants, and grow your reach." />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Total tuitions posted" value={tuitions?.length ?? "—"} icon={BookOpen} accent="purple" detail={tuitions ? "All current listings" : "Could not load listings"} />
-        <StatCard label="Approved tuitions" value={tuitions?.filter((item) => item.approvalStatus === "approved").length ?? "—"} icon={CheckCircle2} accent="green" />
+        <StatCard label="Active approved tuitions" value={tuitions?.filter((item) => item.approvalStatus === "approved" && item.isActive).length ?? "—"} icon={CheckCircle2} accent="green" />
         <StatCard label="Total applicants" value={listing?.counts.all ?? "—"} icon={Users} accent="amber" detail={listing ? "Applications received" : "Could not load applicants"} />
         <StatCard label="Current plan" value={premium === null ? "Unavailable" : premium ? "Pro" : "Free"} icon={Crown} />
       </div>

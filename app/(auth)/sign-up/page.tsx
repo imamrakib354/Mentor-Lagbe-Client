@@ -82,13 +82,14 @@ export default function SignUpPage() {
     setIsSubmitting(true)
 
     try {
-      const { data, error } = await authClient.signUp.email({
+      const signUpDetails = {
         name,
         email,
         password,
-        role,
+        signupRole: role,
         callbackURL: "/",
-      })
+      }
+      const { data, error } = await authClient.signUp.email(signUpDetails)
 
       if (error) {
         toast.error(error.message || "Could not create your account.")

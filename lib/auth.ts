@@ -15,9 +15,12 @@ export const auth = betterAuth({
 
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
-      if (ctx.path === "/sign-up/email" && ctx.body?.role !== undefined &&
-          ctx.body.role !== "student" && ctx.body.role !== "tutor") {
-        throw new APIError("BAD_REQUEST", { message: "Invalid signup role." })
+      if (ctx.path === "/sign-up/email") {
+        if (ctx.body?.role !== undefined ||
+            (ctx.body?.signupRole !== undefined &&
+              ctx.body.signupRole !== "student" && ctx.body.signupRole !== "tutor")) {
+          throw new APIError("BAD_REQUEST", { message: "Invalid signup role." })
+        }
       }
       if (ctx.path === "/update-user" && ctx.body?.role !== undefined) {
         throw new APIError("FORBIDDEN", { message: "Role changes require an admin." })
@@ -34,11 +37,33 @@ export const auth = betterAuth({
     additionalFields: {
       phone: { type: "string", required: false, input: false },
       bio: { type: "string", required: false, input: false },
+      roleSelectionRequired: { type: "boolean", required: false, input: false },
       role: {
         type: ["admin", "tutor", "student"],
-        // Signup accepts student or tutor; the auth hook rejects privileged roles.
-        input: true,
+        // The admin plugin protects this field; signup assigns it on the server.
+        input: false,
         defaultValue: "student",
+      },
+    },
+  },
+
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user, ctx) => {
+          if (ctx?.path === "/sign-up/email") {
+            const role = ctx.body?.signupRole
+            if (role !== undefined && role !== "student" && role !== "tutor") {
+              throw new APIError("BAD_REQUEST", { message: "Invalid signup role." })
+            }
+            return { data: { ...user, role: role === "tutor" ? "tutor" : "student" } }
+          }
+          if (ctx?.path === "/callback/google" ||
+              (ctx?.path === "/callback/:id" && ctx.params?.id === "google") ||
+              (ctx?.path === "/sign-in/social" && ctx.body?.provider === "google")) {
+            return { data: { ...user, role: "student", roleSelectionRequired: true } }
+          }
+        },
       },
     },
   },
@@ -59,6 +84,7 @@ export const auth = betterAuth({
 
   plugins: [
     admin({
+      defaultRole: "student",
       bannedUserMessage: "Your account is suspended. Please contact support.",
     }),
 

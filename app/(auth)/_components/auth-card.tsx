@@ -1,8 +1,13 @@
+"use client"
+
+import { useState } from "react"
+import { toast } from "react-toastify"
 import Image from "next/image"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { authClient } from "@/lib/auth-client"
 
 type AuthCardProps = {
   image: string
@@ -42,7 +47,7 @@ export function AuthCard({
         <Link
           href="/"
           aria-label="MentorLagbe home"
-          className="flex h-14 w-56 max-w-full items-center overflow-hidden rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+          className="brand-logo flex h-14 w-56 max-w-full items-center overflow-hidden rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
         >
           <Image
             src="/images/Mentor_logo.png"
@@ -60,12 +65,36 @@ export function AuthCard({
 }
 
 export function GoogleSignInButton({ label }: { label: string }) {
+  const [isSigningIn, setIsSigningIn] = useState(false)
+
+  async function handleGoogleSignIn() {
+    if (isSigningIn) return
+    setIsSigningIn(true)
+    try {
+      const callbackUrl = new URLSearchParams(window.location.search).get("callbackUrl")
+      const callbackURL = callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//") && !callbackUrl.includes("\\")
+        ? callbackUrl : "/"
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: `/choose-role?next=${encodeURIComponent(callbackURL)}`,
+        newUserCallbackURL: "/choose-role",
+      })
+      if (error) {
+        toast.error(error.message || "Could not start Google sign-in.")
+        setIsSigningIn(false)
+      }
+    } catch {
+      toast.error("Unable to reach the sign-in service.")
+      setIsSigningIn(false)
+    }
+  }
+
   return (
     <Button
       type="button"
       variant="outline"
-      disabled
-      title="Google authentication will be connected later"
+      disabled={isSigningIn}
+      onClick={handleGoogleSignIn}
       className="h-12 w-full gap-3 rounded-xl border-blue-200 bg-white text-sm font-semibold text-blue-950 disabled:opacity-65 sm:text-base dark:border-blue-200 dark:bg-white"
     >
       <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
@@ -86,7 +115,7 @@ export function GoogleSignInButton({ label }: { label: string }) {
           d="M12 5.96c1.47 0 2.79.5 3.83 1.49l2.87-2.87A9.63 9.63 0 0 0 12 2a10 10 0 0 0-8.93 5.49l3.34 2.59C7.2 7.72 9.4 5.96 12 5.96Z"
         />
       </svg>
-      {label}
+      {isSigningIn ? "Connecting to Google..." : label}
     </Button>
   )
 }

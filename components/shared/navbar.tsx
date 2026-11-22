@@ -4,10 +4,11 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { ChevronDown, LayoutDashboard, LogOut, Menu, Moon } from "lucide-react"
+import { ChevronDown, GraduationCap, LayoutDashboard, LogOut, Menu, UserRound } from "lucide-react"
 import { toast } from "react-toastify"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -34,9 +35,9 @@ import { authClient, useSession } from "@/lib/auth-client"
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Browse Tuitions", href: "/tuitions" },
+  { label: "About", href: "/about" },
   { label: "Pricing", href: "/pricing" },
   { label: "Dashboard", href: "/dashboard" },
-  { label: "About", href: "/about" },
 ]
 
 export function Navbar() {
@@ -73,12 +74,12 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-blue-100 bg-white shadow-sm shadow-blue-950/5">
-      <div className="flex min-h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:grid lg:grid-cols-[auto_1fr_auto]">
+    <header className="site-header sticky top-0 z-40 w-full border-b border-blue-100 bg-white shadow-sm shadow-blue-950/5">
+      <div className="site-header-inner flex min-h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:grid lg:grid-cols-[auto_1fr_auto]">
         <Link
           href="/"
           aria-label="MentorLagbe home"
-          className="flex h-12 w-48 shrink-0 items-center overflow-hidden rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
+          className="site-logo flex h-12 w-48 shrink-0 items-center overflow-hidden rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
         >
           <Image
             src="/images/Mentor_logo.png"
@@ -86,13 +87,17 @@ export function Navbar() {
             width={2172}
             height={724}
             sizes="192px"
-            className="h-auto w-48 shrink-0"
+            className="site-logo-image h-auto w-48 shrink-0"
           />
+          <span className="site-logo-dark">
+            <span className="site-logo-icon"><GraduationCap aria-hidden="true" /></span>
+            <span>MentorLagbe</span>
+          </span>
         </Link>
 
         <nav
           aria-label="Main navigation"
-          className="hidden justify-self-center lg:block"
+          className="site-navigation hidden justify-self-center lg:block"
         >
           <ul className="flex items-center gap-1">
             {visibleNavLinks.map((link) => (
@@ -118,6 +123,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center justify-end gap-3 lg:flex">
+          <ThemeToggle />
           {isPending ? (
             <Skeleton
               aria-label="Checking account"
@@ -151,6 +157,13 @@ export function Navbar() {
                 >
                   <LayoutDashboard aria-hidden="true" />
                   Dashboard
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  render={<Link href="/dashboard/profile" />}
+                  className="rounded-lg px-3 py-2.5"
+                >
+                  <UserRound aria-hidden="true" />
+                  Update Profile
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-blue-100" />
                 <DropdownMenuItem
@@ -190,17 +203,6 @@ export function Navbar() {
               </Link>
             </>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
-            type="button"
-            disabled
-            aria-label="Toggle color theme (coming soon)"
-            title="Theme switching coming soon"
-            className="size-11 rounded-xl text-blue-800 disabled:opacity-70"
-          >
-            <Moon aria-hidden="true" className="size-5" />
-          </Button>
         </div>
 
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -262,6 +264,9 @@ export function Navbar() {
                   <div className="flex items-center gap-3">
                     <UserSummary name={user.name} role={user.role} image={user.image} />
                   </div>
+                  <SheetClose nativeButton={false} render={<Link href="/dashboard/profile" />} className={cn(buttonVariants({ variant: "outline" }), "h-11 w-full rounded-xl")}>
+                    Update Profile
+                  </SheetClose>
                   <Button
                     type="button"
                     variant="outline"
@@ -278,7 +283,7 @@ export function Navbar() {
                   </Button>
                 </div>
               ) : (
-                <div className="grid grid-cols-[1fr_1fr_auto] items-center gap-2">
+                <div className="grid grid-cols-2 items-center gap-2">
                   <SheetClose
                     nativeButton={false}
                     render={<Link href="/sign-in" />}
@@ -299,19 +304,12 @@ export function Navbar() {
                   >
                     Sign Up
                   </SheetClose>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    type="button"
-                    disabled
-                    aria-label="Toggle color theme (coming soon)"
-                    title="Theme switching coming soon"
-                    className="size-10 rounded-xl text-blue-800 disabled:opacity-70"
-                  >
-                    <Moon aria-hidden="true" className="size-5" />
-                  </Button>
                 </div>
               )}
+              <div className="mt-4 flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Change theme</span>
+                <ThemeToggle />
+              </div>
             </div>
           </SheetContent>
         </Sheet>

@@ -14,6 +14,7 @@ import {
   ClipboardList,
   CreditCard,
   FileText,
+  GraduationCap,
   LayoutDashboard,
   LogOut,
   Plus,
@@ -133,8 +134,12 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
       className="top-0 h-svh border-blue-100"
     >
       <SidebarHeader className="border-b border-blue-200/70 bg-gradient-to-br from-[#e4f3ff] to-[#dfe7ff] p-5">
-        <Link href="/" aria-label="MentorLagbe home" className="mb-3 block w-44 max-w-full">
-          <Image src="/images/Mentor_logo.png" alt="MentorLagbe" width={2172} height={724} sizes="176px" className="h-auto w-full" />
+        <Link href="/" aria-label="MentorLagbe home" className="site-logo mb-6 block w-44 max-w-full rounded-lg">
+          <Image src="/images/Mentor_logo.png" alt="MentorLagbe" width={2172} height={724} sizes="176px" className="site-logo-image h-auto w-full" />
+          <span className="site-logo-dark">
+            <span className="site-logo-icon"><GraduationCap aria-hidden="true" /></span>
+            <span>MentorLagbe</span>
+          </span>
         </Link>
         <div className="flex min-w-0 items-center gap-3">
           <Avatar size="lg">
@@ -168,7 +173,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent className="bg-gradient-to-b from-[#dfe7ff] via-[#e4eaff] to-[#d9ddfa]">
-        <nav aria-label="Dashboard navigation">
+        <nav aria-label="Dashboard navigation" className="dashboard-navigation">
           <SidebarGroup className="p-3">
             <SidebarGroupLabel className="mb-2 px-3 text-[10px] font-semibold tracking-widest text-slate-500 uppercase">
               Main Menu

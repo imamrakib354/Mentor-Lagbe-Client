@@ -1,9 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { Moon } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
 export function DashboardHeader({ user }: { user: { name: string; email: string; image?: string | null } }) {
@@ -11,7 +10,7 @@ export function DashboardHeader({ user }: { user: { name: string; email: string;
     <header className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
       <SidebarTrigger aria-label="Toggle dashboard sidebar" className="size-10 rounded-xl border border-blue-100 bg-white/80 text-blue-700" />
       <div className="flex items-center gap-2">
-        <Button type="button" variant="ghost" size="icon" disabled aria-label="Theme switching coming soon" title="Theme switching coming soon" className="text-blue-700 disabled:opacity-70"><Moon aria-hidden="true" /></Button>
+        <ThemeToggle />
         <Link href="/dashboard/profile" aria-label="Open user profile" className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/80 bg-white/55 p-1.5 pr-3 shadow-sm shadow-blue-900/5 transition-colors hover:bg-white/80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
           <Avatar size="lg">
             {user.image && <AvatarImage src={user.image} alt="" />}

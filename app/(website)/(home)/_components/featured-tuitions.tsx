@@ -1,199 +1,61 @@
-import {
-  ArrowRight,
-  Atom,
-  BookOpen,
-  CodeXml,
-  FlaskConical,
-  GraduationCap,
-  Sigma,
-} from "lucide-react"
+import Link from "next/link"
+import { ArrowRight, BookOpen } from "lucide-react"
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
+import { getNewTuitions } from "@/lib/actions/home"
 
-// UI preview only. Replace these records with approved, active backend listings.
-const tuitions = [
-  {
-    title: "Higher Math Mastery Batch",
-    subject: "Higher Math",
-    classLevel: "HSC (XI–XII)",
-    mode: "Online",
-    fee: 2500,
-    tutor: "Arif Hasan",
-    initials: "AH",
-    tutorTitle: "Math Tutor",
-    icon: Sigma,
-  },
-  {
-    title: "HSC Physics Intensive Batch",
-    subject: "Physics",
-    classLevel: "HSC (XI–XII)",
-    mode: "Online",
-    fee: 2900,
-    tutor: "Nusrat Jahan",
-    initials: "NJ",
-    tutorTitle: "Physics Tutor",
-    icon: Atom,
-  },
-  {
-    title: "Programming Fundamentals",
-    subject: "Programming",
-    classLevel: "HSC & Admission",
-    mode: "Online",
-    fee: 3000,
-    tutor: "Tanvir Rahman",
-    initials: "TR",
-    tutorTitle: "Programming Mentor",
-    icon: CodeXml,
-  },
-  {
-    title: "IELTS Preparation Batch",
-    subject: "IELTS",
-    classLevel: "Open",
-    mode: "Online",
-    fee: 4000,
-    tutor: "Fariha Chowdhury",
-    initials: "FC",
-    tutorTitle: "IELTS Instructor",
-    icon: GraduationCap,
-  },
-  {
-    title: "HSC Chemistry Crash Course",
-    subject: "Chemistry",
-    classLevel: "HSC (XI–XII)",
-    mode: "Offline",
-    fee: 2800,
-    tutor: "Mahmudul Karim",
-    initials: "MK",
-    tutorTitle: "Chemistry Tutor",
-    icon: FlaskConical,
-  },
-  {
-    title: "SSC Math Advance Batch",
-    subject: "Mathematics",
-    classLevel: "SSC (IX–X)",
-    mode: "Offline",
-    fee: 1800,
-    tutor: "Sadia Akter",
-    initials: "SA",
-    tutorTitle: "Math Tutor",
-    icon: BookOpen,
-  },
-]
+export default async function FeaturedTuitions() {
+  const tuitions = await getNewTuitions().catch(() => null)
+  const [latest, ...others] = tuitions ?? []
 
-export default function FeaturedTuitions() {
   return (
-    <section
-      aria-labelledby="featured-heading"
-      className="rounded-3xl border border-blue-200 bg-white px-5 py-8 shadow-md shadow-blue-950/5 sm:p-8 lg:p-10"
-    >
-      <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="mb-2 text-xs font-semibold tracking-widest text-blue-600 uppercase">
-            Your next learning opportunity
-          </p>
-          <h2
-            id="featured-heading"
-            className="text-2xl font-bold tracking-tight text-blue-950 sm:text-3xl"
-          >
-            Featured Tuitions
-          </h2>
-          <p className="mt-2 text-sm leading-6 text-slate-600">
-            Find a subject, a mentor, and a learning path that feels right for
-            you.
-          </p>
-        </div>
-        <Button
-          disabled
-          variant="secondary"
-          className="h-10 w-fit rounded-xl bg-blue-100 text-blue-700 disabled:opacity-70"
-        >
-          Browse More Tuitions
-          <ArrowRight aria-hidden="true" />
-        </Button>
-      </div>
-
-      <p className="mb-5 text-xs text-slate-500">
-        Sample listings for this design preview. Live tuitions will appear here
-        later.
-      </p>
-
-      <div className="grid auto-rows-fr gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {tuitions.map((tuition) => (
-          <Card
-            key={tuition.title}
-            className="h-full gap-5 rounded-2xl border border-blue-100 bg-white py-6 text-slate-900 shadow-sm ring-0 shadow-blue-950/3"
-          >
-            <CardContent className="flex h-full flex-col px-5 sm:px-6">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
-                  <tuition.icon aria-hidden="true" className="size-6" />
-                </div>
-                <Badge
-                  variant="secondary"
-                  className={
-                    tuition.mode === "Online"
-                      ? "border-sky-100 bg-sky-50 text-sky-700"
-                      : "border-amber-100 bg-amber-50 text-amber-700"
-                  }
-                >
-                  {tuition.mode}
-                </Badge>
-              </div>
-              <h3 className="text-lg leading-7 font-bold text-blue-950">
-                {tuition.title}
-              </h3>
-              <dl className="mt-4 grid grid-cols-2 gap-3 text-xs">
-                <div>
-                  <dt className="text-slate-500">Subject</dt>
-                  <dd className="mt-1 font-medium text-slate-700">
-                    {tuition.subject}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-slate-500">Class level</dt>
-                  <dd className="mt-1 font-medium text-slate-700">
-                    {tuition.classLevel}
-                  </dd>
-                </div>
-              </dl>
-              <p className="mt-5 mb-5 text-xl font-bold text-blue-700">
-                ৳{tuition.fee.toLocaleString("en-US")}
-                <span className="ml-1 text-xs font-normal text-slate-500">
-                  / month
-                </span>
-              </p>
-              <Separator className="mt-auto bg-blue-100" />
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex min-w-0 items-center gap-2.5">
-                  <Avatar size="lg">
-                    <AvatarFallback className="bg-blue-100 text-xs font-bold text-blue-700">
-                      {tuition.initials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-blue-950">
-                      {tuition.tutor}
-                    </p>
-                    <p className="mt-0.5 text-xs text-slate-500">
-                      {tuition.tutorTitle}
-                    </p>
+    <section className="rounded-3xl border border-blue-100 bg-white px-5 py-8 shadow-md shadow-blue-950/5 sm:p-8 lg:p-10">
+      <p className="text-xs font-bold tracking-widest text-blue-600 uppercase">New opportunities</p>
+      <h2 className="mt-2 text-2xl font-bold text-blue-950 sm:text-3xl">Featured Tuitions</h2>
+      <p className="mt-2 text-sm text-slate-600">Discover the latest approved and active tuition listings.</p>
+      {!tuitions ? (
+        <p className="mt-6 text-sm text-slate-600">Could not load featured tuitions. Please try again later.</p>
+      ) : !latest ? (
+        <p className="mt-6 text-sm text-slate-600">No tuitions are available yet.</p>
+      ) : (
+        <>
+          <article className="mt-6 grid gap-5 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-950 p-5 text-white sm:grid-cols-[14rem_1fr]">
+            {/* Tutor-provided banners may use external image hosts. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={latest.bannerImage} alt="" className="h-44 w-full rounded-xl object-cover" />
+            <div className="flex flex-col items-start">
+              <span className="text-xs font-semibold tracking-wider text-blue-100 uppercase">Latest tuition</span>
+              <h3 className="mt-2 text-xl font-bold sm:text-2xl">{latest.title}</h3>
+              <p className="mt-2 text-sm text-blue-100">{latest.subject} · {latest.classLevel} · {latest.mode}</p>
+              <p className="mt-2 line-clamp-2 text-sm text-blue-100">{latest.description}</p>
+              {latest.tutorName && <p className="mt-2 text-sm font-semibold">Tutor: {latest.tutorName}</p>}
+              <p className="mt-2 text-sm font-bold">Monthly fee: ৳{Number(latest.monthlyFee).toLocaleString("en-US")}</p>
+              <Link href={`/tuitions/${latest._id}`} className="mt-4 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">View Details →</Link>
+            </div>
+          </article>
+          <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {others.map((tuition) => (
+              <article key={tuition._id} className="flex flex-col rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+                <div className="flex items-start gap-3">
+                  <span className="rounded-xl bg-blue-50 p-3 text-blue-600"><BookOpen aria-hidden="true" className="size-5" /></span>
+                  <div>
+                    <h3 className="font-bold text-blue-950">{tuition.title}</h3>
+                    <p className="mt-2 text-xs leading-5 text-slate-600">{tuition.subject} · {tuition.classLevel} · {tuition.mode}</p>
+                    <p className="mt-2 text-sm font-semibold text-blue-950">Monthly fee: ৳{Number(tuition.monthlyFee).toLocaleString("en-US")}</p>
                   </div>
                 </div>
-                <Button
-                  disabled
-                  variant="secondary"
-                  className="h-10 rounded-xl bg-blue-50 px-3 text-xs font-semibold text-blue-700 disabled:opacity-70"
-                >
-                  View Details
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                <div className="mt-4 flex items-center justify-between gap-2 border-t border-blue-100 pt-3">
+                  <span className="text-sm font-semibold text-blue-950">{tuition.tutorName || ""}</span>
+                  <Link href={`/tuitions/${tuition._id}`} className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">View Details →</Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
+      )}
+      <div className="mt-7 text-center">
+        <Link href="/tuitions" className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700">
+          Browse All Tuitions <ArrowRight aria-hidden="true" className="size-4" />
+        </Link>
       </div>
     </section>
   )
