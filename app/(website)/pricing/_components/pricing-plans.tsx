@@ -55,7 +55,7 @@ export function PricingPlans({ canceled }: { canceled: boolean }) {
         </div>
         <div className="mt-8 flex items-start gap-3 rounded-2xl border border-blue-100 bg-white/60 p-5 text-sm leading-6 text-slate-600">
           <Sparkles aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-blue-600" />
-          <p>Pro plans are a one-time payment in USD. Some listed benefits are still in development, and payments do not yet activate premium access.</p>
+          <p>Pro plans are a one-time payment in USD. Some listed benefits are still in development. Premium activation requires payment verification.</p>
         </div>
       </div>
     </div>

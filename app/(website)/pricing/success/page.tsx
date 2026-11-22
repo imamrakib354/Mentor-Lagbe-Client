@@ -1,8 +1,10 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { CircleCheck, Info } from "lucide-react"
+import type Stripe from "stripe"
 
 import { buttonVariants } from "@/components/ui/button"
+import { checkoutVerify } from "@/lib/actions/payments"
 import { getSession } from "@/lib/core/server"
 import { stripe } from "@/lib/stripe"
 
@@ -19,18 +21,35 @@ export default async function CheckoutSuccessPage({
     redirect("/sign-in")
   }
 
-  let paid = false
-  let couldCheck = false
-  let checkoutUserId: string | undefined
+  let checkout: Stripe.Checkout.Session | null = null
   try {
-    const checkout = await stripe.checkout.sessions.retrieve(session_id)
-    checkoutUserId = checkout.metadata?.userId
-    couldCheck = true
-    paid = checkout.status === "complete" && checkout.payment_status === "paid"
+    checkout = await stripe.checkout.sessions.retrieve(session_id, {
+      expand: ["line_items"],
+    })
   } catch {
     // Show a neutral message if Stripe cannot be reached or the session is invalid.
   }
-  if (couldCheck && checkoutUserId !== userSession.user.id) redirect("/pricing")
+  if (checkout && checkout.metadata?.userId !== userSession.user.id) redirect("/pricing")
+
+  const paid = checkout?.status === "complete" && checkout.payment_status === "paid"
+  let activated = false
+  if (paid) {
+    try {
+      activated = await checkoutVerify(session_id)
+    } catch {
+      // Keep the receipt visible if the backend is unavailable.
+    }
+  }
+
+  const transactionId = typeof checkout?.payment_intent === "string"
+    ? checkout.payment_intent
+    : checkout?.payment_intent?.id
+  const amount = checkout?.amount_total == null
+    ? "Unavailable"
+    : new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: checkout.currency || "usd",
+      }).format(checkout.amount_total / 100)
 
   return (
     <div className="flex min-h-[70vh] items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 px-4 py-16">
@@ -38,11 +57,31 @@ export default async function CheckoutSuccessPage({
         <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-blue-100 text-blue-600">
           {paid ? <CircleCheck aria-hidden="true" className="size-8" /> : <Info aria-hidden="true" className="size-8" />}
         </span>
-        <h1 className="mt-6 text-3xl font-bold text-blue-950">{paid ? "Payment successful!" : couldCheck ? "Payment not completed" : "Could not check payment"}</h1>
+        <h1 className="mt-6 text-3xl font-bold text-blue-950">{activated ? "Upgrade successful!" : paid ? "Payment received" : checkout ? "Payment not completed" : "Could not check payment"}</h1>
         <p className="mt-4 text-sm leading-6 text-slate-600">
-          {paid ? "Your payment was successful. Premium access is not activated yet." : couldCheck ? "Stripe has not confirmed this payment. Please check your payment status before trying again." : "We could not check your payment with Stripe. Please try again later before making another payment."}
+          {activated ? "Your payment was recorded and premium access is active." : paid ? "Your payment was received, but we could not confirm premium activation. Refresh this page to try again. You do not need to pay again." : checkout ? "Stripe has not confirmed this payment. Please check your payment status before trying again." : "We could not check your payment with Stripe. Please try again later before making another payment."}
         </p>
-        <Link href="/pricing" className={`${buttonVariants()} mt-8 w-full rounded-xl bg-blue-600 text-white`}>Back to pricing</Link>
+        {paid && checkout && (
+          <div className="mt-8 rounded-2xl border border-blue-100 bg-blue-50/50 p-5 text-left">
+            <h2 className="font-bold text-blue-950">Payment details</h2>
+            <dl className="mt-3 divide-y divide-blue-100 text-sm">
+              {[
+                ["Plan", checkout.line_items?.data[0]?.description || "Pro Plan"],
+                ["Amount paid", amount],
+                ["Checkout date (UTC)", new Date(checkout.created * 1000).toLocaleString("en-US", { dateStyle: "long", timeStyle: "short", timeZone: "UTC" })],
+                ["Email", checkout.customer_details?.email || checkout.customer_email || userSession.user.email],
+                ["Transaction ID", transactionId || "Unavailable"],
+                ["Checkout session", checkout.id],
+              ].map(([label, value]) => (
+                <div key={label} className="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between sm:gap-4">
+                  <dt className="text-slate-500">{label}</dt>
+                  <dd className="break-all text-slate-800 sm:text-right">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+        <Link href={activated ? "/dashboard" : "/pricing"} className={`${buttonVariants()} mt-8 w-full rounded-xl bg-blue-600 text-white`}>{activated ? "Go to dashboard" : "Back to pricing"}</Link>
       </section>
     </div>
   )

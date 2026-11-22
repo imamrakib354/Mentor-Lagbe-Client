@@ -36,6 +36,7 @@ export const pricingPlans = [
       price: 0,
       features: [
         "Browse and view all listings",
+        "Up to 5 tuition applications",
         "Contact tutors",
         "Join approved batches",
         "Basic account access",
@@ -46,6 +47,7 @@ export const pricingPlans = [
       price: 10,
       badge: "Best Value",
       features: [
+        "Unlimited tuition applications",
         "Saved tuition tools",
         "Priority support",
         "Better tutor discovery",

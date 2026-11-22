@@ -12,12 +12,12 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { createApplication } from "@/lib/actions/application"
+import { createApplication, getStudentApplications } from "@/lib/actions/application"
+import { getPremiumById } from "@/lib/actions/premium"
 import type { Tuition } from "@/lib/types/tuition"
 
 type ApplicationDialogProps = {
@@ -37,6 +37,27 @@ export function ApplicationDialog({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
   const classTimes = tuition.classTimes ?? []
+
+  async function handleApply() {
+    if (isSubmitting) return
+    setIsSubmitting(true)
+    try {
+      const listing = await getStudentApplications(student.id)
+      if (typeof listing.counts?.all !== "number") {
+        throw new Error("Could not check your application count.")
+      }
+      if (listing.counts.all >= 5 && !(await getPremiumById(student.id))) {
+        toast.info("You have reached the free limit of 5 applications. Upgrade to apply for more.")
+        router.push("/pricing")
+        return
+      }
+      setOpen(true)
+    } catch {
+      toast.error("Could not check your application limit. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -83,10 +104,11 @@ export function ApplicationDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button className="h-12 w-full bg-blue-600 text-base font-semibold text-white hover:bg-blue-700" />}>
+    <>
+      <Button type="button" onClick={handleApply} disabled={isSubmitting} className="h-12 w-full bg-blue-600 text-base font-semibold text-white hover:bg-blue-700">
         <Send aria-hidden="true" /> Apply Now
-      </DialogTrigger>
+      </Button>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 sm:max-w-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-blue-950">
@@ -128,5 +150,6 @@ export function ApplicationDialog({
         </form>
       </DialogContent>
     </Dialog>
+    </>
   )
 }

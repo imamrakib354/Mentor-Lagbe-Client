@@ -22,8 +22,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { createTuition } from "@/lib/actions/tuitions"
+import { createTuition, getTutorTuitions } from "@/lib/actions/tuitions"
 import { uploadImage } from "@/lib/actions/uploadImage"
+import { getPremiumById } from "@/lib/actions/premium"
 import { useSession } from "@/lib/auth-client"
 import {
   classLevels,
@@ -83,6 +84,7 @@ export default function PostTuitionPage() {
 
   function handleDrop(event: DragEvent<HTMLLabelElement>) {
     event.preventDefault()
+    if (isSubmitting) return
     selectImage(event.dataTransfer.files?.[0])
   }
 
@@ -153,6 +155,16 @@ export default function PostTuitionPage() {
     setIsSubmitting(true)
 
     try {
+      const tuitions = await getTutorTuitions(session.user.id)
+      if (!Array.isArray(tuitions)) {
+        throw new Error("Could not check your tuition count.")
+      }
+      if (tuitions.length >= 2 && !(await getPremiumById(session.user.id))) {
+        toast.info("You have reached the free limit of 2 tuition posts. Upgrade to post more.")
+        router.push("/pricing")
+        return
+      }
+
       if (imageMethod === "upload" && imageFile) {
         bannerImage = await uploadImage(imageFile)
       }

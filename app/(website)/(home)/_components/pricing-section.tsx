@@ -61,7 +61,7 @@ export default function PricingSection() {
           <span className="flex items-center gap-2"><Zap aria-hidden="true" className="size-5 text-blue-600" /> Flexible plans</span>
           <span className="flex items-center gap-2"><Headphones aria-hidden="true" className="size-5 text-blue-600" /> Support for tutors and students</span>
         </div>
-        <p className="mt-5 text-center text-xs text-slate-500">Some listed plan features are coming soon. Payments do not yet activate premium access.</p>
+        <p className="mt-5 text-center text-xs text-slate-500">Some listed plan features are coming soon. Premium activation requires payment verification.</p>
         <div className="mt-4 text-center">
           <Link href="/pricing" className={cn(buttonVariants({ variant: "link" }), "font-semibold text-blue-700")}>Explore all plans <ArrowRight aria-hidden="true" /></Link>
         </div>
