@@ -170,9 +170,6 @@ export default function PostTuitionPage() {
       }
 
       const tuition: TuitionFormData = {
-        tutorId: session.user.id,
-        tutorName: session.user.name,
-        tutorEmail: session.user.email,
         title: String(formData.get("title") || "").trim(),
         subject: String(formData.get("subject") || "").trim(),
         classLevel: String(formData.get("classLevel") || "").trim(),
@@ -183,9 +180,7 @@ export default function PostTuitionPage() {
         classTimes,
         description: String(formData.get("description") || "").trim(),
         bannerImage,
-        approvalStatus: "pending",
         isActive: true,
-        createdAt: new Date().toISOString(),
       }
 
       await createTuition(tuition)

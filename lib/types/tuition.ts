@@ -13,9 +13,6 @@ export type TuitionClassTime =
 
 // Describes the tuition data submitted when a tutor creates a listing.
 export type TuitionFormData = {
-  tutorId: string
-  tutorName: string
-  tutorEmail: string
   title: string
   subject: string
   classLevel: string
@@ -26,15 +23,21 @@ export type TuitionFormData = {
   classTimes: TuitionClassTime[]
   description: string
   bannerImage: string
-  approvalStatus: ApprovalStatus
   isActive: boolean
-  createdAt: string
 }
 
 // Describes a saved tuition, including its database ID.
 export type Tuition = TuitionFormData & {
   _id: string
+  tutorId: string
+  tutorName: string
+  tutorEmail: string
+  approvalStatus: ApprovalStatus
+  createdAt: string
 }
+
+// Public API responses do not contain the tutor's identity.
+export type PublicTuition = Omit<Tuition, "tutorId" | "tutorName" | "tutorEmail">
 
 // Describes the fields a tutor can edit on a tuition.
 export type TuitionUpdateData = Pick<
@@ -56,13 +59,13 @@ export type TutorDetails = {
 
 // Groups a tuition with its tutor profile when available.
 export type TuitionDetails = {
-  tuition: Tuition
+  tuition: PublicTuition
   tutor?: TutorDetails
 }
 
 // Describes the public tuition results and pagination details from the API.
 export type TuitionListing = {
-  tuitions: Tuition[]
+  tuitions: PublicTuition[]
   total: number
   page: number
   pageSize: number

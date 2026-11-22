@@ -1,16 +1,29 @@
 import "server-only"
 
 import { betterAuth } from "better-auth"
+import { APIError, createAuthMiddleware } from "better-auth/api"
 import { MongoClient } from "mongodb"
 import { mongodbAdapter } from "@better-auth/mongo-adapter"
-import { admin } from "better-auth/plugins"
+import { admin,jwt } from "better-auth/plugins"
 
 const client = new MongoClient(process.env.MONGODB_URI as string)
 
-const db = client.db("MentorLagbeDB")
+export const db = client.db("MentorLagbeDB")
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
+
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      if (ctx.path === "/sign-up/email" && ctx.body?.role !== undefined &&
+          ctx.body.role !== "student" && ctx.body.role !== "tutor") {
+        throw new APIError("BAD_REQUEST", { message: "Invalid signup role." })
+      }
+      if (ctx.path === "/update-user" && ctx.body?.role !== undefined) {
+        throw new APIError("FORBIDDEN", { message: "Role changes require an admin." })
+      }
+    }),
+  },
 
   emailAndPassword: {
     enabled: true,
@@ -23,7 +36,7 @@ export const auth = betterAuth({
       bio: { type: "string", required: false, input: false },
       role: {
         type: ["admin", "tutor", "student"],
-        // Development only: restrict privileged role assignment before deployment.
+        // Signup accepts student or tutor; the auth hook rejects privileged roles.
         input: true,
         defaultValue: "student",
       },
@@ -47,6 +60,8 @@ export const auth = betterAuth({
   plugins: [
     admin({
       bannedUserMessage: "Your account is suspended. Please contact support.",
-    })
+    }),
+
+    jwt(),
   ],
 })

@@ -1,8 +1,12 @@
+"use server"
+
+import { authFetch } from "@/lib/core/server"
 import type {
   Tuition,
   TuitionDetails,
   TuitionFormData,
   TuitionListing,
+  PublicTuition,
   TuitionUpdateData,
 } from "@/lib/types/tuition"
 
@@ -19,7 +23,7 @@ type CreateTuitionResponse = {
 export async function createTuition(
   tuition: TuitionFormData
 ): Promise<CreateTuitionResponse> {
-  const response = await fetch(`${API_BASE_URL}/tuitions`, {
+  const response = await authFetch(`${API_BASE_URL}/tuitions`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -75,7 +79,7 @@ export async function getTuitionById(
     throw new Error("Could not load this tuition. Please try again.")
   }
 
-  const data = (await response.json()) as Tuition | TuitionDetails | null
+  const data = (await response.json()) as PublicTuition | TuitionDetails | null
 
   if (!data) return null
 
@@ -84,7 +88,7 @@ export async function getTuitionById(
 
 // Fetches the given tutor's listings directly from the backend.
 export async function getTutorTuitions(tutorId: string): Promise<Tuition[]> {
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/tuitions/tutor/${encodeURIComponent(tutorId)}`,
     { cache: "no-store" }
   )
@@ -101,7 +105,7 @@ export async function updateTuitionActiveStatus(
   tuitionId: string,
   isActive: boolean
 ): Promise<void> {
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/tuitions/${encodeURIComponent(tuitionId)}/active`,
     {
       method: "PATCH",
@@ -122,7 +126,7 @@ export async function updateTuitionActiveStatus(
 
 // Deletes a tuition listing by its ID.
 export async function deleteTuition(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/tuitions/${encodeURIComponent(id)}`, {
+  const response = await authFetch(`${API_BASE_URL}/tuitions/${encodeURIComponent(id)}`, {
     method: "DELETE",
   })
   if (!response.ok) throw new Error("Could not delete the tuition.")
@@ -135,7 +139,7 @@ export async function updateTuitionDetails(
   id: string,
   details: TuitionUpdateData
 ): Promise<void> {
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/tuitions/${encodeURIComponent(id)}/details`,
     {
       method: "PATCH",

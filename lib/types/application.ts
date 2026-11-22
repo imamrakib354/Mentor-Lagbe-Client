@@ -1,6 +1,14 @@
 // Describes an application's progress after submission.
 export type ApplicationStatus = "pending" | "accepted" | "rejected"
 
+// Fields submitted by the student; the backend supplies identity and snapshots.
+export type CreateApplicationData = {
+  tuitionId: string
+  phone: string
+  preferredSchedule: string
+  learningNote: string
+}
+
 // Describes the application and tuition details saved when a student applies.
 export type ApplicationFormData = {
   tuitionId: string

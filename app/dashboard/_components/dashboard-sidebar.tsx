@@ -23,7 +23,7 @@ import {
 } from "lucide-react"
 import { toast } from "react-toastify"
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -87,7 +87,7 @@ const menuItemsByRole = {
 }
 
 type DashboardSidebarProps = {
-  user: { name: string; role?: string | null } | null
+  user: { name: string; role?: string | null; image?: string | null } | null
 }
 
 export function DashboardSidebar({ user }: DashboardSidebarProps) {
@@ -138,6 +138,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         </Link>
         <div className="flex min-w-0 items-center gap-3">
           <Avatar size="lg">
+            {user?.image && <AvatarImage src={user.image} alt="" />}
             <AvatarFallback className="bg-blue-600 text-sm font-semibold text-white">
               {name.trim().charAt(0).toUpperCase() || "G"}
             </AvatarFallback>

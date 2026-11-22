@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { ChevronDown, LayoutDashboard, LogOut, Menu, Moon } from "lucide-react"
 import { toast } from "react-toastify"
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -44,6 +44,9 @@ export function Navbar() {
   const router = useRouter()
   const { data: session, isPending } = useSession()
   const user = session?.user
+  const visibleNavLinks = navLinks.filter(
+    (link) => link.href !== "/dashboard" || (!isPending && user)
+  )
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -92,7 +95,7 @@ export function Navbar() {
           className="hidden justify-self-center lg:block"
         >
           <ul className="flex items-center gap-1">
-            {navLinks.map((link) => (
+            {visibleNavLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -131,7 +134,7 @@ export function Navbar() {
                   />
                 }
               >
-                <UserSummary name={user.name} role={user.role} />
+                <UserSummary name={user.name} role={user.role} image={user.image} />
                 <ChevronDown
                   aria-hidden="true"
                   className="size-4 text-blue-600"
@@ -225,7 +228,7 @@ export function Navbar() {
             <Separator className="bg-blue-100" />
             <nav aria-label="Mobile navigation" className="px-4">
               <ul className="space-y-2">
-                {navLinks.map((link) => (
+                {visibleNavLinks.map((link) => (
                   <li key={link.href}>
                     <SheetClose
                       nativeButton={false}
@@ -257,7 +260,7 @@ export function Navbar() {
               ) : user ? (
                 <div className="space-y-4 border-t border-blue-100 pt-5">
                   <div className="flex items-center gap-3">
-                    <UserSummary name={user.name} role={user.role} />
+                    <UserSummary name={user.name} role={user.role} image={user.image} />
                   </div>
                   <Button
                     type="button"
@@ -317,10 +320,11 @@ export function Navbar() {
   )
 }
 
-function UserSummary({ name, role }: { name: string; role?: string }) {
+function UserSummary({ name, role, image }: { name: string; role?: string; image?: string | null }) {
   return (
     <>
       <Avatar size="lg">
+        {image && <AvatarImage src={image} alt="" />}
         <AvatarFallback className="bg-blue-600 text-sm font-semibold text-white">
           {name.trim().charAt(0).toUpperCase() || "U"}
         </AvatarFallback>

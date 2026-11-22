@@ -15,7 +15,7 @@ import {
   classLevels,
   tuitionSubjectsByClassLevel,
 } from "@/lib/data/tuition-options"
-import type { Tuition, TuitionListing } from "@/lib/types/tuition"
+import type { PublicTuition, TuitionListing } from "@/lib/types/tuition"
 
 type TuitionBrowserProps = {
   listing: TuitionListing
@@ -203,7 +203,7 @@ export function TuitionBrowser({
           </div>
         ) : (
           <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {listing.tuitions.map((tuition: Tuition) => (
+            {listing.tuitions.map((tuition: PublicTuition) => (
               <TuitionCard key={tuition._id} tuition={tuition} />
             ))}
           </div>

@@ -1,10 +1,14 @@
+"use server"
+
+import { authFetch } from "@/lib/core/server"
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ||
   "http://localhost:5000"
 
 // Gets the current premium status of a user.
 export async function getPremiumById(id: string): Promise<boolean> {
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/users/${encodeURIComponent(id)}/premium`,
     { cache: "no-store" }
   )

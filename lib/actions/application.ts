@@ -1,5 +1,8 @@
+"use server"
+
+import { authFetch } from "@/lib/core/server"
 import type {
-  ApplicationFormData,
+  CreateApplicationData,
   ApplicationListing,
 } from "@/lib/types/application"
 
@@ -8,8 +11,8 @@ const API_BASE_URL =
   "http://localhost:5000"
 
 // Sends a student's application to the backend.
-export async function createApplication(application: ApplicationFormData) {
-  const response = await fetch(`${API_BASE_URL}/applications`, {
+export async function createApplication(application: CreateApplicationData) {
+  const response = await authFetch(`${API_BASE_URL}/applications`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(application),
@@ -28,7 +31,7 @@ export async function getStudentApplications(
   applicantId: string,
   query = ""
 ): Promise<ApplicationListing> {
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/applications/student/${encodeURIComponent(applicantId)}${query ? `?${query}` : ""}`,
     { cache: "no-store" }
   )
@@ -42,7 +45,7 @@ export async function getTutorApplications(
   tutorId: string,
   query = ""
 ): Promise<ApplicationListing> {
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/applications/tutor/${encodeURIComponent(tutorId)}${query ? `?${query}` : ""}`,
     { cache: "no-store" }
   )
@@ -56,7 +59,7 @@ export async function updateApplicationStatus(
   applicationId: string,
   status: "accepted" | "rejected"
 ): Promise<void> {
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/applications/${encodeURIComponent(applicationId)}/status`,
     {
       method: "PATCH",
@@ -73,7 +76,7 @@ export async function updateApplicationStatus(
 
 // Cancels a pending application by its ID.
 export async function cancelApplication(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/applications/${encodeURIComponent(id)}`, {
+  const response = await authFetch(`${API_BASE_URL}/applications/${encodeURIComponent(id)}`, {
     method: "DELETE",
   })
   if (!response.ok) throw new Error("Could not cancel the application.")

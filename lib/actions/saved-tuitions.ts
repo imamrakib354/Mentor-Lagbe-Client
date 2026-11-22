@@ -1,3 +1,6 @@
+"use server"
+
+import { authFetch } from "@/lib/core/server"
 import type { SavedTuition } from "@/lib/types/saved-tuition"
 
 const API_BASE_URL =
@@ -6,7 +9,7 @@ const API_BASE_URL =
 
 // Saves a tuition for a student or returns the existing bookmark.
 export async function saveTuition(studentId: string, tuitionId: string) {
-  const response = await fetch(`${API_BASE_URL}/saved-tuitions`, {
+  const response = await authFetch(`${API_BASE_URL}/saved-tuitions`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ studentId, tuitionId }),
@@ -18,7 +21,7 @@ export async function saveTuition(studentId: string, tuitionId: string) {
 
 // Fetches a student's saved tuitions and their current tuition details.
 export async function getSavedTuitions(studentId: string): Promise<SavedTuition[]> {
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/saved-tuitions/student/${encodeURIComponent(studentId)}`,
     { cache: "no-store" }
   )
@@ -28,7 +31,7 @@ export async function getSavedTuitions(studentId: string): Promise<SavedTuition[
 
 // Removes a saved tuition bookmark by its ID.
 export async function removeSavedTuition(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/saved-tuitions/${encodeURIComponent(id)}`, {
+  const response = await authFetch(`${API_BASE_URL}/saved-tuitions/${encodeURIComponent(id)}`, {
     method: "DELETE",
   })
   if (!response.ok) throw new Error("Could not remove saved tuition.")

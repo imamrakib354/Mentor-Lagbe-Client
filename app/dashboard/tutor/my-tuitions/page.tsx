@@ -217,7 +217,7 @@ export default function MyTuitionsPage() {
                     </TableCell>
                     <TableCell className="px-4 py-4">
                       <div className="flex items-center gap-1">
-                        <Button
+                        {tuition.approvalStatus === "approved" && tuition.isActive && <Button
                           nativeButton={false}
                           render={<Link href={`/tuitions/${tuition._id}`} />}
                           size="sm"
@@ -227,7 +227,7 @@ export default function MyTuitionsPage() {
                         >
                           <Eye aria-hidden="true" />
                           <span className="hidden lg:inline">View</span>
-                        </Button>
+                        </Button>}
                         <EditTuitionDialog
                           tuition={tuition}
                           onUpdated={(details) => setTuitions((items) =>

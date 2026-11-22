@@ -1,15 +1,13 @@
 import Link from "next/link"
 import { BookOpen, MapPin, Video } from "lucide-react"
 
-import type { Tuition } from "@/lib/types/tuition"
+import type { PublicTuition } from "@/lib/types/tuition"
 
 type TuitionCardProps = {
-  tuition: Tuition
+  tuition: PublicTuition
 }
 
 export function TuitionCard({ tuition }: TuitionCardProps) {
-  const tutorInitial = tuition.tutorName.trim().charAt(0).toUpperCase() || "T"
-
   return (
     <article className="overflow-hidden rounded-2xl border border-blue-100 bg-white p-4 shadow-sm shadow-blue-950/5">
       <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-blue-50">
@@ -54,17 +52,7 @@ export function TuitionCard({ tuition }: TuitionCardProps) {
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-3 border-t border-blue-100 pt-3">
-        <div className="flex min-w-0 items-center gap-2.5">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-cyan-500 text-sm font-bold text-white">
-            {tutorInitial}
-          </span>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-blue-950">
-              {tuition.tutorName}
-            </p>
-            <p className="text-xs text-slate-500">Tutor</p>
-          </div>
-        </div>
+        <span className="text-sm text-slate-500">View tuition details</span>
 
         <Link
           href={`/tuitions/${tuition._id}`}

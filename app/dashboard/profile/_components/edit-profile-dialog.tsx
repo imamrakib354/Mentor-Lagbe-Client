@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { uploadImage } from "@/lib/actions/uploadImage"
 import { updateUserProfile } from "@/lib/actions/users"
+import { useSession } from "@/lib/auth-client"
 import { isValidPhone } from "@/lib/helpers/phone"
 
 export function EditProfileDialog({ name, phone, bio, image }: { name: string; phone?: string | null; bio?: string | null; image?: string | null }) {
@@ -24,6 +25,7 @@ export function EditProfileDialog({ name, phone, bio, image }: { name: string; p
   const [imageError, setImageError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
+  const { refetch } = useSession()
 
   useEffect(() => {
     return () => {
@@ -95,6 +97,7 @@ export function EditProfileDialog({ name, phone, bio, image }: { name: string; p
         bio: String(form.get("bio") || "").trim(),
         image: updatedImage,
       })
+      await refetch()
       toast.success("Profile updated successfully.")
       setOpen(false)
       setImageUrl(updatedImage || "")

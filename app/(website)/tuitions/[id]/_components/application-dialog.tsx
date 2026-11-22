@@ -20,20 +20,18 @@ import { Textarea } from "@/components/ui/textarea"
 import { createApplication, getStudentApplications } from "@/lib/actions/application"
 import { getPremiumById } from "@/lib/actions/premium"
 import { isValidPhone } from "@/lib/helpers/phone"
-import type { Tuition } from "@/lib/types/tuition"
+import type { PublicTuition } from "@/lib/types/tuition"
 
 type ApplicationDialogProps = {
-  tuition: Tuition
+  tuition: PublicTuition
   student: { id: string; name: string; email: string }
   tutorName: string
-  tutorEmail: string
 }
 
 export function ApplicationDialog({
   tuition,
   student,
   tutorName,
-  tutorEmail,
 }: ApplicationDialogProps) {
   const [open, setOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -81,22 +79,9 @@ export function ApplicationDialog({
     try {
       await createApplication({
         tuitionId: tuition._id,
-        applicantId: student.id,
-        applicantName: student.name,
-        applicantEmail: student.email,
-        tutorId: tuition.tutorId,
-        tutorName,
-        tutorEmail,
-        tuitionTitle: tuition.title,
-        bannerImage: tuition.bannerImage,
-        subject: tuition.subject,
-        classLevel: tuition.classLevel,
-        monthlyFee: tuition.monthlyFee,
         phone,
         preferredSchedule,
         learningNote: String(form.get("learningNote") || "").trim(),
-        status: "pending",
-        createdAt: new Date().toISOString(),
       })
       toast.success("Application submitted successfully!")
       setOpen(false)

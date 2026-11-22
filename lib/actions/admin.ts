@@ -1,6 +1,7 @@
 "use server"
 
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
+import { authFetch } from "@/lib/core/server"
 import type { ApprovalStatus, Tuition } from "@/lib/types/tuition"
 
 const API_BASE_URL =
@@ -12,7 +13,7 @@ export async function getAdminTuitions(query = ""): Promise<Tuition[]> {
   const user = await getCurrentUser()
   if (user?.role !== "admin") throw new Error("Only admins can view tuitions.")
 
-  const response = await fetch(
+  const response = await authFetch(
     `${API_BASE_URL}/admin/tuitions${query ? `?${query}` : ""}`,
     { cache: "no-store" }
   )
@@ -29,10 +30,10 @@ export async function updateTuitionApproval(
   const user = await getCurrentUser()
   if (user?.role !== "admin") throw new Error("Only admins can update tuitions.")
 
-  const response = await fetch(`${API_BASE_URL}/tuitions/${encodeURIComponent(id)}`, {
+  const response = await authFetch(`${API_BASE_URL}/tuitions/${encodeURIComponent(id)}`, {
     method: "PATCH",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ role: user.role, approvalStatus }),
+    body: JSON.stringify({ approvalStatus }),
   })
   if (!response.ok) throw new Error("Could not update tuition status.")
 

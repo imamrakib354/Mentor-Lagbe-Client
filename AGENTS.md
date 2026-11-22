@@ -75,13 +75,9 @@ lib/
   to filter for approved, active listings and return paginated results.
 - The browse UI has full-width search, filters, newest/oldest sorting, reset,
   reusable tuition cards, and pagination. It expects six results per page.
-- `/tuitions/[id]` fetches the tuition by ID and displays its banner,
-  description, fee, tutor, and other details. The details link is also enabled
-  in the tutor's My Tuitions table.
-- The details client accepts either a tuition document or `{ tuition, tutor }`.
-  With a tutor object, it can display the current profile image and optional
-  education, experience, and expertise. Otherwise it falls back to the tutor
-  name and email saved on the tuition; those values are not live profile data.
+- `/tuitions/[id]` shows public tuition details; only signed-in users can
+  fetch the mentor profile from `GET /tuitions/:id/mentor` with a JWT.
+  The tutor's My Tuitions table links to approved, active listings only.
 - Students can open the Apply Now dialog and submit a phone number, a batch
   time from the tuition's `classTimes`, and an optional learning note.
   Guests, tutors, and admins see a disabled button and notice.
@@ -99,9 +95,8 @@ lib/
   `GOOGLE_CLIENT_SECRET` are supplied.
 - Supported roles are `student`, `tutor`, and `admin`; each new account
   defaults to `student`.
-- Sign-up UI offers only student and tutor roles, but the Better Auth `role`
-  field still has `input: true`. Enforce role restrictions server-side before
-  deployment so a direct request cannot self-assign `admin`.
+- Sign-up offers student and tutor roles. Better Auth's server hook rejects
+  privileged signup roles and blocks self-service role updates.
 - Sign-out is implemented in the website navbar and dashboard sidebar.
 - Server-side session access uses `getCurrentUser()`; the client uses the
   typed `authClient` exports in `lib/auth-client.ts`.
@@ -114,9 +109,9 @@ lib/
 - `app/dashboard/layout.tsx` provides the responsive header, off-canvas
   sidebar, role-specific navigation, profile link, and sign-out behavior.
 - Role-specific navigation is implemented for student, tutor, and admin.
-- The dashboard layout requires sign-in, and some pages have role checks.
-  This is not a complete authorization boundary: all role routes and backend
-  mutations require server-side authorization before production.
+- The dashboard layout requires sign-in and role layouts check access.
+  Protected external API requests use JWTs; the backend must enforce role
+  and ownership checks independently of dashboard layouts.
 
 ### Tutor tuition flow
 

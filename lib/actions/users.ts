@@ -3,6 +3,7 @@
 import { auth } from "../auth";
 import { headers } from "next/headers";
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
+import { authFetch } from "@/lib/core/server"
 import type { UserRole } from "@/lib/types/user"
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000"
@@ -18,7 +19,7 @@ export async function updateUserProfile(profile: {
     if (!user) throw new Error("Please sign in to update your profile.")
     if (!profile.name.trim()) throw new Error("Please enter your name.")
 
-    const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/users/${encodeURIComponent(user.id)}`, {
+    const response = await authFetch(`${BASE_URL.replace(/\/$/, "")}/users/${encodeURIComponent(user.id)}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(profile),
@@ -60,7 +61,7 @@ export async function updateUserRole(userId: string, role: UserRole) {
         throw new Error("Please select a valid role.")
     }
 
-    const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/users/${encodeURIComponent(userId)}/role`, {
+    const response = await authFetch(`${BASE_URL.replace(/\/$/, "")}/users/${encodeURIComponent(userId)}/role`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role }),

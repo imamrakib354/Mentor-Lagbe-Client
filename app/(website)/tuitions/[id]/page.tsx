@@ -27,6 +27,7 @@ import { getStudentApplications } from "@/lib/actions/application"
 import { getSavedTuitions } from "@/lib/actions/saved-tuitions"
 import { getTuitionById } from "@/lib/actions/tuitions"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
+import { getTutorProfile } from "@/lib/helpers/getTutorProfile"
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString("en-US", {
@@ -46,8 +47,9 @@ export default async function TuitionDetailsPage({
 
   if (!details) notFound()
 
-  const { tuition, tutor } = details
+  const { tuition } = details
   const currentUser = await getCurrentUser()
+  const tutor = currentUser ? await getTutorProfile(tuition._id).catch(() => null) : null
   const canApply = currentUser?.role === "student"
   let hasApplied = false
   let applicationCheckFailed = false
@@ -66,8 +68,8 @@ export default async function TuitionDetailsPage({
       bookmarkId = undefined
     }
   }
-  const tutorName = tutor?.name || tuition.tutorName
-  const tutorEmail = tutor?.email || tuition.tutorEmail
+  const tutorName = tutor?.name || "your mentor"
+  const tutorEmail = tutor?.email
   const tutorInitial = tutorName.trim().charAt(0).toUpperCase() || "T"
   const applicationMessage = currentUser
     ? "Only student accounts can apply for a tuition."
@@ -116,10 +118,10 @@ export default async function TuitionDetailsPage({
               </h1>
 
               <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
-                <span className="inline-flex items-center gap-1.5">
+                {tutor?.name && <span className="inline-flex items-center gap-1.5">
                   <UserRound aria-hidden="true" className="size-4 text-blue-600" />
                   Tutor: <strong className="text-blue-950">{tutorName}</strong>
-                </span>
+                </span>}
                 <span className="inline-flex items-center gap-1.5">
                   <CalendarDays aria-hidden="true" className="size-4 text-blue-600" />
                   {tuition.daysPerWeek} days per week
@@ -175,7 +177,7 @@ export default async function TuitionDetailsPage({
           </section>
         </div>
 
-        <aside className="space-y-5 xl:sticky xl:top-24 xl:self-start">
+        <aside className="space-y-5">
           <section className="overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-sm shadow-blue-950/5">
             <div className="bg-linear-to-br from-blue-50 to-blue-100 p-6">
               <p className="text-xs font-bold tracking-wider text-blue-700 uppercase">
@@ -220,7 +222,7 @@ export default async function TuitionDetailsPage({
 
             <div className="border-t border-blue-100 p-5">
               {canApply && currentUser && !hasApplied && !applicationCheckFailed ? (
-                <ApplicationDialog tuition={tuition} student={currentUser} tutorName={tutorName} tutorEmail={tutorEmail} />
+                <ApplicationDialog tuition={tuition} student={currentUser} tutorName={tutorName} />
               ) : (
                 <Button type="button" disabled className="h-12 w-full bg-blue-600 text-base font-semibold text-white">
                   <Send aria-hidden="true" />
@@ -247,6 +249,14 @@ export default async function TuitionDetailsPage({
             <p className="text-xs font-bold tracking-wider text-blue-700 uppercase">
               Your mentor
             </p>
+            {!currentUser ? (
+              <p className="mt-4 text-sm text-slate-600">
+                <Link href="/sign-in" className="font-semibold text-blue-700 hover:underline">Sign in</Link> to view the mentor&apos;s profile.
+              </p>
+            ) : !tutor ? (
+              <p className="mt-4 text-sm text-slate-600">Could not load the mentor profile. Please try again later.</p>
+            ) : (
+              <>
             <div className="mt-4 flex items-center gap-3">
               <Avatar className="size-14">
                 {tutor?.image && (
@@ -263,10 +273,10 @@ export default async function TuitionDetailsPage({
                 <p className="text-sm text-slate-500">Tutor</p>
               </div>
             </div>
-            <div className="mt-5 flex items-center gap-2 border-t border-blue-100 pt-4 text-sm text-slate-600">
+            {tutorEmail && <div className="mt-5 flex items-center gap-2 border-t border-blue-100 pt-4 text-sm text-slate-600">
               <Mail aria-hidden="true" className="size-4 shrink-0 text-blue-600" />
               <span className="truncate">{tutorEmail}</span>
-            </div>
+            </div>}
             {tutor?.phone && (
               <p className="mt-3 flex items-center gap-2 text-sm text-slate-600">
                 <Phone aria-hidden="true" className="size-4 shrink-0 text-blue-600" />
@@ -280,6 +290,8 @@ export default async function TuitionDetailsPage({
                 {tutor?.experience && <p>{tutor.experience}</p>}
                 {tutor?.expertise && <p>{tutor.expertise}</p>}
               </div>
+            )}
+              </>
             )}
           </section>
         </aside>
