@@ -42,7 +42,8 @@ export const authFetch = async (
     cache: "no-store",
   })
 
-  if (res.status === 401) throw new Error("Your session has expired. Please sign in again.")
+  if (!res.ok) console.error("Protected API request failed:", res.status)
+  if (res.status === 401) throw new Error("Authentication with the service failed. Please sign in again or try later.")
   if (res.status === 403) throw new Error("You do not have permission to perform this action.")
   return res
 }

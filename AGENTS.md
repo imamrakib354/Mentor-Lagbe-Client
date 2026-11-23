@@ -69,6 +69,8 @@ lib/
   `components/shared/`.
 - The navbar handles loading, signed-in, and signed-out states. Public pricing
   and about routes are available, and the theme toggle supports light and dark.
+- App metadata includes public page descriptions, tuition-specific titles, and
+  non-indexed dashboard and authentication pages.
 
 ### Tuition browsing and details
 
@@ -86,6 +88,8 @@ lib/
 - Before enabling Apply Now, the page checks the student's applications.
   An existing application displays **Already Applied**; a failed check keeps
   the button disabled.
+- Application, user, tuition-moderation and review date displays use the
+  Asia/Dhaka time zone to keep server and browser rendering consistent.
 - The details page itself does not enforce public visibility or ownership.
   The external detail API must enforce approved/active visibility and any
   authenticated owner-preview exception.
@@ -213,13 +217,14 @@ lib/
   not return to the success page; pending/failed transaction recording.
 - Several advertised premium benefits remain previews; do not assume badges,
   priority placement or support features are implemented.
-- Automated tests and a project-specific README.
+- Automated tests.
 
 ## Required Environment Variables
 
 ```bash
 MONGODB_URI=
 BETTER_AUTH_URL=
+BETTER_AUTH_SECRET=
 NEXT_PUBLIC_API_BASE_URL=     # Optional locally; defaults to http://localhost:5000
 IMGBB_API_KEY=                # Required for uploaded tuition banners
 GOOGLE_CLIENT_ID=             # Optional; enable Google sign-in with the secret

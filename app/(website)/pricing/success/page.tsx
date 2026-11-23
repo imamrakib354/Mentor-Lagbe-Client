@@ -2,11 +2,17 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { CircleCheck, Info } from "lucide-react"
 import type Stripe from "stripe"
+import type { Metadata } from "next"
 
 import { buttonVariants } from "@/components/ui/button"
 import { checkoutVerify } from "@/lib/actions/payments"
 import { getSession } from "@/lib/core/server"
 import { stripe } from "@/lib/stripe"
+
+export const metadata: Metadata = {
+  title: "Payment Confirmation",
+  robots: { index: false, follow: false },
+}
 
 export default async function CheckoutSuccessPage({
   searchParams,

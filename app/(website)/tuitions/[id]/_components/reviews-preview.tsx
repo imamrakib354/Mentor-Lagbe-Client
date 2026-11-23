@@ -59,7 +59,7 @@ function ReviewCard({ review, own }: { review: Review; own?: boolean }) {
                 <h4 className="font-bold text-[#10204c] dark:text-[#f4f7ff]">{review.studentName || "Student"}</h4>
                 <span className="inline-flex items-center gap-1 rounded-full bg-[#e4efff] px-2 py-1 text-[10px] font-semibold text-[#245be8] dark:bg-[#254789] dark:text-[#d8e6ff]"><Check aria-hidden="true" className="size-3" /> {own ? "Your review" : "Student review"}</span>
               </div>
-              <p className="mt-1 flex items-center gap-1 text-xs text-[#687b98] dark:text-[#aabddc]"><CalendarDays aria-hidden="true" className="size-3" /> {new Date(review.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+              <p className="mt-1 flex items-center gap-1 text-xs text-[#687b98] dark:text-[#aabddc]"><CalendarDays aria-hidden="true" className="size-3" /> {new Date(review.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Dhaka" })}</p>
             </div>
             <div className="flex items-center gap-2"><RatingStars rating={review.rating} /><span className="text-xs font-semibold text-[#536682] dark:text-[#c2d1e9]">{review.rating}.0 / 5</span></div>
           </div>

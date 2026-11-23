@@ -1,8 +1,14 @@
 import Link from "next/link"
+import type { Metadata } from "next"
 import { ArrowRight, BookOpen, GraduationCap, ShieldCheck } from "lucide-react"
 
 import HowItWorks from "../(home)/_components/how-it-works"
 import { buttonVariants } from "@/components/ui/button"
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Learn how MentorLagbe connects students and tutors across Bangladesh.",
+}
 
 const values = [
   { icon: GraduationCap, title: "For students", description: "Explore tuition listings and find a learning experience that fits your goals." },

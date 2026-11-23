@@ -1,10 +1,16 @@
 import type { CSSProperties } from "react"
+import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
 import { DashboardHeader } from "./_components/dashboard-header"
 import { DashboardSidebar } from "./_components/dashboard-sidebar"
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  robots: { index: false, follow: false },
+}
 
 export default async function DashboardLayout({
   children,

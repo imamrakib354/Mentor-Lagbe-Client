@@ -118,7 +118,7 @@ export function ApplicantsTable({
                         "—"
                       )}
                     </TableCell>
-                    <TableCell className="px-3 text-slate-600">{new Date(application.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</TableCell>
+                    <TableCell className="px-3 text-slate-600">{new Date(application.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Dhaka" })}</TableCell>
                     <TableCell className="px-3">
                       <span className={`rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${application.status === "accepted" ? "bg-emerald-50 text-emerald-700" : application.status === "rejected" ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"}`}>
                         {application.status}

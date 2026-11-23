@@ -1,4 +1,5 @@
 import Link from "next/link"
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import {
   ArrowLeft,
@@ -29,6 +30,16 @@ import { getSavedTuitions } from "@/lib/actions/saved-tuitions"
 import { getTuitionById } from "@/lib/actions/tuitions"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
 import { getTutorProfile } from "@/lib/helpers/getTutorProfile"
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params
+  const details = await getTuitionById(id).catch(() => null)
+  if (!details) return { title: "Tuition Details" }
+  return {
+    title: details.tuition.title,
+    description: details.tuition.description.slice(0, 160),
+  }
+}
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString("en-US", {

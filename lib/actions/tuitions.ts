@@ -94,6 +94,7 @@ export async function getTutorTuitions(tutorId: string): Promise<Tuition[]> {
   )
 
   if (!response.ok) {
+    console.error("Get tutor tuitions failed:", response.status)
     throw new Error("Could not load your tuitions. Please try again.")
   }
 

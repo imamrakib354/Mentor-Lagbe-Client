@@ -1,6 +1,12 @@
 import { TuitionBrowser } from "./_components/tuition-browser"
 import { getPublicTuitions } from "@/lib/actions/tuitions"
 import type { TuitionListing } from "@/lib/types/tuition"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Browse Tuitions",
+  description: "Search approved tuition listings by subject, class level and learning mode.",
+}
 
 type SearchParams = Record<string, string | string[] | undefined>
 

@@ -36,6 +36,8 @@ export default function MyTuitionsPage() {
   const { data: session, isPending: isSessionPending } = useSession()
   const [tuitions, setTuitions] = useState<Tuition[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [loadFailed, setLoadFailed] = useState(false)
+  const [retry, setRetry] = useState(0)
   const [updatingId, setUpdatingId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -50,7 +52,9 @@ export default function MyTuitionsPage() {
       try {
         const tutorTuitions = await getTutorTuitions(session.user.id)
         setTuitions(tutorTuitions)
+        setLoadFailed(false)
       } catch (error) {
+        setLoadFailed(true)
         toast.error(
           error instanceof Error
             ? error.message
@@ -62,7 +66,7 @@ export default function MyTuitionsPage() {
     }
 
     loadTuitions()
-  }, [isSessionPending, session?.user?.id])
+  }, [isSessionPending, session?.user?.id, retry])
 
   async function toggleActiveStatus(tuitionId: string, isActive: boolean) {
     if (updatingId) return
@@ -116,6 +120,11 @@ export default function MyTuitionsPage() {
           <div className="flex min-h-64 items-center justify-center gap-2 text-sm text-slate-600">
             <Loader2 aria-hidden="true" className="size-5 animate-spin text-blue-600" />
             Loading your tuitions...
+          </div>
+        ) : loadFailed ? (
+          <div className="flex min-h-64 flex-col items-center justify-center gap-3 px-4 text-center">
+            <p className="text-sm text-slate-600">Could not load your tuitions. Please try again.</p>
+            <Button type="button" onClick={() => { setIsLoading(true); setRetry((value) => value + 1) }}>Try again</Button>
           </div>
         ) : tuitions.length === 0 ? (
           <div className="flex min-h-64 flex-col items-center justify-center px-4 text-center">

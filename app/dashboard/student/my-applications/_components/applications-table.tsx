@@ -104,7 +104,7 @@ export function ApplicationsTable({ listing, savedIds, studentId, search, status
                     </TableCell>
                     <TableCell className="whitespace-normal"><p className="font-semibold text-blue-950">{application.tutorName}</p><p className="mt-1 break-all text-xs text-slate-500">{application.tutorEmail}</p></TableCell>
                     <TableCell className="font-semibold text-blue-950">৳{Number(application.monthlyFee).toLocaleString("en-US")}</TableCell>
-                    <TableCell>{new Date(application.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</TableCell>
+                    <TableCell>{new Date(application.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Dhaka" })}</TableCell>
                     <TableCell><span className={`rounded-full px-3 py-1 text-xs font-semibold capitalize ${statusClass(application.status)}`}>{application.status}</span></TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">

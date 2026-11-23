@@ -124,7 +124,7 @@ export function UsersTable({ users, total, currentUserId }: { users: DirectoryUs
                       </span>
                     </TableCell>
                     <TableCell className="px-4 text-slate-600">
-                      {new Date(user.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      {new Date(user.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Dhaka" })}
                     </TableCell>
                     <TableCell className="px-4">
                       <select

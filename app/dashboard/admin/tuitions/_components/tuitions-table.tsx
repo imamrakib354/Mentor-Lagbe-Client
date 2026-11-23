@@ -140,7 +140,7 @@ export function TuitionsTable({
                     <TableCell className="px-4 font-semibold text-blue-950">৳{Number(tuition.monthlyFee).toLocaleString("en-US")}</TableCell>
                     <TableCell className="px-4"><span className={`rounded-full px-2.5 py-1 text-xs font-semibold capitalize ${tuition.approvalStatus === "approved" ? "bg-emerald-50 text-emerald-700" : tuition.approvalStatus === "rejected" ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"}`}>{tuition.approvalStatus}</span></TableCell>
                     <TableCell className="px-4"><span className={tuition.isActive ? "text-emerald-700" : "text-slate-500"}>{tuition.isActive ? "Active" : "Closed"}</span></TableCell>
-                    <TableCell className="px-4 text-slate-600">{new Date(tuition.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</TableCell>
+                    <TableCell className="px-4 text-slate-600">{new Date(tuition.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Dhaka" })}</TableCell>
                     <TableCell className="px-4">
                       <div className="flex flex-col items-stretch gap-1.5">
                         {tuition.approvalStatus === "pending" && (
