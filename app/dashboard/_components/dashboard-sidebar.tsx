@@ -231,7 +231,7 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
           onClick={handleSignOut}
           disabled={!user || isSigningOut}
           title={!user ? "Sign out is available when signed in" : undefined}
-          className="h-11 w-full rounded-xl border-blue-100 bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-800 dark:border-blue-100 dark:bg-white"
+          className="h-11 w-full rounded-xl border-blue-100 bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-800 dark:border-border dark:bg-secondary dark:text-secondary-foreground dark:hover:bg-accent"
         >
           {isSigningOut ? (
             <Spinner className="motion-reduce:animate-none" />

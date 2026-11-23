@@ -29,11 +29,11 @@ export default async function UserProfilePage() {
         <div className="flex flex-col items-start gap-5 border-b border-blue-200/60 pb-7 sm:flex-row sm:items-center">
           <Avatar className="size-28 border-4 border-white/80 shadow-lg shadow-blue-900/10 sm:size-36">
             {user.image && <AvatarImage src={user.image} alt="" />}
-            <AvatarFallback className="bg-blue-200 text-3xl font-bold text-blue-700">{user.name.trim().charAt(0).toUpperCase() || "U"}</AvatarFallback>
+            <AvatarFallback className="bg-secondary text-3xl font-bold text-secondary-foreground">{user.name.trim().charAt(0).toUpperCase() || "U"}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
             <h2 className="break-words text-2xl font-bold text-blue-950 sm:text-3xl">{user.name}</h2>
-            <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-blue-200/70 px-3 py-1 text-xs font-bold text-blue-700 capitalize">
+            <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-secondary-foreground capitalize">
               <GraduationCap aria-hidden="true" className="size-4" />{user.role || "student"}
             </span>
             <p className="mt-3 flex min-w-0 items-center gap-2 text-sm text-slate-600"><Mail aria-hidden="true" className="size-4 shrink-0 text-blue-600" /><span className="break-all">{user.email}</span></p>

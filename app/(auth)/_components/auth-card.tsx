@@ -95,7 +95,7 @@ export function GoogleSignInButton({ label }: { label: string }) {
       variant="outline"
       disabled={isSigningIn}
       onClick={handleGoogleSignIn}
-      className="h-12 w-full gap-3 rounded-xl border-blue-200 bg-white text-sm font-semibold text-blue-950 disabled:opacity-65 sm:text-base dark:border-blue-200 dark:bg-white"
+      className="h-12 w-full gap-3 rounded-xl border-blue-200 bg-white text-sm font-semibold text-blue-950 disabled:opacity-65 sm:text-base dark:border-border dark:bg-secondary dark:text-secondary-foreground"
     >
       <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5">
         <path

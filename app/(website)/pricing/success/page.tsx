@@ -87,7 +87,7 @@ export default async function CheckoutSuccessPage({
             </dl>
           </div>
         )}
-        <Link href={activated ? "/dashboard" : "/pricing"} className={`${buttonVariants()} mt-8 w-full rounded-xl bg-blue-600 text-white`}>{activated ? "Go to dashboard" : "Back to pricing"}</Link>
+        <Link href={activated ? "/dashboard" : "/pricing"} className={`${buttonVariants()} mt-8 w-full rounded-xl bg-blue-600 text-white hover:bg-blue-700`}>{activated ? "Go to dashboard" : "Back to pricing"}</Link>
       </section>
     </div>
   )

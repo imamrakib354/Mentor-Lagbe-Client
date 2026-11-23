@@ -16,7 +16,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { authClient } from "@/lib/auth-client"
 
 const inputClassName =
-  "h-12 rounded-xl border-blue-200 bg-white pl-11 text-blue-950 placeholder:text-slate-400 focus-visible:border-blue-500 focus-visible:ring-blue-500/20 dark:bg-white"
+  "h-12 rounded-xl border-blue-200 bg-white pl-11 text-blue-950 placeholder:text-slate-400 focus-visible:border-blue-500 focus-visible:ring-blue-500/20 dark:border-input dark:bg-muted dark:text-foreground"
 
 export default function SignInPage() {
   const router = useRouter()

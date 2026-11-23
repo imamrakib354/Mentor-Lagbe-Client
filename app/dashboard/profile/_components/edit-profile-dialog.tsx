@@ -128,7 +128,7 @@ export function EditProfileDialog({ name, phone, bio, image }: { name: string; p
           <div className="flex flex-col items-center justify-start gap-3 rounded-2xl bg-blue-100/50 p-5 text-center sm:bg-transparent sm:px-0">
             <Avatar className="size-32 border-4 border-white/80 shadow-md shadow-blue-900/10">
               {preview && <AvatarImage key={preview} src={preview} alt="" />}
-              <AvatarFallback className="bg-blue-200 text-3xl font-bold text-blue-700">{name.trim().charAt(0).toUpperCase() || "U"}</AvatarFallback>
+              <AvatarFallback className="bg-secondary text-3xl font-bold text-secondary-foreground">{name.trim().charAt(0).toUpperCase() || "U"}</AvatarFallback>
             </Avatar>
             <p className="text-xs leading-5 text-slate-500">Your profile picture preview</p>
           </div>

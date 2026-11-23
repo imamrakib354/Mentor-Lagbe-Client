@@ -9,7 +9,7 @@
         background: linear-gradient(135deg, #b9e9f5, #d6e8ff 52%, #c0c8fb);
     }
     .dark .dashboard-background {
-        background: linear-gradient(135deg, #090f20, #17233e);
+        background: radial-gradient(ellipse at 100% 0%, #17263a 0%, transparent 45%), #0b111b;
     }
     .dashboard-surface {
         background: linear-gradient(135deg, rgba(236, 248, 255, 0.9), rgba(226, 231, 255, 0.88));
@@ -17,9 +17,9 @@
         box-shadow: 0 12px 30px -18px rgba(45, 74, 155, 0.3);
     }
     .dark .dashboard-surface {
-        background: #131d36;
-        border-color: #2c3956;
-        box-shadow: 0 12px 30px -18px #0009;
+        background: #151f2d;
+        border-color: #303e50;
+        box-shadow: 0 16px 36px -24px #000c;
     }
 }
 
@@ -125,8 +125,8 @@
   .dark :is([class~="border-blue-100"], [class~="border-blue-200"], [class*="border-blue-200/"], [class*="border-white/"], [class~="divide-blue-100"]) {
     border-color: var(--border);
   }
-  .dark :is([class~="hover:bg-blue-50"], [class~="hover:bg-white/80"]):hover {
-    background-color: var(--accent);
+  .dark :is([class~="hover:bg-blue-50"], [class~="hover:bg-blue-100"], [class~="hover:bg-blue-100/70"], [class~="hover:bg-white/80"]):hover {
+    background-color: #354d6b;
   }
   .dark .brand-logo {
     background-color: white;
@@ -135,37 +135,37 @@
 
 .dark {
     color-scheme: dark;
-    --background: #090f20;
-    --foreground: #f2f5ff;
-    --card: #131d36;
-    --card-foreground: #f2f5ff;
-    --popover: #17213a;
-    --popover-foreground: #f2f5ff;
-    --primary: #8297ff;
-    --primary-foreground: #09132e;
-    --secondary: #202c49;
-    --secondary-foreground: #e2e9ff;
-    --muted: #1c2842;
-    --muted-foreground: #a3b1d0;
-    --accent: #26345b;
-    --accent-foreground: #e8edff;
+    --background: #0b111b;
+    --foreground: #edf3fb;
+    --card: #151f2d;
+    --card-foreground: #edf3fb;
+    --popover: #1b2838;
+    --popover-foreground: #edf3fb;
+    --primary: #83adff;
+    --primary-foreground: #0b1933;
+    --secondary: #243246;
+    --secondary-foreground: #e0eafa;
+    --muted: #202d3d;
+    --muted-foreground: #aebdd1;
+    --accent: #293b52;
+    --accent-foreground: #edf3fb;
     --destructive: oklch(0.704 0.191 22.216);
-    --border: #2c3956;
-    --input: #2c3956;
-    --ring: #8297ff;
+    --border: #344357;
+    --input: #405069;
+    --ring: #83adff;
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
-    --sidebar: #131d36;
-    --sidebar-foreground: #f2f5ff;
-    --sidebar-primary: #8297ff;
-    --sidebar-primary-foreground: #09132e;
-    --sidebar-accent: #26345b;
-    --sidebar-accent-foreground: #e8edff;
-    --sidebar-border: #2c3956;
-    --sidebar-ring: #8297ff;
+    --sidebar: #111b28;
+    --sidebar-foreground: #edf3fb;
+    --sidebar-primary: #83adff;
+    --sidebar-primary-foreground: #0b1933;
+    --sidebar-accent: #293b52;
+    --sidebar-accent-foreground: #edf3fb;
+    --sidebar-border: #303e50;
+    --sidebar-ring: #83adff;
 }
 
 @layer base {
@@ -187,8 +187,8 @@
 }
 
 .dark .site-header {
-  border-color: #273662;
-  background: #101d40;
+  border-color: #303e50;
+  background: #111b28;
   box-shadow: none;
 }
 
@@ -228,12 +228,12 @@
 }
 
 .dark .site-navigation a:hover {
-  background: #263867;
+  background: #293b52;
   color: white;
 }
 
 .dark .site-navigation a[aria-current="page"] {
-  background: #3155f6;
+  background: #315fc3;
   color: white;
 }
 
@@ -252,36 +252,103 @@
 }
 
 .dark .dashboard-navigation a:hover {
-  background: #26385f;
+  background: #26394e;
   color: #fff;
 }
 
 .dark .dashboard-navigation a[aria-current="page"],
 .dark .dashboard-navigation a[aria-current="page"]:hover {
-  background: #3155e9;
+  background: #315fc3;
   color: #fff;
 }
 
+/* Legacy pages still use light-specific utilities. Keep their surfaces and
+   semantic states distinct until those components use theme tokens directly. */
+@layer utilities {
+  .dark :is([class~="bg-blue-50"], [class*="bg-blue-50/"], [class~="bg-blue-100"], [class*="bg-blue-100/"], [class~="bg-slate-50"], [class~="bg-slate-100"]) {
+    background-color: #202e40;
+  }
+  .dark :is([class*="from-blue-50"], [class*="from-blue-100"], [class*="from-cyan-100"], [class*="from-sky-100"], [class*="from-[#f5f8ff]"], [class*="from-[#e4f3ff]"], [class*="from-[#dfe7ff]"]) {
+    background-image: linear-gradient(135deg, #1b2939, #202e40);
+  }
+  .dark :is([class~="bg-emerald-50"], [class~="bg-emerald-100"], [class~="bg-green-50"], [class~="bg-green-100"]) { background-color: #153d36; }
+  .dark :is([class~="bg-red-50"], [class~="bg-red-100"], [class~="bg-rose-50"], [class~="bg-rose-100"]) { background-color: #47272f; }
+  .dark :is([class~="bg-amber-50"], [class~="bg-amber-100"], [class~="bg-yellow-50"], [class~="bg-yellow-100"]) { background-color: #483a20; }
+  .dark :is([class~="bg-violet-50"], [class~="bg-violet-100"]) { background-color: #352c49; }
+  .dark :is([class~="text-emerald-600"], [class~="text-emerald-700"], [class~="text-green-600"], [class~="text-green-700"]) { color: #80dfbe; }
+  .dark :is([class~="text-red-600"], [class~="text-red-700"], [class~="text-rose-600"], [class~="text-rose-700"]) { color: #ff9da9; }
+  .dark :is([class~="text-amber-600"], [class~="text-amber-700"], [class~="text-amber-900"], [class~="text-yellow-700"]) { color: #f3ce80; }
+  .dark :is([class~="text-violet-600"], [class~="text-violet-700"]) { color: #d6baff; }
+  .dark :is([class~="border-red-100"], [class~="border-rose-100"]) { border-color: #70414b; }
+  .dark :is([class~="border-amber-100"], [class~="border-amber-200"]) { border-color: #725b32; }
+  .dark :is([class~="border-emerald-100"], [class~="border-emerald-200"]) { border-color: #32685a; }
+  .dark :is([class~="hover:bg-red-50"], [class~="hover:bg-rose-50"]):hover { background-color: #59323c; }
+  .dark [class~="hover:bg-emerald-50"]:hover { background-color: #205347; }
+}
+
+.dark [data-sidebar="sidebar"] {
+  background: #111b28;
+  border-color: #303e50;
+}
+
+.dark [data-sidebar="header"],
+.dark [data-sidebar="content"],
+.dark [data-sidebar="footer"] {
+  background: #111b28;
+  border-color: #303e50;
+}
+
+.dark .dashboard-background table thead {
+  background: #202e40;
+}
+
+.dark .dashboard-background table tbody tr:hover {
+  background: #243348;
+}
+
+/* Give outline and ghost actions a visible, consistent hover instead of
+   letting legacy light-mode background utilities wash out their labels. */
+.dark [data-slot="button"][data-variant="outline"]:not(:disabled):hover,
+.dark [data-slot="button"][data-variant="ghost"]:not(:disabled):hover,
+.dark [data-slot="button"][data-variant="secondary"]:not(:disabled):hover {
+  background-color: #354d6b;
+  border-color: #7292bb;
+}
+
+.dark [data-slot="button"]:is([class~="text-blue-700"], [class~="text-blue-950"]):not(:disabled):hover {
+  color: #fff;
+}
+
+.dark [data-slot="button"][class~="bg-blue-600"]:not(:disabled):hover {
+  background-color: #3c6dd6;
+  color: #fff;
+}
+
+.dark [data-slot="button"]:focus-visible {
+  outline: 2px solid #a3c5ff;
+  outline-offset: 2px;
+}
+
 .dark .home-page {
-  background: #0a1532;
+  background: #0b111b;
 }
 
 /* Keep nested homepage surfaces distinct instead of mapping them all to --card. */
 .dark .home-featured,
 .dark .home-workflows {
-  background: #131f3a;
-  border-color: #34466e;
+  background: #151f2d;
+  border-color: #344357;
 }
 
 .dark .home-featured-card,
 .dark .home-workflow-card {
-  background: #0e1a32;
-  border-color: #35496f;
+  background: #1b2939;
+  border-color: #405069;
 }
 
 .dark .home-workflow-header {
-  background: #1c2d50;
-  border-color: #35496f;
+  background: #243449;
+  border-color: #405069;
 }
 
 .dark .home-page .home-icon-tile,
@@ -301,18 +368,18 @@
 }
 
 .dark .home-pricing {
-  background: linear-gradient(135deg, #172747, #202e50);
-  border-color: #34466e;
+  background: linear-gradient(135deg, #172637, #203148);
+  border-color: #344357;
 }
 
 .dark .home-pricing-group {
-  background: #101d36;
-  border-color: #3a4b70;
+  background: #141f2d;
+  border-color: #405069;
 }
 
 .dark .home-plan-card {
-  background: #1b2b49;
-  border-color: #415477;
+  background: #202e40;
+  border-color: #405069;
 }
 
 .dark .home-plan-pro {
