@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
 import { getSession } from "@/lib/core/server"
+import { getPremiumById } from "@/lib/actions/premium"
 
-export async function POST() {
+export async function POST(request: Request) {
   const userSession = await getSession()
   const user = userSession?.user
 
@@ -18,6 +19,15 @@ export async function POST() {
       { error: "This plan is only for students and tutors." },
       { status: 403 }
     )
+  }
+
+  try {
+    if (await getPremiumById(user.id)) {
+      return NextResponse.redirect(new URL("/pricing?checkout=already-pro", request.url), 303)
+    }
+  } catch {
+    // Do not create a checkout when the user's current plan cannot be verified.
+    return NextResponse.redirect(new URL("/pricing?checkout=plan-unavailable", request.url), 303)
   }
 
   try {

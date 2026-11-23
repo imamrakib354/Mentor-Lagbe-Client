@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 export default async function PricingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ canceled?: string }>
+  searchParams: Promise<{ canceled?: string; checkout?: string }>
 }) {
-  const { canceled } = await searchParams
-  return <PricingPlans canceled={canceled === "1"} />
+  const { canceled, checkout } = await searchParams
+  return <PricingPlans canceled={canceled === "1"} checkout={checkout} />
 }

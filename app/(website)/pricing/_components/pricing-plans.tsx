@@ -9,7 +9,7 @@ import { useSession } from "@/lib/auth-client"
 import { pricingPlans } from "@/lib/data/pricing-plans"
 import { cn } from "@/lib/utils"
 
-export function PricingPlans({ canceled }: { canceled: boolean }) {
+export function PricingPlans({ canceled, checkout }: { canceled: boolean; checkout?: string }) {
   const { data: session, isPending } = useSession()
   const role = session?.user?.role
 
@@ -24,6 +24,8 @@ export function PricingPlans({ canceled }: { canceled: boolean }) {
         </div>
 
         {canceled && <p role="status" className="mt-9 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">Checkout was canceled. You can try again whenever you are ready.</p>}
+        {checkout === "already-pro" && <p role="status" className="mt-9 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-950">Your Pro plan is already active. You do not need to pay again.</p>}
+        {checkout === "plan-unavailable" && <p role="alert" className="mt-9 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">We could not verify your current plan, so checkout was not started. Please try again later.</p>}
         <div className="mt-9 rounded-xl border border-blue-200 bg-white/70 px-4 py-3 text-sm leading-6 text-blue-950" aria-live="polite">
           {isPending ? "Checking your account..." : role === "tutor" || role === "student" ? `You are signed in as a ${role}. The ${role === "tutor" ? "Tutor" : "Student"} Pro plan is designed for your role.` : session?.user ? "Pro plans are designed for student and tutor accounts." : <>Sign in to see the plan for your role. <Link href="/sign-in" className="font-semibold text-blue-700 underline underline-offset-2">Sign in</Link></>}
         </div>
