@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 
 export default function PricingSection() {
   return (
-    <section id="plans" aria-labelledby="pricing-heading" className="relative overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 via-[#edf3ff] to-blue-100 px-4 py-12 sm:px-8 sm:py-14 lg:px-10">
+    <section id="plans" aria-labelledby="pricing-heading" className="home-pricing relative overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-blue-50 via-[#edf3ff] to-blue-100 px-4 py-12 sm:px-8 sm:py-14 lg:px-10">
       <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-blue-200/30 blur-2xl" />
       <div className="relative mx-auto max-w-7xl">
         <div className="mb-9 text-center">
@@ -21,9 +21,9 @@ export default function PricingSection() {
           {pricingPlans.map((group) => {
             const Icon = group.role === "tutor" ? UserRound : GraduationCap
             return (
-              <div key={group.role} className="rounded-3xl border border-white/80 bg-white/60 p-4 shadow-lg shadow-blue-900/5 sm:p-5">
+              <div key={group.role} className="home-pricing-group rounded-3xl border border-white/80 bg-white/60 p-4 shadow-lg shadow-blue-900/5 sm:p-5">
                 <div className="mb-5 flex items-center gap-4">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-600"><Icon aria-hidden="true" className="size-6" /></span>
+                  <span className="home-icon-tile flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-600"><Icon aria-hidden="true" className="size-6" /></span>
                   <div>
                     <h3 className="text-xl font-bold text-blue-950 sm:text-2xl">For {group.audience}</h3>
                     <p className="mt-1 text-sm text-slate-600">{group.description}</p>
@@ -33,9 +33,9 @@ export default function PricingSection() {
                   {[group.free, group.pro].map((plan) => {
                     const isPro = plan.price > 0
                     return (
-                      <div key={plan.name} className={cn("flex h-full flex-col rounded-2xl border bg-white p-5 shadow-sm", isPro ? "border-blue-500 bg-blue-50/70" : "border-blue-100")}>
+                      <div key={plan.name} className={cn("home-plan-card flex h-full flex-col rounded-2xl border bg-white p-5 shadow-sm", isPro ? "home-plan-pro border-blue-500 bg-blue-50/70" : "border-blue-100")}>
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700">{plan.name}</span>
+                          <span className="home-plan-label rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700">{plan.name}</span>
                           {"badge" in plan && <span className="flex items-center gap-1 rounded-full bg-blue-600 px-2.5 py-1 text-xs font-semibold text-white"><Crown aria-hidden="true" className="size-3" />{plan.badge}</span>}
                         </div>
                         <p className="mt-4 text-3xl font-extrabold text-blue-950">${plan.price}<span className="ml-1 text-sm font-semibold text-slate-500">{isPro ? " · one-time" : " · free"}</span></p>
@@ -45,7 +45,7 @@ export default function PricingSection() {
                         {isPro ? (
                           <CheckoutButton role={group.role} label="Pay with Stripe" />
                         ) : (
-                          <Button disabled variant="outline" className="h-11 w-full rounded-xl border-blue-200 bg-white font-bold text-blue-950 disabled:opacity-100">Get Started Free</Button>
+                          <Button disabled variant="outline" className="home-free-button h-11 w-full rounded-xl border-blue-200 bg-white font-bold text-blue-950 disabled:opacity-100">Get Started Free</Button>
                         )}
                       </div>
                     )

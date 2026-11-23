@@ -43,6 +43,7 @@ lib/
   actions/application.ts      # Application creation, listing and decisions
   actions/payments.ts         # Backend payment verification and listing
   actions/premium.ts          # Fetch current premium status
+  actions/reviews.ts          # Public reviews and authenticated student review actions
   actions/saved-tuitions.ts   # Save, list and remove bookmarks
   actions/tuitions.ts         # External tuition API client
   actions/uploadImage.ts      # Image upload helper
@@ -54,6 +55,7 @@ lib/
   stripe.ts                   # Server-only Stripe client
   helpers/getCurrentUser.ts   # Server-side session lookup
   types/application.ts        # Application data and status types
+  types/review.ts             # Public review and paginated listing types
   types/tuition.ts            # Tuition domain types
 ```
 
@@ -65,8 +67,8 @@ lib/
   `/platform-stats` for top subjects and platform counts.
 - A responsive shared navbar and footer are available under
   `components/shared/`.
-- The navbar handles loading, signed-in, and signed-out states. `/pricing`
-  exists; `/about` is not part of the navigation.
+- The navbar handles loading, signed-in, and signed-out states. Public pricing
+  and about routes are available, and the theme toggle supports light and dark.
 
 ### Tuition browsing and details
 
@@ -83,7 +85,7 @@ lib/
   Guests, tutors, and admins see a disabled button and notice.
 - Before enabling Apply Now, the page checks the student's applications.
   An existing application displays **Already Applied**; a failed check keeps
-  the button disabled. The reviews section and review button are placeholders.
+  the button disabled.
 - The details page itself does not enforce public visibility or ownership.
   The external detail API must enforce approved/active visibility and any
   authenticated owner-preview exception.
@@ -115,6 +117,9 @@ lib/
 - The dashboard layout requires sign-in and role layouts check access.
   Protected external API requests use JWTs; the backend must enforce role
   and ownership checks independently of dashboard layouts.
+- Student, tutor and admin dashboard overviews and a shared profile page are
+  implemented. Profile edits use the external backend; tutor profiles on public
+  tuition details are fetched through the authenticated mentor endpoint.
 
 ### Tutor tuition flow
 
@@ -158,6 +163,23 @@ lib/
   applications it fetches premium status and redirects non-premium students
   to pricing.
 
+### Student reviews
+
+- Tuition details display public reviews, an overall average and total, with
+  newest/oldest sorting and three reviews per page. Longer comments can be
+  expanded beyond three lines.
+- Signed-in students with an `accepted` application can submit a 1–5 rating
+  and a nonempty comment of at most 500 characters. Students can see and delete
+  their own review; after deletion they can submit again. Their own review
+  appears separately and may also appear in its normal public list position.
+- `lib/actions/reviews.ts` uses public `GET /reviews/:tuitionId` and JWT-protected
+  `GET /reviews/:tuitionId/mine`, `POST /reviews`, and `DELETE /reviews/:id`.
+  The client expects the backend's paginated response, and the mine endpoint
+  to return JSON `null` when no review exists.
+- The external API must validate accepted applications, enforce ownership and
+  one review per tuition and student using a unique index, and keep student and
+  tutor IDs out of public review responses. UI checks are not authorization.
+
 ### Pricing, payments and administration
 
 - The home pricing section and `/pricing` use shared plan data. Tutor Pro is
@@ -185,10 +207,6 @@ lib/
 
 ## Not Yet Implemented
 
-- Public about route.
-- Tutor, student, and admin dashboard overviews.
-- User profile page, live tutor-profile backend response, and theme switching.
-- Student-only server authorization and reviews.
 - Complete route guards, backend authentication and authorization, and
   server-side premium-limit enforcement.
 - Stripe webhook-based payment recording and activation when a customer does

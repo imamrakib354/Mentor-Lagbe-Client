@@ -8,7 +8,7 @@ export default async function FeaturedTuitions() {
   const [latest, ...others] = tuitions ?? []
 
   return (
-    <section className="rounded-3xl border border-blue-100 bg-white px-5 py-8 shadow-md shadow-blue-950/5 sm:p-8 lg:p-10">
+    <section className="home-featured rounded-3xl border border-blue-100 bg-white px-5 py-8 shadow-md shadow-blue-950/5 sm:p-8 lg:p-10">
       <p className="text-xs font-bold tracking-widest text-blue-600 uppercase">New opportunities</p>
       <h2 className="mt-2 text-2xl font-bold text-blue-950 sm:text-3xl">Featured Tuitions</h2>
       <p className="mt-2 text-sm text-slate-600">Discover the latest approved and active tuition listings.</p>
@@ -29,14 +29,14 @@ export default async function FeaturedTuitions() {
               <p className="mt-2 line-clamp-2 text-sm text-blue-100">{latest.description}</p>
               {latest.tutorName && <p className="mt-2 text-sm font-semibold">Tutor: {latest.tutorName}</p>}
               <p className="mt-2 text-sm font-bold">Monthly fee: ৳{Number(latest.monthlyFee).toLocaleString("en-US")}</p>
-              <Link href={`/tuitions/${latest._id}`} className="mt-4 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">View Details →</Link>
+              <Link href={`/tuitions/${latest._id}`} className="home-details-link mt-4 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400">View Details →</Link>
             </div>
           </article>
           <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {others.map((tuition) => (
-              <article key={tuition._id} className="flex flex-col rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
+              <article key={tuition._id} className="home-featured-card flex flex-col rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
                 <div className="flex items-start gap-3">
-                  <span className="rounded-xl bg-blue-50 p-3 text-blue-600"><BookOpen aria-hidden="true" className="size-5" /></span>
+                  <span className="home-icon-tile rounded-xl bg-blue-50 p-3 text-blue-600"><BookOpen aria-hidden="true" className="size-5" /></span>
                   <div>
                     <h3 className="font-bold text-blue-950">{tuition.title}</h3>
                     <p className="mt-2 text-xs leading-5 text-slate-600">{tuition.subject} · {tuition.classLevel} · {tuition.mode}</p>
@@ -45,7 +45,7 @@ export default async function FeaturedTuitions() {
                 </div>
                 <div className="mt-4 flex items-center justify-between gap-2 border-t border-blue-100 pt-3">
                   <span className="text-sm font-semibold text-blue-950">{tuition.tutorName || ""}</span>
-                  <Link href={`/tuitions/${tuition._id}`} className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">View Details →</Link>
+                  <Link href={`/tuitions/${tuition._id}`} className="home-details-link rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400">View Details →</Link>
                 </div>
               </article>
             ))}

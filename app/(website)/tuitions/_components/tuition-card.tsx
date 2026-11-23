@@ -56,7 +56,7 @@ export function TuitionCard({ tuition }: TuitionCardProps) {
 
         <Link
           href={`/tuitions/${tuition._id}`}
-          className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg bg-blue-50 px-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100"
+          className="tuition-details-link inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg bg-blue-50 px-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
         >
           <BookOpen aria-hidden="true" className="size-4" />
           Details

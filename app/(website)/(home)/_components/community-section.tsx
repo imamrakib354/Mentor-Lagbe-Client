@@ -13,7 +13,7 @@ export default async function CommunitySection() {
           stats.topSubjects.length === 0 ? <p className="mt-5 text-sm text-slate-500">No application data yet.</p> :
           <div className="mt-5 flex flex-wrap gap-2">
             {stats.topSubjects.map(({ subject }) => (
-              <Link key={subject} href={`/tuitions?subject=${encodeURIComponent(subject)}`} className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-950 hover:bg-blue-100">{subject}</Link>
+              <Link key={subject} href={`/tuitions?subject=${encodeURIComponent(subject)}`} className="home-community-tile rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-semibold text-blue-950 transition-colors hover:bg-blue-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400">{subject}</Link>
             ))}
           </div>}
       </div>
@@ -23,7 +23,7 @@ export default async function CommunitySection() {
         {!stats ? <p className="mt-5 text-sm text-slate-500">Statistics are unavailable right now.</p> :
           <dl className="mt-5 grid grid-cols-3 gap-2">
             {[{ label: "Students", value: stats.students }, { label: "Tutors", value: stats.tutors }, { label: "Active Tuitions", value: stats.tuitions }].map((item) => (
-              <div key={item.label} className="rounded-xl border border-blue-100 bg-blue-50 p-3 text-center">
+              <div key={item.label} className="home-community-tile rounded-xl border border-blue-100 bg-blue-50 p-3 text-center">
                 <dd className="text-xl font-bold text-blue-700 sm:text-2xl">{item.value.toLocaleString("en-US")}</dd>
                 <dt className="mt-1 text-xs text-slate-600">{item.label}</dt>
               </div>

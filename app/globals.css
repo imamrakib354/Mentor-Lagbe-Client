@@ -237,6 +237,16 @@
   color: white;
 }
 
+.dark .tuition-details-link {
+  background: #263b72;
+  color: #e8efff;
+}
+
+.dark .tuition-details-link:hover {
+  background: #3657a2;
+  color: #fff;
+}
+
 .dark .dashboard-navigation a {
   color: #c5d2ec;
 }
@@ -254,6 +264,81 @@
 
 .dark .home-page {
   background: #0a1532;
+}
+
+/* Keep nested homepage surfaces distinct instead of mapping them all to --card. */
+.dark .home-featured,
+.dark .home-workflows {
+  background: #131f3a;
+  border-color: #34466e;
+}
+
+.dark .home-featured-card,
+.dark .home-workflow-card {
+  background: #0e1a32;
+  border-color: #35496f;
+}
+
+.dark .home-workflow-header {
+  background: #1c2d50;
+  border-color: #35496f;
+}
+
+.dark .home-page .home-icon-tile,
+.dark .home-page .home-plan-label {
+  background: #263e74;
+  color: #c4d4ff;
+}
+
+.dark .home-details-link {
+  background: #304f91;
+  color: #fff;
+}
+
+.dark .home-details-link:hover {
+  background: #4269b8;
+  color: #fff;
+}
+
+.dark .home-pricing {
+  background: linear-gradient(135deg, #172747, #202e50);
+  border-color: #34466e;
+}
+
+.dark .home-pricing-group {
+  background: #101d36;
+  border-color: #3a4b70;
+}
+
+.dark .home-plan-card {
+  background: #1b2b49;
+  border-color: #415477;
+}
+
+.dark .home-plan-pro {
+  background: #1c3159;
+  border-color: #5d84f7;
+}
+
+.dark .home-free-button {
+  background: #2a3c5c;
+  border-color: #536887;
+  color: #e5edff;
+}
+
+.dark .home-pricing button:disabled:not(.home-free-button) {
+  background: #244681;
+  color: #d5e2ff;
+  opacity: 1;
+}
+
+.dark .home-community-tile {
+  background: #243a65;
+  border-color: #405981;
+}
+
+.dark a.home-community-tile:hover {
+  background: #365389;
 }
 
 .dark .home-hero {
@@ -350,20 +435,10 @@
 @media (min-width: 1024px) {
   .dark .site-header-inner {
     min-height: 90px;
-    padding-right: clamp(2rem, 5vw, 5rem);
-    padding-left: clamp(2rem, 5vw, 5rem);
-  }
-
-  .dark .home-page {
-    padding-top: 0;
   }
 
   .dark .home-hero {
     min-height: 690px;
-    margin-right: -1.25rem;
-    margin-left: -1.25rem;
-    border: 0;
-    border-radius: 0;
   }
 
   .dark .hero-content {

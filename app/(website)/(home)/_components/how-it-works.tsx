@@ -76,7 +76,7 @@ export default function HowItWorks() {
     <section
       id="how-it-works"
       aria-labelledby="how-heading"
-      className="rounded-3xl border border-blue-200 bg-white px-5 py-8 shadow-md shadow-blue-950/5 sm:p-8 lg:p-10"
+      className="home-workflows rounded-3xl border border-blue-200 bg-white px-5 py-8 shadow-md shadow-blue-950/5 sm:p-8 lg:p-10"
     >
       <div className="mb-8">
         <p className="mb-2 text-xs font-semibold tracking-widest text-blue-600 uppercase">
@@ -97,10 +97,10 @@ export default function HowItWorks() {
         {workflows.map((workflow) => (
           <Card
             key={workflow.audience}
-            className="gap-0 rounded-2xl border border-blue-100 bg-white py-0 text-slate-900 shadow-sm ring-0 shadow-blue-950/3"
+            className="home-workflow-card gap-0 overflow-hidden rounded-2xl border border-blue-100 bg-white py-0 text-slate-900 shadow-sm ring-0 shadow-blue-950/3"
           >
-            <CardHeader className="flex flex-row items-center gap-3 border-b border-blue-100 bg-blue-50/80 p-5 sm:p-6">
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
+            <CardHeader className="home-workflow-header flex flex-row items-center gap-3 border-b border-blue-100 bg-blue-50/80 p-5 sm:p-6">
+              <div className="home-icon-tile flex size-11 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
                 <workflow.icon aria-hidden="true" className="size-6" />
               </div>
               <div>
@@ -116,7 +116,7 @@ export default function HowItWorks() {
               <ol className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-4 sm:gap-x-6">
                 {workflow.steps.map((step, index) => (
                   <li key={step.title} className="relative text-center">
-                    <div className="relative mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                    <div className="home-icon-tile relative mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                       <step.icon aria-hidden="true" className="size-6" />
                       <Badge className="absolute -right-1 -bottom-1 size-5 rounded-full bg-blue-600 p-0 text-[10px] text-white">
                         {index + 1}

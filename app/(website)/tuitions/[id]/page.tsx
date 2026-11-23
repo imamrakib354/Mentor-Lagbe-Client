@@ -11,7 +11,6 @@ import {
   Monitor,
   Phone,
   Send,
-  Star,
   UserRound,
 } from "lucide-react"
 
@@ -23,7 +22,9 @@ import {
 import { Button } from "@/components/ui/button"
 import { ApplicationDialog } from "./_components/application-dialog"
 import { SaveTuitionButton } from "./_components/save-tuition-button"
+import { ReviewsPreview } from "./_components/reviews-preview"
 import { getStudentApplications } from "@/lib/actions/application"
+import { getMyReview, getReviews } from "@/lib/actions/reviews"
 import { getSavedTuitions } from "@/lib/actions/saved-tuitions"
 import { getTuitionById } from "@/lib/actions/tuitions"
 import { getCurrentUser } from "@/lib/helpers/getCurrentUser"
@@ -52,12 +53,16 @@ export default async function TuitionDetailsPage({
   const tutor = currentUser ? await getTutorProfile(tuition._id).catch(() => null) : null
   const canApply = currentUser?.role === "student"
   let hasApplied = false
+  let hasAcceptedApplication = false
   let applicationCheckFailed = false
   let bookmarkId: string | null | undefined
   if (canApply && currentUser) {
     try {
       const listing = await getStudentApplications(currentUser.id)
       hasApplied = listing.applications.some((application) => application.tuitionId === tuition._id)
+      hasAcceptedApplication = listing.applications.some(
+        (application) => application.tuitionId === tuition._id && application.status === "accepted"
+      )
     } catch {
       applicationCheckFailed = true
     }
@@ -74,6 +79,16 @@ export default async function TuitionDetailsPage({
   const applicationMessage = currentUser
     ? "Only student accounts can apply for a tuition."
     : "Sign in with a student account to apply."
+  const reviews = await getReviews(tuition._id).catch(() => null)
+  let myReview = null
+  let myReviewCheckFailed = false
+  if (canApply) {
+    try {
+      myReview = await getMyReview(tuition._id)
+    } catch {
+      myReviewCheckFailed = true
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#f0f7ff] px-3 py-6 sm:px-5 sm:py-8">
@@ -150,31 +165,6 @@ export default async function TuitionDetailsPage({
             </div>
           </div>
 
-          <section className="rounded-3xl border border-blue-100 bg-white p-5 shadow-sm shadow-blue-950/5 sm:p-7">
-            <div className="flex items-start gap-3">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                <Star aria-hidden="true" className="size-5" />
-              </span>
-              <div>
-                <h2 className="text-xl font-bold text-blue-950">
-                  Student Feedback & Reviews
-                </h2>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Reviews are coming soon. Students with approved applications
-                  will be able to share their experience.
-                </p>
-              </div>
-            </div>
-            <Button
-              type="button"
-              variant="outline"
-              disabled
-              className="mt-5 border-blue-100 text-blue-700"
-            >
-              <Star aria-hidden="true" />
-              Write a review
-            </Button>
-          </section>
         </div>
 
         <aside className="space-y-5">
@@ -295,6 +285,18 @@ export default async function TuitionDetailsPage({
             )}
           </section>
         </aside>
+        <div className="xl:col-span-2">
+          <ReviewsPreview
+            tuitionId={tuition._id}
+            signedIn={Boolean(currentUser)}
+            isStudent={canApply}
+            eligible={hasAcceptedApplication}
+            eligibilityCheckFailed={applicationCheckFailed}
+            initialReviews={reviews}
+            initialMyReview={myReview}
+            initialMyReviewCheckFailed={myReviewCheckFailed}
+          />
+        </div>
       </div>
     </div>
     </div>
